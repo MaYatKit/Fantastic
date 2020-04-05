@@ -1,0 +1,51 @@
+.musicli{
+    width: 100%;
+    color: white;
+    display: block;
+    height: 64px;
+    padding: 5px 16px 5px 16px;
+    background-color: #383b3f;
+    box-sizing: border-box;
+}
+
+.musicli.even{
+    background-color: #25292e;
+}
+
+.musicli > .img{
+    width: 54px;
+    height: 54px;
+    margin-right: 15px;
+    float: left;
+}
+
+.musicli > .img > img{
+    height: 100%;
+    width: 100%;
+}
+
+.musicli > .info{
+    float: left;
+    padding: 5px 0;
+}
+
+.musicli > .info > .top{
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.musicli > .info > .bottom{
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 4px;
+}
+
+.musicli > .info > .bottom .dot{
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.musicli > .control{
+    float: right;
+    padding-top: 6px;
+}
