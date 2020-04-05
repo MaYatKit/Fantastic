@@ -1,0 +1,57 @@
+.layout {
+    display: inline-block;
+    background: white;
+    height: 24px;
+    width: 100%;
+    margin-left: 24px;
+    margin-bottom: 24px;
+    cursor: pointer;
+}
+
+.icon {
+
+    height: 24px;
+    width: 24px;
+    horiz-align: left;
+    vertical-align: middle;
+}
+
+.icon_selected {
+
+    height: 24px;
+    width: 24px;
+    horiz-align: left;
+    vertical-align: middle;
+    color: #951518;
+}
+
+.text_selected{
+    font-family: 'Roboto', 'Noto', sans-serif;
+
+    font-size: 16px;
+    color: #951518;
+    font-weight: bolder;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+.item {
+    display: inline;
+    height: 100%;
+    width: auto;
+    horiz-align: left;
+    margin-left: 16px;
+    vertical-align: middle;
+}
+
+
+.text {
+    font-family: 'Roboto', 'Noto', sans-serif;
+
+    font-size: 16px;
+    color: rgba(0,0,0,.8);
+    font-weight: bolder;
+    text-decoration: none;
+    text-align: center;
+}

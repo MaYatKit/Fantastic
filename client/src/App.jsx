@@ -4,6 +4,7 @@ import React from 'react';
 
 import './App.css';
 import MusicLi from './components/MusicLi'
+import SideBar from './components/SideBar';
 
 let testMusicInfo = [
   {
@@ -26,18 +27,21 @@ let testMusicInfo = [
   }
 ]
 
+let testSideBarInfo = { username: 'user1' };
+
 function App() {
   return (
     <div className="App">
+        <SideBar usename={testSideBarInfo.username}> </SideBar>
       <p>Hello World</p>
       <div>
         {
           testMusicInfo.map( (entry, index) => {
             return (
-              <MusicLi name={entry.name} 
-                album={entry.album} 
-                votes={entry.votes} 
-                icon={entry.icon} 
+              <MusicLi name={entry.name}
+                album={entry.album}
+                votes={entry.votes}
+                icon={entry.icon}
                 index={index}
                 key={index}>
               </MusicLi>
@@ -45,7 +49,7 @@ function App() {
           })
         }
       </div>
-        
+
     </div>
   );
 }
