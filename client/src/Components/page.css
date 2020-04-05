@@ -1,0 +1,57 @@
+body {
+    background: #dddddd;
+}
+
+.page {
+    margin-top: 10%;
+    display: grid;
+    place-items: center;
+}
+
+.logo {
+    height: 250px;
+}
+
+.landing {
+    margin-top: 10%;
+    height: 110px;
+    display: grid;
+    place-items: center;
+}
+
+.creating {
+    margin-top: 10%;
+    height: 110px;
+    display: grid;
+    place-items: center;
+}
+
+.joining {
+    margin-top: 10%;
+    height: 110px;
+    display: grid;
+    place-items: center;
+}
+
+.codeInput {
+    color: #555555;
+    width: 150px;
+    padding: 0 5px;
+    border: none;
+    font-size: 1.5rem;
+    outline: 0;
+    background: transparent;
+    box-shadow:none;
+}
+
+.arrow {
+    border: none;
+    color: #c42627;
+    background: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.arrow:active {
+    transform: scale(0.99);
+}
