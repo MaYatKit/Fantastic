@@ -30,7 +30,7 @@ function App() {
   return (
     <div className="App">
       <p>Hello World</p>
-      <div>
+      <div style={{marginLeft: "260px"}}>
         {
           testMusicInfo.map( (entry, index) => {
             return (
