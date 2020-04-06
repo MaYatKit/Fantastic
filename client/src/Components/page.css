@@ -1,5 +1,7 @@
 body {
-    background: #dddddd;
+    background-image: url("../image/bg.png");
+    border-image-repeat: repeat;
+    background-size: 500px;
 }
 
 .page {

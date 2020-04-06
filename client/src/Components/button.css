@@ -9,8 +9,6 @@
   cursor: pointer;
   text-align: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: background 250ms ease-in-out,
-  transform 150ms ease;
   -webkit-appearance: none;
   -moz-appearance: none;
 }
