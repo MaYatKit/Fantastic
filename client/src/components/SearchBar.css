@@ -1,0 +1,21 @@
+.input-field {
+    height: 35px;
+    font-size: medium;
+    border: none;
+    width: 100%;
+}
+
+.icon {
+    width: 30px;
+    height: 30px;
+    margin: 5px 15px 5px 10px;
+}
+
+.form-wrapper {
+    width: 100%;
+    color: #383b3f;
+    border-radius: 3px;
+    background-color: white;
+    display: flex;
+    padding: 5px;
+}
