@@ -34,7 +34,7 @@ function App() {
     <div className="App">
         <SideBar usename={testSideBarInfo.username}> </SideBar>
       <p>Hello World</p>
-      <div>
+      <div style={{marginLeft: "260px"}}>
         {
           testMusicInfo.map( (entry, index) => {
             return (
