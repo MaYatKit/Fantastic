@@ -5,6 +5,7 @@ import React from 'react';
 import './App.css';
 import MusicLi from './components/MusicLi'
 import SideBar from './components/SideBar';
+import * as Playback from './playBack';
 
 let testMusicInfo = [
   {
@@ -28,6 +29,8 @@ let testMusicInfo = [
 ]
 
 let testSideBarInfo = { username: 'user1' };
+
+Playback.init();
 
 function App() {
   return (
