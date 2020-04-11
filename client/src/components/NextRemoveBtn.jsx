@@ -7,6 +7,8 @@ import style from "./MliBtns.css"
 import {MdSkipNext} from "react-icons/md"
 import {MdClear} from "react-icons/md"
 
+import * as playBack from "../playBack"
+
 // all possible states
 // const s = ["REMOVE", "NEXT"];
 
@@ -29,6 +31,7 @@ export default class MusicLi extends React.Component {
     this.setState({
       play: next
     })
+    playBack.next();
   }
 
   iconFn(){
@@ -44,5 +47,5 @@ export default class MusicLi extends React.Component {
         { this.iconFn() }
       </div>
     );
-  }   
+  }
 }
