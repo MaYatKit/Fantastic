@@ -1,11 +1,11 @@
 import React from "react";
 import Button from "./button";
-import "./page.css";
+import "./landingPage.css";
 
 import {FaArrowLeft} from "react-icons/fa";
 import logo from "./../image/logo.png"
 
-class Page extends React.Component{
+class LandingPage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -61,4 +61,4 @@ class Page extends React.Component{
     }
 }
 
-export default Page;
+export default LandingPage;
