@@ -17,8 +17,6 @@ class MusicLiWrapper extends React.Component {
     }
 
 render(){
-    this.handleAddTodo();
-    console.log("hi", )
     return(
     <div style={{marginLeft: "260px"}}>
         {
