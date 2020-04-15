@@ -32,7 +32,7 @@ export default class MusicLi extends React.Component {
             <span className="album-name">
             {this.props.album}
             </span>
-            <span className="dot">·</span>
+            <span className="dot">-</span>
             <span className="state">
               {this.musicStateText(this.props)}
             </span>

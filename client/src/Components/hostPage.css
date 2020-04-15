@@ -1,0 +1,55 @@
+body {
+    background:#31558a;
+}
+
+.page {
+    display: grid;
+    place-items: center;
+    background:#31558a;
+    padding-top: 10px;
+}
+
+.result{
+    border-radius: 10px;
+    margin: 10px;
+    width: 80%;
+    color: white;
+    display: block;
+    height: 80px;
+    padding: 15px 32px 5px 16px;
+    background:#214273;
+    box-sizing: border-box;
+}
+
+.result > .img{
+    width: 54px;
+    height: 54px;
+    margin-right: 15px;
+    float: left;
+}
+
+.result > .img > img{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.result > .info{
+    float: left;
+    padding: 5px 0;
+}
+
+.result > .info > .top{
+    font-size: 1rem;
+    line-height: 20px;
+}
+
+.result > .info > .bottom{
+    font-size: 0.75rem;
+    line-height: 20px;
+    margin-top: 4px;
+}
+
+.result > .info > .bottom .dot {
+    display: inline-block;
+}

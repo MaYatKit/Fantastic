@@ -55,7 +55,7 @@ class HostPage extends React.Component {
                     .then((jsonData) => {
                         this.setState({tracks: []});
                         for (let i = 0; i < jsonData.tracks.items.length; i++) {
-                            this.setState({tracks: [...this.state.tracks, {trackName: jsonData.tracks.items[i].name, albumName: jsonData.tracks.items[i].album.name, artistName: jsonData.tracks.items[i].artists[0].name}]});
+                            this.setState({tracks: [...this.state.tracks, {trackName: jsonData.tracks.items[i].name, albumName: jsonData.tracks.items[i].album.name, artistName: jsonData.tracks.items[i].artists[0].name, albumArt: jsonData.tracks.items[i].album.images[0].url}]});
                         }
                     });
             });
@@ -69,12 +69,27 @@ class HostPage extends React.Component {
         return (
             <div>
                 <SearchBar GetResult={this.GetResult}/>
-                <div>
+                <div className={"page"}>
                     {this.state.tracks.map((item, index) => {
                         return (
-                            <div key={index}>
-                                <h2>{item.trackName}</h2>
-                                <h6>{item.albumName} {item.artistName}</h6>
+                            <div className={"result"} key={index}>
+                                <div className="img">
+                                    <img src={item.albumArt} alt=""/>
+                                </div>
+                                <div className={"info"}>
+                                    <div className={"top"}>
+                                        {item.trackName}
+                                    </div>
+                                    <div className={"bottom clearfix"}>
+                                        <span className={"album-name"}>
+                                            {item.albumName}
+                                        </span>
+                                        <span className={"dot"}>·</span>
+                                        <span className={"artist-name"}>
+                                            {item.artistName}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         )
                     })}

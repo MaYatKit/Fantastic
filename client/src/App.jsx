@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-// import LandingPage from "./Components/landingPage.jsx";
-import HostPage from "./Components/hostPage";
+//import LandingPage from "./components/landingPage.jsx";
+import HostPage from "./components/hostPage";
 
 function App() {
   return (
