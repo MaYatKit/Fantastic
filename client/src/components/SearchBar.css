@@ -1,8 +1,17 @@
 .input-field {
     height: 35px;
-    font-size: medium;
+    color: white;
+    width: 90%;
+    padding: 0 5px;
     border: none;
-    width: 100%;
+    font-size: 1.5rem;
+    outline: 0;
+    background: transparent;
+    box-shadow:none;
+}
+
+.input-field::placeholder {
+    color: #b7b7b7;
 }
 
 .icon {
@@ -13,9 +22,6 @@
 
 .form-wrapper {
     width: 100%;
-    color: #383b3f;
-    border-radius: 3px;
-    background-color: white;
     display: flex;
     padding: 5px;
 }

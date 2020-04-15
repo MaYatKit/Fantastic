@@ -39,7 +39,7 @@ export default class SearchBar extends React.Component {
         return(
             <div>
                 <form className="form-wrapper">
-                    { icon }
+                    <div className={"image"}>{ icon }</div>
                     <input className = "input-field"
                     type = "text"
                     placeholder = "Add Tracks"
