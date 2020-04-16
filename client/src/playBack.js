@@ -1,40 +1,41 @@
 import React from 'react';
+import oauth from './oauth'
 
+// // Get the hash of the url
+// const hash = window.location.hash
+//     .substring(1)
+//     .split('&')
+//     .reduce(function (initial, item) {
+//         if (item) {
+//             var parts = item.split('=');
+//             initial[parts[0]] = decodeURIComponent(parts[1]);
+//         }
+//         return initial;
+//     }, {});
 
-// Get the hash of the url
-const hash = window.location.hash
-    .substring(1)
-    .split('&')
-    .reduce(function (initial, item) {
-        if (item) {
-            var parts = item.split('=');
-            initial[parts[0]] = decodeURIComponent(parts[1]);
-        }
-        return initial;
-    }, {});
+// // window.location.hash = '';
+// // Set token
+// let _token = hash.access_token;
+// // let _token = "BQCY5qSxEJavbkrJA5hOEtjeTDCFG3hw9B2ym3nsgCdWccGyZyq2J9LiMoDsHIPLG1w84737qpGudOMkrgwng64-9nOaC-zALESpjxxLW6WZEk0b1L80CbPvaiYa2EC-wR_FDhcU3LvYYAM_IzxRbiqrEC4ZCTjj4PXOQ9UTBBtFTzmaRsBVz1E";
 
-window.location.hash = '';
-// Set token
-let _token = hash.access_token;
-// let _token = "BQCY5qSxEJavbkrJA5hOEtjeTDCFG3hw9B2ym3nsgCdWccGyZyq2J9LiMoDsHIPLG1w84737qpGudOMkrgwng64-9nOaC-zALESpjxxLW6WZEk0b1L80CbPvaiYa2EC-wR_FDhcU3LvYYAM_IzxRbiqrEC4ZCTjj4PXOQ9UTBBtFTzmaRsBVz1E";
+// const authEndpoint = 'https://accounts.spotify.com/authorize';
 
-const authEndpoint = 'https://accounts.spotify.com/authorize';
+// // Replace with your app's client ID, redirect URI and desired scopes
+// const clientId = '38c1268007c94332bec6779dadad7837';
+// const redirectUri = 'http://localhost:3000';
+// const scopes = [
+//     'streaming',
+//     'user-read-email',
+//     'user-read-private',
+//     'user-modify-playback-state'
+// ];
 
-// Replace with your app's client ID, redirect URI and desired scopes
-const clientId = '38c1268007c94332bec6779dadad7837';
-const redirectUri = 'http://localhost:3000';
-const scopes = [
-    'streaming',
-    'user-read-email',
-    'user-read-private',
-    'user-modify-playback-state'
-];
+// // If there is no token, redirect to Spotify authorization
+// if (!_token) {
+//     window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
+// }
 
-// If there is no token, redirect to Spotify authorization
-if (!_token) {
-    window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
-}
-
+let _token = oauth.getToken();
 let readyToPlay = false;
 let deviceId = 0;
 
