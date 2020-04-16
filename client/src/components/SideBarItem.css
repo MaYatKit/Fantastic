@@ -1,36 +1,42 @@
 .layout {
     display: inline-block;
-    background: white;
-    height: 24px;
-    width: 100%;
+    background: #1f2127;
+    color: white;
+    height: 2rem;
+    width: calc(100% - 48px);
+    margin-top: 0.5rem;
     margin-left: 24px;
-    margin-bottom: 24px;
+    margin-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     cursor: pointer;
+    border-radius: 0.5rem;
+}
+
+.layout:hover {
+    background-color: #47cf73;
+    color: #2d313a;
 }
 
 .icon {
-
     height: 24px;
     width: 24px;
     horiz-align: left;
     vertical-align: middle;
+    margin: 5px 15px 5px 10px;
 }
 
 .icon_selected {
-
     height: 24px;
     width: 24px;
     horiz-align: left;
     vertical-align: middle;
-    color: #951518;
+    margin: 5px 15px 5px 10px;
+    color: white;
 }
 
 .text_selected{
-    font-family: 'Roboto', 'Noto', sans-serif;
-
-    font-size: 16px;
-    color: #951518;
-    font-weight: bolder;
+    font-size: 1rem;
     text-decoration: none;
     text-align: center;
 }
@@ -40,18 +46,13 @@
     display: inline;
     height: 100%;
     width: auto;
-    horiz-align: left;
-    margin-left: 16px;
+    align-content: center;
     vertical-align: middle;
 }
 
 
 .text {
-    font-family: 'Roboto', 'Noto', sans-serif;
-
-    font-size: 16px;
-    color: rgba(0,0,0,.8);
-    font-weight: bolder;
+    font-size: 1rem;
     text-decoration: none;
     text-align: center;
 }

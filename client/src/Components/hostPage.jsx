@@ -2,6 +2,7 @@ import React from 'react';
 import SearchBar from "./SearchBar";
 import './hostPage.css';
 import SideBar from "./SideBar";
+import MusicLi from "./MusicLi";
 
 const hash = window.location.hash
     .substring(1)
@@ -35,7 +36,8 @@ class HostPage extends React.Component {
         super(props);
 
         this.state = {
-            tracks: []
+            tracks: [],
+            active: false
         };
 
         this.GetResult = this.GetResult.bind(this);
@@ -54,6 +56,7 @@ class HostPage extends React.Component {
                     .then(response => response.json())
                     .then((jsonData) => {
                         this.setState({tracks: []});
+                        this.setState({active: true});
                         for (let i = 0; i < jsonData.tracks.items.length; i++) {
                             this.setState({tracks: [...this.state.tracks, {trackName: jsonData.tracks.items[i].name, albumName: jsonData.tracks.items[i].album.name, artistName: jsonData.tracks.items[i].artists[0].name, albumArt: jsonData.tracks.items[i].album.images[0].url}]});
                         }
@@ -61,6 +64,7 @@ class HostPage extends React.Component {
             });
         } else {
             this.setState({tracks: []});
+            this.setState({active: false});
         }
     }
 
@@ -71,29 +75,32 @@ class HostPage extends React.Component {
                 <div style={{marginLeft: "260px"}}>
                     <SearchBar GetResult={this.GetResult}/>
                     <div className={"page"}>
-                        {this.state.tracks.map((item, index) => {
-                            return (
-                                <div className={"result"} key={index}>
-                                    <div className="img">
-                                        <img src={item.albumArt} alt=""/>
-                                    </div>
-                                    <div className={"info"}>
-                                        <div className={"top"}>
-                                            {item.trackName}
+                        <div className={"search-results " + (this.state.active ? "" : "hidden")}>
+                            {this.state.tracks.map((item, index) => {
+                                return (
+                                    <div className={"result"} key={index}>
+                                        <div className="img">
+                                            <img src={item.albumArt} alt=""/>
                                         </div>
-                                        <div className={"bottom"}>
-                                            <span className={"album-name"}>
-                                                {item.albumName}
-                                            </span>
-                                            <span className={"dot"}>·</span>
-                                            <span className={"artist-name"}>
-                                                {item.artistName}
-                                            </span>
+                                        <div className={"info"}>
+                                            <div className={"top"}>
+                                                {item.trackName}
+                                            </div>
+                                            <div className={"bottom"}>
+                                                <span className={"album-name"}>
+                                                    {item.albumName}
+                                                </span>
+                                                <span className={"dot"}>·</span>
+                                                <span className={"artist-name"}>
+                                                    {item.artistName}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
+                        
                     </div>
                 </div>
             </div>

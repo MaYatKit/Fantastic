@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-import style from './SideBarItem.css';
+import './SideBarItem.css';
 
 
 export default class SideBarItem extends React.Component {
