@@ -1,6 +1,6 @@
 .input-field {
     height: 35px;
-    color: white;
+    color: #31558a;
     width: 90%;
     padding: 0 5px;
     border: none;
@@ -11,7 +11,7 @@
 }
 
 .input-field::placeholder {
-    color: #b7b7b7;
+    color: #1e3bb3;
 }
 
 .icon {

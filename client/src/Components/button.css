@@ -28,7 +28,7 @@
 .main {
   display: inline-block;
   position: relative;
-  background-image: linear-gradient(to top, #5540cd, #493fc7, #3c3ec0, #2e3dba, #1e3bb3);
+  background-color: #11998e;
   -webkit-backface-visibility: hidden;
   z-index: 1;
 }
@@ -58,7 +58,7 @@
 .secondary {
   display: inline-block;
   position: relative;
-  background-image: linear-gradient(to right top, #ed433f, #df3a37, #d2302f, #c42627, #b71b1f);
+  background-color: #11998e;
   -webkit-backface-visibility: hidden;
   z-index: 1;
 }
@@ -71,7 +71,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to right top, #fab823, #f9a315, #f68d0c, #f3770d, #ee5f13);
+  background: linear-gradient(to right, #11998e, #38ef7d);
   transition: opacity 0.5s ease-out;
   z-index: 2;
   opacity: 0;

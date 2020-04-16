@@ -1,50 +1,60 @@
 body {
-    background:#31558a;
+    background:#eeeeee;
 }
 
 .page {
     display: grid;
     place-items: center;
-    background:#31558a;
+    background:#eeeeee;
     padding-top: 10px;
+    margin-top: 0;
 }
 
-.result{
+.search-results {
+    z-index: 100;
+}
+
+.result {
     border-radius: 10px;
     margin: 10px;
     width: 80%;
-    color: white;
+    color: #31558a;
     display: block;
     height: 80px;
     padding: 15px 32px 5px 16px;
-    background:#214273;
+    background: #cbcbcb;
     box-sizing: border-box;
 }
 
-.result > .img{
+.result:hover {
+    background: linear-gradient(to right, #11998e, #38ef7d);
+    color: #eeeeee;
+}
+
+.result > .img {
     width: 54px;
     height: 54px;
     margin-right: 15px;
     float: left;
 }
 
-.result > .img > img{
+.result > .img > img {
     height: 100%;
     width: 100%;
     border-radius: 5px;
 }
 
-.result > .info{
+.result > .info {
     float: left;
     padding: 5px 0;
 }
 
-.result > .info > .top{
+.result > .info > .top {
     font-size: 1rem;
     line-height: 20px;
 }
 
-.result > .info > .bottom{
+.result > .info > .bottom {
     font-size: 0.75rem;
     line-height: 20px;
     margin-top: 4px;

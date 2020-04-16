@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchBar from "./SearchBar";
-
 import './hostPage.css';
+import SideBar from "./SideBar";
 
 const hash = window.location.hash
     .substring(1)
@@ -65,34 +65,36 @@ class HostPage extends React.Component {
     }
 
     render() {
-        console.log(this.state.tracks);
         return (
             <div>
-                <SearchBar GetResult={this.GetResult}/>
-                <div className={"page"}>
-                    {this.state.tracks.map((item, index) => {
-                        return (
-                            <div className={"result"} key={index}>
-                                <div className="img">
-                                    <img src={item.albumArt} alt=""/>
-                                </div>
-                                <div className={"info"}>
-                                    <div className={"top"}>
-                                        {item.trackName}
+                <SideBar username={"test"}> </SideBar>
+                <div style={{marginLeft: "260px"}}>
+                    <SearchBar GetResult={this.GetResult}/>
+                    <div className={"page"}>
+                        {this.state.tracks.map((item, index) => {
+                            return (
+                                <div className={"result"} key={index}>
+                                    <div className="img">
+                                        <img src={item.albumArt} alt=""/>
                                     </div>
-                                    <div className={"bottom clearfix"}>
-                                        <span className={"album-name"}>
-                                            {item.albumName}
-                                        </span>
-                                        <span className={"dot"}>·</span>
-                                        <span className={"artist-name"}>
-                                            {item.artistName}
-                                        </span>
+                                    <div className={"info"}>
+                                        <div className={"top"}>
+                                            {item.trackName}
+                                        </div>
+                                        <div className={"bottom"}>
+                                            <span className={"album-name"}>
+                                                {item.albumName}
+                                            </span>
+                                            <span className={"dot"}>·</span>
+                                            <span className={"artist-name"}>
+                                                {item.artistName}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })}
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         );
