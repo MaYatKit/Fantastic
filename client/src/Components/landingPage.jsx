@@ -23,18 +23,17 @@ class LandingPage extends React.Component{
         switch (this.state.pagePosition) {
             case 0:
                 return (
-                    <div className={"page"}>
+                    <div className={"landingPage"}>
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"landing"}>
                             <Button name={"CREATE PARTY"} type={"main"} pos={1} changePagePosition={this.changePagePosition} />
                             <Button name={"JOIN PARTY"} type={"secondary"} pos={2} changePagePosition={this.changePagePosition} />
                         </div>
                     </div>
-
                 );
             case 1:
                 return (
-                    <div className={"page"}>
+                    <div className={"landingPage"}>
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"creating"}>
                             <Button name={"clicked"} type={"main"} pos={0} changePagePosition={this.changePagePosition}/>
@@ -44,7 +43,7 @@ class LandingPage extends React.Component{
                 );
             case 2:
                 return (
-                    <div className={"page"}>
+                    <div className={"landingPage"}>
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"joining"}>
                             <div className={"inputArea"}>

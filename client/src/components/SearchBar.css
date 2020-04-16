@@ -11,7 +11,7 @@
 }
 
 .input-field::placeholder {
-    color: white;
+    color: #aaaaaa;
 }
 
 .icon {
@@ -24,5 +24,6 @@
 .form-wrapper {
     width: 100%;
     display: flex;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }

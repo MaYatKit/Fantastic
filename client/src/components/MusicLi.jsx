@@ -1,9 +1,7 @@
 import React from 'react';
-import style from "./MusicLi.css"
+import "./MusicLi.css"
 
 import PlayBtn from './PlayBtn'
-
-
 
 export default class MusicLi extends React.Component {
 
@@ -32,7 +30,7 @@ export default class MusicLi extends React.Component {
             <span className="album-name">
             {this.props.album}
             </span>
-            <span className="dot">-</span>
+            <span className="dot">.</span>
             <span className="state">
               {this.musicStateText(this.props)}
             </span>

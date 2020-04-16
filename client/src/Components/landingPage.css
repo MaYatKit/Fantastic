@@ -1,10 +1,11 @@
-body {
+html {
     background-image: url("../image/bg.png");
     border-image-repeat: repeat;
     background-size: 500px;
+    background-color: #151619;
 }
 
-.page {
+.landingPage {
     margin-top: 10%;
     display: grid;
     place-items: center;

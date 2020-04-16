@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+//import './App.css';
 import LandingPage from "./components/landingPage.jsx";
 import HostPage from "./components/hostPage";
 

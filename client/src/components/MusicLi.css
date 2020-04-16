@@ -1,15 +1,15 @@
 .musicli{
-    width: 100%;
+    width: 90%;
     color: white;
-    display: block;
+    display: inline-block;
     height: 64px;
     padding: 5px 16px 5px 16px;
-    background-color: #383b3f;
+    background-color: #444857;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
     box-sizing: border-box;
-}
-
-.musicli.even{
-    background-color: #25292e;
+    text-align: left;
 }
 
 .musicli > .img{
@@ -22,6 +22,7 @@
 .musicli > .img > img{
     height: 100%;
     width: 100%;
+    border-radius: 5px;
 }
 
 .musicli > .info{

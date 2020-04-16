@@ -13,9 +13,19 @@
     border-radius: 0.5rem;
 }
 
+.layout_selected {
+    background-color: #444857;
+    color: white;
+}
+
 .layout:hover {
     background-color: #47cf73;
     color: #2d313a;
+}
+
+.layout_selected:hover {
+    background-color: #444857;
+    color: white;
 }
 
 .icon {

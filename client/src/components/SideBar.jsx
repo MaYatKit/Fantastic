@@ -18,7 +18,7 @@ import SideBarItem from './SideBarItem';
 let items = [{
     item: 'Queue',
     icon: MdQueueMusic,
-    selected: false
+    selected: true
 }, {
     item: 'Settings',
     icon: MdSettings,
