@@ -18,31 +18,31 @@ import SideBarItem from './SideBarItem';
 let items = [{
     item: 'Queue',
     icon: MdQueueMusic,
-    selected: false
+    to: '/main/queue'
 }, {
     item: 'Settings',
     icon: MdSettings,
-    selected: false
+    to: '/main/setting'
 }, {
     item: 'Share',
     icon: MdShare,
-    selected: false
+    to: '/main/share'
 }, {
     item: 'TV mode',
     icon: MdTv,
-    selected: false
+    to: '/main/tv'
 }, {
     item: 'Homepage',
     icon: MdHome,
-    selected: false
+    to: '/'
 }, {
     item: 'Exit Party',
     icon: MdHighlightOff,
-    selected: false
+    to: '/'
 }, {
     item: 'Logout',
     icon: MdExitToApp,
-    selected: false
+    to: '/main/logout'
 }];
 
 
@@ -58,11 +58,11 @@ export default class SideBar extends React.Component {
 
 
     itemOnclick(item, changeStyle) {
-        items.map((entry, index) => {
+        // items.map((entry, index) => {
 
-            entry.selected = entry.item === item;
-        });
-        this.setState({data:items});
+        //     entry.selected = entry.item === item;
+        // });
+        // this.setState({data:items});
 
         // this.render();
     }
@@ -83,7 +83,7 @@ export default class SideBar extends React.Component {
                                 item={entry.item}
                                 icon={entry.icon}
                                 index={index}
-                                selected={entry.selected}
+                                to={entry.to}
                                 itemOnclick={this.itemOnclick}>
                             </SideBarItem>);
                         }
