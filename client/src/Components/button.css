@@ -28,56 +28,17 @@
 .main {
   display: inline-block;
   position: relative;
-  background-color: #11998e;
-  -webkit-backface-visibility: hidden;
-  z-index: 1;
+  background-color: #444857;
+  transition: background 0.5s ease-out;
 }
 
-.main:after {
-  position: absolute;
-  content: '';
-  border-radius: 20px;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, #11998e, #38ef7d);
-  transition: opacity 0.5s ease-out;
-  z-index: 2;
-  opacity: 0;
-}
-.main:hover:after {
-  opacity: 1;
+.main:hover {
+  background: #47cf73;
 }
 
 .button span {
   position: relative;
   z-index: 3;
-}
-
-.secondary {
-  display: inline-block;
-  position: relative;
-  background-color: #11998e;
-  -webkit-backface-visibility: hidden;
-  z-index: 1;
-}
-
-.secondary:after {
-  position: absolute;
-  content: '';
-  border-radius: 20px;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, #11998e, #38ef7d);
-  transition: opacity 0.5s ease-out;
-  z-index: 2;
-  opacity: 0;
-}
-.secondary:hover:after {
-  opacity: 1;
 }
 
 .button:focus {
