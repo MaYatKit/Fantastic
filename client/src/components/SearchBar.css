@@ -1,29 +1,21 @@
 .input-field {
     height: 35px;
-    color: white;
-    width: 90%;
-    padding: 0 5px;
+    font-size: medium;
     border: none;
-    font-size: 1.5rem;
-    outline: 0;
-    background: transparent;
-    box-shadow:none;
-}
-
-.input-field::placeholder {
-    color: #aaaaaa;
+    width: 100%;
 }
 
 .icon {
     width: 30px;
     height: 30px;
     margin: 5px 15px 5px 10px;
-    color: white;
 }
 
 .form-wrapper {
     width: 100%;
+    color: #383b3f;
+    border-radius: 3px;
+    background-color: white;
     display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px;
 }

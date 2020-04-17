@@ -1,22 +1,29 @@
 import React from 'react';
 
-import logo from './../image/logo.png';
-import sidebar_bg from './../image/sidebar_bg.png';
-import './SideBarIcon.css';
+
+import { MdAcUnit } from 'react-icons/all';
+import style from './SideBarIcon.css';
 
 
 export default class SideBarIcon extends React.Component {
+
+
+    constructor(props) {
+        super(props);
+
+    }
+
     render() {
         return (
             <div className="side_bar_icon_layout">
-                <img className={"side_bar_background"} src={sidebar_bg} alt={"bg"}/>
-                <img className="side_bar_icon" src={logo} alt={"logo"}/>
+                <div className="img">
+                    <img className="side_bar_icon" src={"https://d33wubrfki0l68.cloudfront.net/1967c0923ec2039f845c917dae55fa32f0b73e74/ca447/img/festify-logo.svg"}/>
+                </div>
                 <div className="user_info">
                     <span className="user_name">
                         {this.props.username}
                     </span>
                 </div>
-            </div>
-        );
+            </div>);
     }
 }
