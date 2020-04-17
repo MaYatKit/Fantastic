@@ -27,7 +27,7 @@ class LandingPage extends React.Component{
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"landing"}>
                             <Button name={"CREATE PARTY"} type={"main"} pos={1} changePagePosition={this.changePagePosition} />
-                            <Button name={"JOIN PARTY"} type={"main"} pos={2} changePagePosition={this.changePagePosition} />
+                            <Button name={"JOIN PARTY"} type={"secondary"} pos={2} changePagePosition={this.changePagePosition} />
                         </div>
                     </div>
                 );
@@ -37,7 +37,7 @@ class LandingPage extends React.Component{
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"creating"}>
                             <Button name={"clicked"} type={"main"} pos={0} changePagePosition={this.changePagePosition}/>
-                            <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
+                            <Button name={"JOIN PARTY"} type={"secondary"} pos={0} changePagePosition={this.changePagePosition} />
                         </div>
                     </div>
                 );
@@ -50,7 +50,7 @@ class LandingPage extends React.Component{
                                 <button className={"arrow"} onClick={() => this.changePagePosition(0)}><FaArrowLeft/></button>
                                 <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} />
                             </div>
-                            <Button name={"JOIN"} type={"main"} />
+                            <Button name={"JOIN"} type={"secondary"} />
                         </div>
                     </div>
                 );

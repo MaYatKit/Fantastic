@@ -2,7 +2,6 @@
     display: inline-block;
     background: #1f2127;
     color: white;
-    transition: background 0.25s ease-out, color 0.25s ease-out;
     height: 2rem;
     width: calc(100% - 48px);
     margin-top: 0.5rem;
