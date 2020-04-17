@@ -3,6 +3,8 @@ import React from 'react';
 import LandingPage from "./components/landingPage.jsx";
 import HostPage from "./components/hostPage";
 
+Playback.init();
+
 function App() {
   return (
     <div className="App">

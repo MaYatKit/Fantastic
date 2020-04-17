@@ -2,6 +2,9 @@ import React from 'react';
 import "./MusicLi.css"
 
 import PlayBtn from './PlayBtn'
+import LikeBtn from './LikeBtn'
+import NextRemoveBtn from './NextRemoveBtn'
+
 
 export default class MusicLi extends React.Component {
 
@@ -38,7 +41,10 @@ export default class MusicLi extends React.Component {
         </div>
 
         <div className="control">
+          <NextRemoveBtn></NextRemoveBtn>
           <PlayBtn></PlayBtn>
+          <LikeBtn></LikeBtn>
+          
         </div>
       </div>
     );
