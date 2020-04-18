@@ -30,7 +30,7 @@ let testMusicInfo = [
 
 let testSideBarInfo = { username: 'user1' };
 
-Playback.init();
+//Playback.init();
 
 function App() {
   return (
