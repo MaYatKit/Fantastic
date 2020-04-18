@@ -1,3 +1,45 @@
 const mongoose = require('mongoose')
-const HostModel = require('../src/models/Host')
+const uniqueValidator = require('mongoose-unique-validator')
 
+var trackSchema = new mongoose.Schema({
+    uri:{
+        type: String,
+        required: true
+    },
+    artist: String,
+    album: String,
+    votes: {
+        type: Number,
+        default: 0
+    },
+    albumIcon:{
+        small: String,
+        large: String
+    }
+})
+
+var partySchema = new mongoose.Schema({
+    name: String,
+    id: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    currentTrack: trackSchema,
+    tracks: [trackSchema]
+})
+
+var hostSchema = new mongoose.Schema({
+    id:{
+        type: String,
+        required: true,
+        unique: true
+    },
+    name: String,
+    accessToken: String,
+    party: partySchema
+})
+
+hostSchema.plugin(uniqueValidator)
+
+module.exports = mongoose.model('host', hostSchema)
