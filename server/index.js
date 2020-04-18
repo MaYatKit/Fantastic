@@ -10,8 +10,8 @@ const app = express();
 const port = process.env.PORT || 1000
 
 //Connect to mongodb
-const mongoUri = process.env.MONGODB_URI + "appData"
-mongoose.connect(mongoUri, {useNewUrlParser: true})
+const mongoUri = process.env.MONGODB_URI
+mongoose.connect(mongoUri, {useNewUrlParser: true , dbName: 'appdata'})
 const db = mongoose.connection;
 
 // Checking the DB connection

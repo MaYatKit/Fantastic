@@ -21,7 +21,24 @@ passport.use(
         console.log("expires_in " + expires_in)
         console.log("ID: " + profile.id)
         console.log("displayName: " + profile.displayName)
-        return done(null, profile)
+
+        let host
+
+        Host.findOne({id: profile.id}).then((result)=>{
+            if(result === null){
+                host = new Host({
+                    id: profile.id,
+                    name: profile.displayName,
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
+                }).save()
+            }else{
+                result.accessToken = accessToken
+                result.refreshToken = refreshToken
+                result.save()
+            }
+        })
+        return done(null, host)
         //check if host exists in the database, if not create a new one.
     })
 )
