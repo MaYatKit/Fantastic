@@ -7,9 +7,9 @@ passport.serializeUser(function(user, done) {
     done(null, user);
   });
   
-  passport.deserializeUser(function(user, done) {
-    done(null, user);
-  });
+passport.deserializeUser(function(user, done) {
+done(null, user);
+});
 
 passport.use(
     new SpotifyStrategy({
@@ -36,9 +36,10 @@ passport.use(
                 result.accessToken = accessToken
                 result.refreshToken = refreshToken
                 result.save()
+                host = result
             }
         })
-        return done(null, host)
+        return done(null, profile)
         //check if host exists in the database, if not create a new one.
     })
 )
