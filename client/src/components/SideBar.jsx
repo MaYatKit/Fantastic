@@ -15,22 +15,22 @@ import {
 import SideBarItem from './SideBarItem';
 
 
-let items = [{
+let host_items = [{
     item: 'Queue',
     icon: MdQueueMusic,
-    selected: true
+    to: '/host'
 }, {
     item: 'Settings',
     icon: MdSettings,
-    to: '/main/setting'
+    to: '/host/setting'
 }, {
     item: 'Share',
     icon: MdShare,
-    to: '/main/share'
+    to: '/host/share'
 }, {
     item: 'TV mode',
     icon: MdTv,
-    to: '/main/tv'
+    to: '/host/tv'
 }, {
     item: 'Homepage',
     icon: MdHome,
@@ -42,9 +42,30 @@ let items = [{
 }, {
     item: 'Logout',
     icon: MdExitToApp,
-    to: '/main/logout'
+    to: '/host/logout'
 }];
 
+let guest_items = [{
+    item: 'Queue',
+    icon: MdQueueMusic,
+    to: '/guest'
+}, {
+    item: 'Settings',
+    icon: MdSettings,
+    to: '/guest/setting'
+}, {
+    item: 'Share',
+    icon: MdShare,
+    to: '/guest/share'
+}, {
+    item: 'Homepage',
+    icon: MdHome,
+    to: '/'
+}, {
+    item: 'Exit Party',
+    icon: MdHighlightOff,
+    to: '/'
+}];
 
 export default class SideBar extends React.Component {
 
@@ -52,7 +73,6 @@ export default class SideBar extends React.Component {
         super(props);
         this.itemOnclick = this.itemOnclick.bind(this);
         this.state = {
-            data: items
         };
     }
 
@@ -68,6 +88,7 @@ export default class SideBar extends React.Component {
     }
 
     render() {
+        let items = this.props.isGuest ? guest_items : host_items
         return (
             <div className={'side_bar'}>
 

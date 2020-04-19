@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom';
 
 import './App.css';
-import MusicLiWrapper from './components/MusicLiWrapper'
-import SideBar from './components/SideBar';
+import HostPage from './components/hostPage'
+import LandingPage from './components/landingPage'
+import GuestPage from './components/GuestPage'
 import * as Playback from './playBack';
 import oauth from './oauth'
 
@@ -13,11 +14,36 @@ Playback.init();
 window.oauth = oauth;   // for test use
 
 function App() {
-  return (
-      <div className="App">
-        <HostPage />
-      </div>
-  );
+    return (
+        <Router><div className="App">
+            <Switch>
+
+            <Route path="/host">
+                <HostPage></HostPage>
+            </Route>
+
+            <Route path="/guest">
+                <GuestPage></GuestPage>
+            </Route>
+
+            <Route path="/">
+                <div style={
+                    {"position": "absolute", 
+                    "color": "white", 
+                    "top": 0, 
+                    "textAlign": "center", 
+                    "width": "100%"}}>
+                    <NavLink to={`host`} style={{color: "white"}}>Host Page</NavLink>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <NavLink to={`guest`} style={{color: "white"}}>Guest Page</NavLink>
+                </div>
+                    
+                <LandingPage></LandingPage>
+            </Route>
+
+            </Switch>
+        </div></Router>
+    );
 }
 
 export default App;

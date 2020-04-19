@@ -14,9 +14,9 @@ export default class SideBarItem extends React.Component {
     }
 
 
-    // itemClick(item) {
-    //     this.props.itemOnclick(item);
-    // }
+    itemClick(item) {
+        // this.props.itemOnclick(item);
+    }
 
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -28,13 +28,13 @@ export default class SideBarItem extends React.Component {
         const Icon = this.props.icon;
 
         return (
-            <div className={"layout " + (this.props.selected ? 'layout_selected' : '')} onClick={() => this.itemClick(this.props.item)}>
+            <NavLink to={this.props.to} exact className="layout" activeClassName="select">
                 <Icon className={this.props.selected ? 'icon_selected' : 'icon'}> </Icon>
                 <div className="item">
                     <span className={'text'}>
                         {this.props.item}
                     </span>
                 </div>
-            </div>);
+            </NavLink>);
     }
 }
