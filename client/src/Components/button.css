@@ -1,0 +1,51 @@
+.button {
+  display: inline-block;
+  width: 200px;
+  border: none;
+  border-radius: 20px;
+  padding: 0.75rem 2rem;
+  color: #dddddd;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.animateIn {
+  opacity: 1;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+
+.main {
+  display: inline-block;
+  position: relative;
+  background-color: #444857;
+  transition: background 0.5s ease-out;
+}
+
+.main:hover {
+  background: #47cf73;
+}
+
+.button span {
+  position: relative;
+  z-index: 3;
+}
+
+.button:focus {
+  outline: 1px solid #dddddd;
+  outline-offset: -4px;
+}
+
+.button:active {
+  transform: scale(0.99);
+}
