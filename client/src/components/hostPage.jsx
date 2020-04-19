@@ -3,33 +3,36 @@ import SearchBar from "./SearchBar";
 import './hostPage.css';
 import SideBar from "./SideBar";
 import MusicLi from "./MusicLi";
+import oauth from '../oauth'
 
-const hash = window.location.hash
-    .substring(1)
-    .split('&')
-    .reduce(function (initial, item) {
-        if (item) {
-            let parts = item.split('=');
-            initial[parts[0]] = decodeURIComponent(parts[1]);
-        }
-        return initial;
-    }, {});
+// const hash = window.location.hash
+//     .substring(1)
+//     .split('&')
+//     .reduce(function (initial, item) {
+//         if (item) {
+//             let parts = item.split('=');
+//             initial[parts[0]] = decodeURIComponent(parts[1]);
+//         }
+//         return initial;
+//     }, {});
 
-window.location.hash = '';
-let _token = hash.access_token;
+// window.location.hash = '';
 
-const authEndpoint = 'https://accounts.spotify.com/authorize';
 
-const clientId = '38c1268007c94332bec6779dadad7837';
-const redirectUri = 'http://localhost:3000';
-const scopes = [
-    'user-read-email',
-    'user-read-private',
-];
+// const authEndpoint = 'https://accounts.spotify.com/authorize';
 
-if (!_token) {
-    window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
-}
+// const clientId = '38c1268007c94332bec6779dadad7837';
+// const redirectUri = 'http://localhost:3000';
+// const scopes = [
+//     'user-read-email',
+//     'user-read-private',
+// ];
+
+// if (!_token) {
+//     window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
+// }
+
+
 
 let testMusicInfo = [
     {
@@ -70,7 +73,7 @@ class HostPage extends React.Component {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + _token
+                    'Authorization': 'Bearer ' + oauth.getToken()
                 }
             }).then(data => {
                 fetch(data.url)
