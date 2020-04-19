@@ -13,25 +13,11 @@ Playback.init();
 window.oauth = oauth;   // for test use
 
 function App() {
-    return (
-        <Router><div className="App">
-            <Switch>
-
-            <Route path="/main">
-                <SideBar usename={testSideBarInfo.username}> </SideBar>
-                <MusicLiWrapper></MusicLiWrapper>
-            </Route>
-
-            <Route path="/">
-                <p>Landing Page</p>
-                <p style={{textAlign: "center"}}>
-                    <NavLink to={`main`}>Content Page</NavLink>
-                </p>
-            </Route>
-
-            </Switch>
-        </div></Router>
-    );
+  return (
+      <div className="App">
+        <HostPage />
+      </div>
+  );
 }
 
 export default App;
