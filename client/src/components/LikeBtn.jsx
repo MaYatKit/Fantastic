@@ -25,7 +25,7 @@ export default class MusicLi extends React.Component {
   }
 
   clickHdl(event){
-    if(this.state.play == "NOT_IN_QUEUE")
+    if(this.state.play === "NOT_IN_QUEUE")
       return this.setState({
         play: "LIKED"
       })
@@ -37,17 +37,17 @@ export default class MusicLi extends React.Component {
   }
 
   iconFn(){
-    if(this.state.play == "NOT_IN_QUEUE")
-      return (<FiPlus className="icon"></FiPlus>)
-    else if (this.state.play == "LIKED")
-      return (<MdFavorite className="icon"></MdFavorite>)
+    if(this.state.play === "NOT_IN_QUEUE")
+      return (<FiPlus className="icon"/>)
+    else if (this.state.play === "LIKED")
+      return (<MdFavorite className="icon"/>)
     else
-      return (<MdFavoriteBorder className="icon"></MdFavoriteBorder>)
+      return (<MdFavoriteBorder className="icon"/>)
   }
 
   render(){
     return (
-      <div className="likebtn" onClick={this.clickHdl}>
+      <div className="btn" onClick={this.clickHdl}>
         { this.iconFn() }
       </div>
     );

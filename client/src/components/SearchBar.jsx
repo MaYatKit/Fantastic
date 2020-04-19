@@ -14,17 +14,19 @@ export default class SearchBar extends React.Component {
         };
     }
 
+    handleKeyPress(event) {
+        return (event.target.value.match(/[A-Za-z0-9]+/g));
+    }
+
     handleOnChange(event){
         if(event.target.value){
             this.setState({searching: true});
         }else{
             this.setState({searching: false});
         }
-        if (event.target.value === " ") {
-            this.props.GetResult("%20");
-        }else{
-            this.props.GetResult(event.target.value);
-        }
+
+        event.target.value.replace(/\s/g, "%20");
+        this.props.GetResult(event.target.value);
     }
 
     render () {
@@ -41,6 +43,7 @@ export default class SearchBar extends React.Component {
                 <form className="form-wrapper">
                     <div className={"image"}>{ icon }</div>
                     <input className = "input-field"
+                    onKeyPress={event => this.handleKeyPress(event)}
                     type = "text"
                     placeholder = "Add Tracks"
                     onChange = {event => this.handleOnChange(event)}

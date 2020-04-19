@@ -1,11 +1,11 @@
 import React from 'react';
 
-import style from "./MliBtns.css"
+import "./MliBtns.css"
 
 // import icons
 import { MdPlayArrow } from "react-icons/md";
 import { MdPause } from "react-icons/md";
-import * as playBack from '../playBack';
+//import * as playBack from '../playBack';
 
 // all possible states
 // const s = ["DISABLED", "PLAYING", "PAUSE"];
@@ -16,7 +16,7 @@ export default class MusicLi extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      play: "PLAYING"
+      play: "PAUSE"
     };
 
     // https://stackoverflow.com/questions/33973648/react-this-is-undefined-inside-a-component-function
@@ -24,26 +24,26 @@ export default class MusicLi extends React.Component {
   }
 
   clickHdl(event){
-    if(this.state.play == "DISABLED")
+    if(this.state.play === "DISABLED")
       return;
 
-    let next = this.state.play == "PLAYING" ? "PAUSE" : "PLAYING";
+    let next = this.state.play === "PLAYING" ? "PAUSE" : "PLAYING";
     this.setState({
       play: next
     })
-    this.state.play === "PLAYING" ? playBack.pause(): playBack.resume();
+    //this.state.play === "PLAYING" ? playBack.pause(): playBack.resume();
   }
 
   iconFn(){
-    if(this.state.play == "PLAYING")
-      return (<MdPause className="icon"></MdPause>)
+    if(this.state.play === "PLAYING")
+      return (<MdPause className="icon"/>)
     else
-      return (<MdPlayArrow className="icon"></MdPlayArrow>)
+      return (<MdPlayArrow className="icon"/>)
   }
 
   render(){
     return (
-      <div className="playbtn" onClick={this.clickHdl}>
+      <div className="btn playbtn" onClick={this.clickHdl}>
         { this.iconFn() }
       </div>
     );

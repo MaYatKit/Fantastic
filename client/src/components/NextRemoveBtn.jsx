@@ -1,13 +1,13 @@
 import React from 'react';
 
-import style from "./MliBtns.css"
+import "./MliBtns.css"
 
 // import icons
 
 import {MdSkipNext} from "react-icons/md"
 import {MdClear} from "react-icons/md"
 
-import * as playBack from "../playBack"
+//import * as playBack from "../playBack"
 
 // all possible states
 // const s = ["REMOVE", "NEXT"];
@@ -31,19 +31,19 @@ export default class MusicLi extends React.Component {
     this.setState({
       play: next
     })
-    playBack.next();
+    //playBack.next();
   }
 
   iconFn(){
-    if(this.state.play == "REMOVE")
-      return (<MdSkipNext className="icon"></MdSkipNext>)
+    if(this.state.play === "REMOVE")
+      return (<MdSkipNext className="icon"/>)
     else
-      return (<MdClear className="icon"></MdClear>)
+      return (<MdClear className="icon"/>)
   }
 
   render(){
     return (
-      <div className="likebtn" onClick={this.clickHdl}>
+      <div className="btn" onClick={this.clickHdl}>
         { this.iconFn() }
       </div>
     );
