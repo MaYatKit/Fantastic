@@ -1,21 +1,32 @@
 .layout {
     display: inline-block;
-    background: white;
-    height: 24px;
-    width: 100%;
+    background: #1f2127;
+    color: white;
+    transition: background 0.25s ease-out, color 0.25s ease-out;
+    height: 2rem;
+    width: calc(100% - 48px);
+    margin-top: 0.5rem;
     margin-left: 24px;
-    margin-bottom: 24px;
+    margin-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     cursor: pointer;
-    text-decoration: none;
-    color: black;
+    border-radius: 0.5rem;
 }
 
-.layout.active{
-    color: #951518;
+.layout_selected {
+    background-color: #444857;
+    color: white;
 }
 
-.layout.active > .item > .text{
-    color: #951518;
+.layout:hover {
+    background-color: #47cf73;
+    color: #2d313a;
+}
+
+.layout_selected:hover {
+    background-color: #444857;
+    color: white;
 }
 
 .icon {
@@ -23,6 +34,25 @@
     width: 24px;
     horiz-align: left;
     vertical-align: middle;
+    margin: 5px 15px 5px 10px;
+}
+
+.icon_selected {
+    height: 24px;
+    width: 24px;
+    horiz-align: left;
+    vertical-align: middle;
+<<<<<<< HEAD
+=======
+    margin: 5px 15px 5px 10px;
+    color: white;
+}
+
+.text_selected{
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+>>>>>>> master
 }
 
 
@@ -30,18 +60,13 @@
     display: inline;
     height: 100%;
     width: auto;
-    horiz-align: left;
-    margin-left: 16px;
+    align-content: center;
     vertical-align: middle;
 }
 
 
 .text {
-    font-family: 'Roboto', 'Noto', sans-serif;
-
-    font-size: 16px;
-    color: rgba(0,0,0,.8);
-    font-weight: bolder;
+    font-size: 1rem;
     text-decoration: none;
     text-align: center;
 }
