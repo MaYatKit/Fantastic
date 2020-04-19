@@ -22,7 +22,7 @@ function getTokenFromURL(){
     if(token === undefined){
         return null
     }else{
-        localStorage.setItem('spotify_token', token);
+        sessionStorage.setItem('spotify_token', token);
         window.location.hash = '';
         return token;
     }
@@ -47,7 +47,7 @@ function requestToken(){
 }
 
 function getToken(){
-    let token = localStorage.getItem('spotify_token');
+    let token = sessionStorage.getItem('spotify_token');
     if(token !== null)
         return token;
 
