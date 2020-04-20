@@ -17,11 +17,57 @@ passport.use(
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         callbackURL: process.env.SPOTIFY_CALLBACK_URL
     }, (accessToken, refreshToken, expires_in, profile, done)=> {
-        console.log("accessToken " + accessToken)
-        console.log("expires_in " + expires_in)
-        console.log("ID: " + profile.id)
-        console.log("displayName: " + profile.displayName)
-
+        
+        let fakeParty = {
+            id: "12345",
+            tracks:[
+                {
+                    name: "Dancing Queen",
+                    uri: "spotify:track:0GjEhVFGZW8afUYGChu3Rr",
+                    artist: "ABBA",
+                    album: "Arrival",
+                    votes: 1,
+                    albumIcon:{
+                        small: "https://i.scdn.co/image/ab67616d0000485170f7a1b35d5165c85b95a0e0",
+                        large: "https://i.scdn.co/image/ab67616d0000b27370f7a1b35d5165c85b95a0e0"
+                    }
+                },
+                {
+                    name: "The Winner Takes It All",
+                    uri: "spotify:track:3oEkrIfXfSh9zGnE7eBzSV",
+                    artist: "ABBA",
+                    album: "Super Trouper",
+                    votes: 0,
+                    albumIcon:{
+                        small: "https://i.scdn.co/image/ab67616d000048514d08fc99eff4ed52dfce91fa",
+                        large: "https://i.scdn.co/image/ab67616d0000b2734d08fc99eff4ed52dfce91fa"
+                    }
+                },
+                {
+                    name: "Don't Stop Me Now - 2011 Mix",
+                    uri: "spotify:track:5T8EDUDqKcs6OSOwEsfqG7",
+                    artist: "Queen",
+                    album: "Jazz (2011 Remaster)",
+                    votes: 2,
+                    albumIcon:{
+                        small: "https://i.scdn.co/image/ab67616d000048517c39dd133836c2c1c87e34d6",
+                        large: "https://i.scdn.co/image/ab67616d0000b2737c39dd133836c2c1c87e34d6"
+                    }
+                },
+                {
+                    name: "We Will Rock You - Remastered",
+                    uri: "spotify:track:4pbJqGIASGPr0ZpGpnWkDn",
+                    artist: "Queen",
+                    album: "News Of The World (2011 Remaster)",
+                    votes: 5,
+                    albumIcon:{
+                        small: "https://i.scdn.co/image/ab67616d000048511f7077ae1018b5fbab08dfa8",
+                        large: "https://i.scdn.co/image/ab67616d0000b2731f7077ae1018b5fbab08dfa8"
+                    }
+                },
+            ]
+        }
+        console.log(accessToken)
         let host
 
         Host.findOne({id: profile.id}).then((result)=>{
@@ -30,7 +76,8 @@ passport.use(
                     id: profile.id,
                     name: profile.displayName,
                     accessToken: accessToken,
-                    refreshToken: refreshToken
+                    refreshToken: refreshToken,
+                    party: fakeParty
                 }).save()
             }else{
                 result.accessToken = accessToken

@@ -27,6 +27,8 @@ app.use(passport.initialize())
 //Exporting routes
 const auth = require("./src/routes/auth-route")
 app.use("/auth", auth)
+const party = require("./src/routes/party-route")
+app.use("/party", party)
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
