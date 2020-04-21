@@ -14,9 +14,9 @@ import testData from './testData'
  */
 const initState = {
     testNum : 2222,
-    roomId : sessionStorage.getItem('roomId')?sessionStorage.getItem('roomId'):0,
-    userName : sessionStorage.getItem('userName')?sessionStorage.getItem('userName'):"initial name",
-    musicInfo : sessionStorage.getItem('musicInfo')?JSON.parse(sessionStorage.getItem('musicInfo')):[
+    roomId : sessionStorage.getItem('roomId')!=="undefined"?sessionStorage.getItem('roomId'):0,
+    userName : sessionStorage.getItem('userName')!=="undefined"?sessionStorage.getItem('userName'):"initial name",
+    musicInfo : sessionStorage.getItem('musicInfo')!=="undefined"?JSON.parse(sessionStorage.getItem('musicInfo')):[
         {
             name: "Norway Ice",
             album: "Ice 2004",
@@ -38,12 +38,12 @@ function appReducer(prevState = initState, action) {
             return Object.assign({}, prevState);
         case 'REFREASH_HOSTPAGE':
             const newState = JSON.parse(JSON.stringify(prevState));
-            sessionStorage.setItem('roomId',action.data["roomId"] );
-            sessionStorage.setItem('userName',action.data["userName"] );
-            sessionStorage.setItem('musicInfo',JSON.stringify(action.data["songs"]));
-            newState.roomId = action.data["roomId"];
-            newState.userName = action.data["userName"];
-            newState.musicInfo = action.data["songs"];
+            sessionStorage.setItem('roomId',action.data[0]["id"] );
+            sessionStorage.setItem('userName',action.data[0]["id"] );
+            sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
+            newState.roomId = action.data[0]["id"];
+            newState.userName = action.data[0]["id"];
+            newState.musicInfo = action.data[0]["tracks"];
             return newState;
         default:
             return Object.assign({}, prevState);

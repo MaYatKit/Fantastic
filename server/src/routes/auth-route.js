@@ -14,4 +14,6 @@ router.get("/spotify/callback/", passport.authenticate("spotify", {session: fals
     }
 )
 
+
+
 module.exports = router

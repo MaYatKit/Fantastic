@@ -3,11 +3,11 @@ const router = express.Router()
 const Host = require("../models/host")
 
 router.get("/", async (req,res,next)=>{
-    try{ 
+    try{
         let partyDetails = await Host.aggregate([
             //haven't tested reading user from cookie
             { "$match": { id: req.cookies.user} },
-            { "$group": {_id: null, 
+            { "$group": {_id: null,
                 id: {"$first": "$party.id"},
                 tracks: {"$push": "$party.tracks"}}
             },
@@ -19,9 +19,11 @@ router.get("/", async (req,res,next)=>{
         }
 
          res.status(200).json(partyDetails)
+         res.end();
 
     }catch(err){
         res.status(500).json({message: err.message})
+        res.end();
     }
 })
 

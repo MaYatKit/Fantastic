@@ -15,6 +15,7 @@ class LandingPage extends React.Component{
         };
         this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
+        this.login = this.login.bind(this);
         this.create();
     }
 
@@ -25,7 +26,7 @@ class LandingPage extends React.Component{
 
     create(){
         console.log("Create room!!");
-        fetch('http://localhost:1000/auth/create', {
+        fetch('http://localhost:1000/party', {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -35,15 +36,42 @@ class LandingPage extends React.Component{
             },
         }).then(response => {
             // console.log(response.json());
-            console.log("Authorize successful!!!");
-            response.json().then(json => {
-                if (json["status"] === "ok"){
-                    this.props.refreshHostPage(json);
-                    this.changePagePosition(0);
-                }
-            });
-        }).catch(function (e) {
+            if (response["status"] === 404){
+                console.log("Authorize fail!!! Need to login!!!");
+                this.changePagePosition(3);
+            }else if (response["status"] === 200){
+                console.log("Authorize successful!!!");
+                response.json().then(json => {
+                        this.props.refreshHostPage(json);
+                        this.changePagePosition(0);
+                });
+            }
+        }).catch(e=> {
             console.log("Create room failed: " + e);
+            this.changePagePosition(3);
+        });
+    }
+
+    login(){
+        fetch('http://localhost:1000/auth/spotify', {
+            method: 'GET',
+            mode: 'no-cors',
+            credentials: 'include',
+            headers: {
+                Accept:"*/*",
+                "Content-Type": "application/json;charset=utf-8"
+            },
+        }).then(response => {
+            // console.log(response.json());
+            if (response["status"] === 404){
+                console.log("Login fail!!!");
+
+            }else if (response["status"] === 0){
+                console.log("Login successful, fetching user info...");
+                this.create();
+            }
+        }).catch(function (e) {
+            console.log("Login failed: " + e);
         });
     }
 
@@ -64,7 +92,7 @@ class LandingPage extends React.Component{
                     <div className={"landingPage"}>
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"creating"}>
-                            <Button name={"Authorizing"} type={"main"} pos={0} disable = {true} changePagePosition={this.changePagePosition}/>
+                            <Button name={"AUTHORIZING"} type={"main"} pos={0} disable = {true} changePagePosition={this.changePagePosition}/>
                             <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
                         </div>
                     </div>
@@ -79,6 +107,18 @@ class LandingPage extends React.Component{
                                 <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} />
                             </div>
                             <Button name={"JOIN"} type={"main"} />
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div className={"landingPage"}>
+                        <img className={"logo"} src={logo} alt={"logo"} />
+                        <div className={"joining"}>
+                            <div className={"login"}>
+                                <button className={"button animateIn main"} type={"main"} onClick={() => this.login()}> LOGIN </button>
+                                <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
+                            </div>
                         </div>
                     </div>
                 );
