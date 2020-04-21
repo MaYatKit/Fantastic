@@ -4,6 +4,7 @@ import './hostPage.css';
 import SideBar from "./SideBar";
 import MusicLi from "./MusicLi";
 import oauth from '../oauth'
+import { connect } from 'react-redux'
 
 // const hash = window.location.hash
 //     .substring(1)
@@ -55,16 +56,27 @@ let testMusicInfo = [
     }
 ]
 
-class HostPage extends React.Component {
+class ConnectHostPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             tracks: [],
-            active: false
+            active: false,
+            userName:this.props.userName,
+            roomId: this.props.roomId,
+            musicInfo: this.props.musicInfo
         };
 
         this.GetResult = this.GetResult.bind(this);
+        // this.checkState = this.checkState.bind(this);
+        // this.checkState();
+    }
+
+    checkState(){
+        if (this.state.musicInfo === undefined) {
+            // after refresh page, need to query data from sever again
+        }
     }
 
     GetResult(searchItem) {
@@ -95,7 +107,7 @@ class HostPage extends React.Component {
     render() {
         return (
             <div className={"hostPage"}>
-                <SideBar username={"test"}> </SideBar>
+                <SideBar userName={this.state.userName} roomId={this.state.roomId}> </SideBar>
                 <div style={{marginLeft: "260px"}}>
                     <SearchBar GetResult={this.GetResult}/>
                     <div className={"page"}>
@@ -125,7 +137,7 @@ class HostPage extends React.Component {
                             })}
                         </div>
                         <div className={"tracklist"}>
-                            {testMusicInfo.map( (entry, index) => {
+                            {this.state.musicInfo.map( (entry, index) => {
                                 return (
                                     <MusicLi name={entry.name}
                                              album={entry.album}
@@ -144,4 +156,17 @@ class HostPage extends React.Component {
     }
 }
 
-export default HostPage;
+const mapStateToProps = state => ({
+    userName: state.userName,
+    roomId : state.roomId,
+    musicInfo: state.musicInfo
+});
+
+
+
+
+export const HostPage = connect(mapStateToProps)(ConnectHostPage);
+
+
+
+// export default HostPage;

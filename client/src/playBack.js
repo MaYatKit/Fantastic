@@ -35,7 +35,7 @@ import oauth from './oauth'
 //     window.location = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join('%20')}&response_type=token&show_dialog=true`;
 // }
 
-let _token = oauth.getToken();
+let _token = "";
 let readyToPlay = false;
 let deviceId = 0;
 
