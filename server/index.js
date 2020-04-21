@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const passport = require('passport')
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 require("./src/config/passport-setup")
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(cors())
 app.use(express.json())
 app.use(passport.initialize())
+app.use(cookieParser())
 
 //Exporting routes
 const auth = require("./src/routes/auth-route")

@@ -4,8 +4,9 @@ const Host = require("../models/host")
 
 router.get("/", async (req,res,next)=>{
     try{
+        //hard coded for now
         let partyDetails = await Host.aggregate([
-            { "$match": { id: req.cookies.user} },
+            { "$match": { id: "psjgh61luhrhqqp6bh7ol4oz2"} },
             { "$group": {_id: null, 
                 id: {"$first": "$party.id"},
                 tracks: {"$push": "$party.tracks"}}

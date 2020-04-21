@@ -85,7 +85,6 @@ passport.use(
                     {accessToken: accessToken, refreshToken:refreshToken})
             }
         })
-        console.log("host" + user)
         return done(null, user)
         //check if host exists in the database, if not create a new one.
     })
