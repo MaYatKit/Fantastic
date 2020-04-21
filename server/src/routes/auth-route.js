@@ -9,6 +9,8 @@ router.get("/spotify", passport.authenticate("spotify", {
 router.get("/spotify/callback/", passport.authenticate("spotify", {session: false}),
     (req, res)=>{
         //redirect the user to the frontend.
+        console.log("cookie " + req.user)
+        res.cookie("user", req.user.id)
         res.redirect("http://localhost:3000")
     }
 )

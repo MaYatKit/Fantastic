@@ -16,7 +16,7 @@ passport.use(
         clientID: process.env.SPOTIFY_CLIENT_ID,
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         callbackURL: process.env.SPOTIFY_CALLBACK_URL
-    }, (accessToken, refreshToken, expires_in, profile, done)=> {
+    }, async (accessToken, refreshToken, expires_in, profile, done)=> {
         
         let fakeParty = {
             id: "12345",
@@ -67,26 +67,26 @@ passport.use(
                 },
             ]
         }
-        console.log(accessToken)
-        let host
+        let user
 
-        Host.findOne({id: profile.id}).then((result)=>{
+        await Host.findOne({id: profile.id}).then(async (result)=>{
             if(result === null){
-                host = new Host({
+                user = await new Host({
                     id: profile.id,
                     name: profile.displayName,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
                     party: fakeParty
                 }).save()
+                
             }else{
-                result.accessToken = accessToken
-                result.refreshToken = refreshToken
-                result.save()
-                host = result
+                console.log("does exist")
+                user = await Host.findOneAndUpdate({id: profile.id},
+                    {accessToken: accessToken, refreshToken:refreshToken})
             }
         })
-        return done(null, profile)
+        console.log("host" + user)
+        return done(null, user)
         //check if host exists in the database, if not create a new one.
     })
 )
