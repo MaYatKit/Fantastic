@@ -6,12 +6,13 @@ router.get("/", async (req,res,next)=>{
     try{
         let partyDetails = await Host.aggregate([
             //haven't tested reading user from cookie
-            { "$match": { id: req.cookies.user} },
+            { "$match": { id: "psjgh61luhrhqqp6bh7ol4oz2"} },
             { "$group": {_id: null,
                 id: {"$first": "$party.id"},
+                name: {"$first": "$name"},
                 tracks: {"$push": "$party.tracks"}}
             },
-            { "$project": {id: 1, tracks: 1 , _id: 0} }
+            { "$project": {id: 1, tracks: 1 ,name: 1, _id: 0} }
         ])
 
         if(!partyDetails || partyDetails.length === 0){

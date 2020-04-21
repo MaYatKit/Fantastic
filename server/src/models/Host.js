@@ -6,6 +6,7 @@ var trackSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    name: String,
     artist: String,
     album: String,
     votes: {
