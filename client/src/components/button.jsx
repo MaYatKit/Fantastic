@@ -8,7 +8,7 @@ class Button extends React.Component{
             return (
                 <button className={`button animateIn ${this.props.type}`} ><Link to ='/host'>{this.props.name}</Link></button>
             );
-        }else if (this.props.pos != null) {
+        } else if (this.props.pos != null) {
             return (
                 <button className={`button animateIn ${this.props.type}`} onClick={() => this.props.changePagePosition(this.props.pos)} disabled={this.props.disable}><span>{this.props.name}</span></button>
             );
