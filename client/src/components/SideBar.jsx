@@ -93,7 +93,7 @@ export default class SideBar extends React.Component {
             <div className={'side_bar'}>
 
                 <SideBarIcon className={'side_bar_icon'}
-                             username={this.props.username}> </SideBarIcon>
+                             userName={this.props.userName} roomId = {this.props.roomId}> </SideBarIcon>
 
 
                 <div className={'side_bar_item_list'}>

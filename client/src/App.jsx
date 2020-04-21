@@ -2,15 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom';
 
 import './App.css';
-import HostPage from './components/hostPage'
-import LandingPage from './components/landingPage'
+import { HostPage } from './components/hostPage';
+import  {ReduxLandingPage}  from './components/landingPage'
 import GuestPage from './components/GuestPage'
 import * as Playback from './playBack';
 import oauth from './oauth'
 
 let testSideBarInfo = { username: 'user1' };
 
-Playback.init();
+// Playback.init();
 window.oauth = oauth;   // for test use
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
         <Router><div className="App">
             <Switch>
 
-            <Route path="/host">
+            <Route path="/host" component={HostPage}>
                 <HostPage></HostPage>
             </Route>
 
@@ -28,17 +28,16 @@ function App() {
 
             <Route path="/">
                 <div style={
-                    {"position": "absolute", 
-                    "color": "white", 
-                    "top": 0, 
-                    "textAlign": "center", 
+                    {"position": "absolute",
+                    "color": "white",
+                    "top": 0,
+                    "textAlign": "center",
                     "width": "100%"}}>
                     <NavLink to={`host`} style={{color: "white"}}>Host Page</NavLink>
                     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <NavLink to={`guest`} style={{color: "white"}}>Guest Page</NavLink>
                 </div>
-                    
-                <LandingPage></LandingPage>
+                <ReduxLandingPage></ReduxLandingPage>
             </Route>
 
             </Switch>

@@ -12,17 +12,41 @@ import testData from './testData'
  * follows a different convention (such as function maps) if it makes sense for your
  * project.
  */
-function appReducer(prevState = 0, action) {
+const initState = {
+    testNum : 2222,
+    roomId : sessionStorage.getItem('roomId')?sessionStorage.getItem('roomId'):0,
+    userName : sessionStorage.getItem('userName')?sessionStorage.getItem('userName'):"initial name",
+    musicInfo : sessionStorage.getItem('musicInfo')?JSON.parse(sessionStorage.getItem('musicInfo')):[
+        {
+            name: "Norway Ice",
+            album: "Ice 2004",
+            icon: "https://1.bp.blogspot.com/-PjjZ8IdgL4o/XFdM0rw8jgI/AAAAAAAAAbA/n5PceMU_W4g2qCkBL--1CN531O15GNQuACLcBGAs/s1600/bandcamp-button-square-green-256.png",
+            votes: 6
+        }
+    ],
+};
+
+
+function appReducer(prevState = initState, action) {
     if (typeof prevState === 'undefined') {
         return Object.assign({}, testData);
     }
     switch (action.type) {
         case 'TEST_ACTION':
-            return Object.assign({}, prevState, {text:action.content})
+            return Object.assign({}, prevState, {text:action.content});
         case 'TEST_ADD_MOCKDATA':
-            return Object.assign({}, testData)
+            return Object.assign({}, prevState);
+        case 'REFREASH_HOSTPAGE':
+            const newState = JSON.parse(JSON.stringify(prevState));
+            sessionStorage.setItem('roomId',action.data["roomId"] );
+            sessionStorage.setItem('userName',action.data["userName"] );
+            sessionStorage.setItem('musicInfo',JSON.stringify(action.data["songs"]));
+            newState.roomId = action.data["roomId"];
+            newState.userName = action.data["userName"];
+            newState.musicInfo = action.data["songs"];
+            return newState;
         default:
-            return prevState
+            return Object.assign({}, prevState);
     }
 }
 

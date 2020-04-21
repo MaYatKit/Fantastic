@@ -49,3 +49,23 @@
 .button:active {
   transform: scale(0.99);
 }
+
+a:link {
+  text-decoration: none;
+  color: white;
+}
+
+a:visited{
+  text-decoration: none;
+  color: white;
+}
+
+a:active{
+  text-decoration: none;
+  color: white;
+}
+
+a:hover{
+  text-decoration: none;
+  color: white;
+}
