@@ -39,7 +39,7 @@ function appReducer(prevState = initState, action) {
         case 'REFREASH_HOSTPAGE':
             const newState = JSON.parse(JSON.stringify(prevState));
             sessionStorage.setItem('roomId',action.data[0]["id"] );
-            sessionStorage.setItem('userName',action.data[0]["id"] );
+            sessionStorage.setItem('userName',action.data[0]["name"] );
             sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
             newState.roomId = action.data[0]["id"];
             newState.userName = action.data[0]["id"];
