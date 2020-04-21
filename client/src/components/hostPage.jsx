@@ -139,7 +139,7 @@ class ConnectHostPage extends React.Component {
                         <div className={"tracklist"}>
                             {this.state.musicInfo[0].map( (entry, index) => {
                                 return (
-                                    <MusicLi name={entry.artist}
+                                    <MusicLi name={entry.name}
                                              album={entry.album}
                                              votes={entry.votes}
                                              icon={entry.albumIcon["large"]}
