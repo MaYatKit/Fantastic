@@ -12,6 +12,7 @@
     text-align: center;
     overflow: auto;
     opacity: 0.95;
+    transition: height ease 0.5s, opacity ease 0.5s;
 }
 
 .tracklist {

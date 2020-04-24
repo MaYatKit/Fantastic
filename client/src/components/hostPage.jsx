@@ -3,6 +3,7 @@ import SearchBar from "./SearchBar";
 import './hostPage.css';
 import SideBar from "./SideBar";
 import MusicLi from "./MusicLi";
+import ShareCode from "./ShareCode";
 
 const hash = window.location.hash
     .substring(1)
@@ -134,6 +135,7 @@ class HostPage extends React.Component {
                                 )
                             })}
                         </div>
+                        <ShareCode partyCode={"1234"}/>
                     </div>
                 </div>
             </div>
