@@ -18,10 +18,10 @@ router.get("/", async (req,res,next)=>{
 
         if(!partyDetails || partyDetails.length === 0){
             res.status(404).json({message: "couldn't find host"})
+        }else{
+            res.status(200).json(partyDetails)
+            res.end();
         }
-
-         res.status(200).json(partyDetails)
-         res.end();
 
     }catch(err){
         res.status(500).json({message: err.message})

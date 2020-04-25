@@ -67,24 +67,29 @@ passport.use(
                 },
             ]
         }
-        let user
+        let user = false;
 
-        await Host.findOne({id: profile.id}).then(async (result)=>{
-            if(result === null){
-                user = await new Host({
-                    id: profile.id,
-                    name: profile.displayName,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    party: fakeParty
-                }).save()
-                
-            }else{
-                console.log("does exist")
-                user = await Host.findOneAndUpdate({id: profile.id},
-                    {accessToken: accessToken, refreshToken:refreshToken})
-            }
-        })
+        try{
+            await Host.findOne({id: profile.id}).then(async (result)=>{
+                if(result === null){
+                    user = await new Host({
+                        id: profile.id,
+                        name: profile.displayName,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
+                        party: Math.floor(Math.random()*100000),
+                        // party: 12345
+                    }).save()
+                    
+                }else{
+                    console.log("does exist")
+                    user = await Host.findOneAndUpdate({id: profile.id},
+                        {accessToken: accessToken, refreshToken:refreshToken})
+                }
+            })
+        }catch(e){
+            
+        }
         return done(null, user)
         //check if host exists in the database, if not create a new one.
     })
