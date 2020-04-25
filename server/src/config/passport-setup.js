@@ -77,7 +77,7 @@ passport.use(
                         name: profile.displayName,
                         accessToken: accessToken,
                         refreshToken: refreshToken,
-                        party: 12345
+                        party: Object.assign( {}, fakeParty, {id: Math.floor(Math.random()*100000) } )
                     }).save()
                     
                 }else{
