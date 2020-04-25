@@ -77,8 +77,7 @@ passport.use(
                         name: profile.displayName,
                         accessToken: accessToken,
                         refreshToken: refreshToken,
-                        party: Math.floor(Math.random()*100000),
-                        // party: 12345
+                        party: 12345
                     }).save()
                     
                 }else{
@@ -88,7 +87,7 @@ passport.use(
                 }
             })
         }catch(e){
-            
+            console.error(e);
         }
         return done(null, user)
         //check if host exists in the database, if not create a new one.
