@@ -17,9 +17,8 @@ passport.use(
         clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
         callbackURL: process.env.SPOTIFY_CALLBACK_URL
     }, async (accessToken, refreshToken, expires_in, profile, done)=> {
-        
         let fakeParty = {
-            id: "12345",
+            id: Math.floor((Math.random()*90000)) + 10000 + "",
             tracks:[
                 {
                     name: "Dancing Queen",
@@ -71,6 +70,7 @@ passport.use(
 
         await Host.findOne({id: profile.id}).then(async (result)=>{
             if(result === null){
+                //Generate a new party code
                 user = await new Host({
                     id: profile.id,
                     name: profile.displayName,
@@ -78,14 +78,11 @@ passport.use(
                     refreshToken: refreshToken,
                     party: fakeParty
                 }).save()
-                
             }else{
-                console.log("does exist")
                 user = await Host.findOneAndUpdate({id: profile.id},
                     {accessToken: accessToken, refreshToken:refreshToken})
             }
         })
         return done(null, user)
-        //check if host exists in the database, if not create a new one.
     })
 )
