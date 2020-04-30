@@ -26,7 +26,7 @@ class LandingPage extends React.Component{
 
     create(){
         console.log("Create room!!");
-        fetch('http://localhost:1000/party', {
+        fetch('http://localhost:1000/party/', {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -53,26 +53,30 @@ class LandingPage extends React.Component{
     }
 
     login(){
-        fetch('http://localhost:1000/auth/spotify', {
-            method: 'GET',
-            mode: 'no-cors',
-            credentials: 'include',
-            headers: {
-                Accept:"*/*",
-                "Content-Type": "application/json;charset=utf-8"
-            },
-        }).then(response => {
-            // console.log(response.json());
-            if (response["status"] === 404){
-                console.log("Login fail!!!");
+        window.location.replace('http://localhost:1000/auth/spotify')
 
-            }else if (response["status"] === 0){
-                console.log("Login successful, fetching user info...");
-                this.create();
-            }
-        }).catch(function (e) {
-            console.log("Login failed: " + e);
-        });
+
+
+        // fetch('http://localhost:1000/auth/spotify', {
+        //     method: 'GET',
+        //     mode: 'no-cors',
+        //     credentials: 'include',
+        //     headers: {
+        //         Accept:"*/*",
+        //         "Content-Type": "application/json;charset=utf-8"
+        //     },
+        // }).then(response => {
+        //     // console.log(response.json());
+        //     if (response["status"] === 404){
+        //         console.log("Login fail!!!");
+        //
+        //     }else if (response["status"] === 0){
+        //         console.log("Login successful, fetching user info...");
+        //         // this.create();
+        //     }
+        // }).catch(function (e) {
+        //     console.log("Login failed: " + e);
+        // });
     }
 
     render() {
