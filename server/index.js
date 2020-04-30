@@ -41,6 +41,9 @@ app.use("/auth", auth)
 const party = require("./src/routes/party-route")
 app.use("/party", party)
 
+const search = require("./src/routes/search")
+app.use("/search", search)
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });

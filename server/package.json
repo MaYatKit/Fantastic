@@ -14,7 +14,8 @@
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-spotify": "^1.1.0",
-    "cookie-parser": "^1.4.5"
+    "cookie-parser": "^1.4.5",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
