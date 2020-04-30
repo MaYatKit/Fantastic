@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-rou
 import MusicLiWrapper from './MusicLiWrapper'
 import SideBar from './SideBar';
 
-export default class SideBarItem extends React.Component {
+export default class GuestPage extends React.Component {
 
 
     constructor(props) {

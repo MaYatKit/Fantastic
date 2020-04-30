@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+require('./src/routes/ws')
 require("./src/config/passport-setup")
 
 // Setup Express
