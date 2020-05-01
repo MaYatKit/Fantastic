@@ -90,19 +90,22 @@ class ConnectHostPage extends React.Component {
                 }
             })
                 .then(response => {
-                    let jsonData = response.json();
-                    this.setState({ tracks: [] });
-                    this.setState({ active: true });
-                    for (let i = 0; i < jsonData.tracks.items.length; i++) {
-                        this.setState({
-                            tracks: [...this.state.tracks, {
-                                trackName: jsonData.tracks.items[i].name,
-                                albumName: jsonData.tracks.items[i].album.name,
-                                artistName: jsonData.tracks.items[i].artists[0].name,
-                                albumArt: jsonData.tracks.items[i].album.images[0].url
-                            }]
-                        });
-                    }
+                    response.json().then(json=>{
+                        this.setState({ tracks: [] });
+                        this.setState({ active: true });
+                        for (let i = 0; i < json.tracks.items.length; i++) {
+                            this.setState({
+                                tracks: [...this.state.tracks, {
+                                    trackName: json.tracks.items[i].name,
+                                    albumName: json.tracks.items[i].album.name,
+                                    artistName: json.tracks.items[i].artists[0].name,
+                                    albumArt: json.tracks.items[i].album.images[0].url
+                                }]
+                            });
+                        }
+                    });
+
+
                 });
         } else {
             this.setState({ tracks: [] });
