@@ -6,7 +6,7 @@ const Host = require("../models/host")
 passport.serializeUser(function(user, done) {
     done(null, user);
   });
-  
+
 passport.deserializeUser(function(user, done) {
 done(null, user);
 });
@@ -66,23 +66,28 @@ passport.use(
                 },
             ]
         }
-        let user
+        let user = false;
+        try{
+            await Host.findOne({id: profile.id}).then(async (result)=>{
+                if(result === null){
+                    user = await new Host({
+                        id: profile.id,
+                        name: profile.displayName,
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
+                        expireTime: Math.floor(new Date().getTime() / 1000) + expires_in,
+                        party: Object.assign( {}, fakeParty, {id: Math.floor(Math.random()*100000) } )
+                    }).save()
 
-        await Host.findOne({id: profile.id}).then(async (result)=>{
-            if(result === null){
-                //Generate a new party code
-                user = await new Host({
-                    id: profile.id,
-                    name: profile.displayName,
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    party: fakeParty
-                }).save()
-            }else{
-                user = await Host.findOneAndUpdate({id: profile.id},
-                    {accessToken: accessToken, refreshToken:refreshToken})
-            }
-        })
+                }else{
+                    console.log("does exist")
+                    user = await Host.findOneAndUpdate({id: profile.id},
+                        {accessToken: accessToken, refreshToken:refreshToken, expireTime: Math.floor(new Date().getTime() / 1000) + expires_in})
+                }
+            })
+        }catch(e){
+            console.error(e);
+        }
         return done(null, user)
     })
 )
