@@ -17,7 +17,8 @@
     "passport-spotify": "^1.1.0",
     "socket.io": "^2.3.0"
     "cookie-parser": "^1.4.5",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "sync-request": "^6.1.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

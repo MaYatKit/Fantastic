@@ -39,6 +39,7 @@ var hostSchema = new mongoose.Schema({
     name: String,
     accessToken: String,
     refreshToken: String,
+    expireTime: String,
     party: partySchema
 })
 
