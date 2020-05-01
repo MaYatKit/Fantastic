@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "./button";
 import "./landingPage.css";
+import api from '../api'
 
 import {FaArrowLeft} from "react-icons/fa";
 import logo from "./../image/logo.png"
@@ -26,15 +27,8 @@ class LandingPage extends React.Component{
 
     create(){
         console.log("Create room!!");
-        fetch('http://localhost:1000/party/', {
-            method: 'GET',
-            mode: 'cors',
-            credentials: 'include',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json;charset=utf-8"
-            },
-        }).then(response => {
+        api.createParty()
+        .then(response => {
             // console.log(response.json());
             if (response["status"] === 404){
                 console.log("Authorize fail!!! Need to login!!!");
@@ -53,7 +47,7 @@ class LandingPage extends React.Component{
     }
 
     login(){
-        window.location.replace('http://localhost:1000/auth/spotify')
+        api.login()
 
 
 
