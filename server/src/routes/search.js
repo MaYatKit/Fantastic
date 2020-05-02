@@ -47,10 +47,10 @@ router.get('/', async (req, res) => {
 
 
 
-            // if (Math.floor(new Date().getTime() / 1000) >= expireTime){
+            if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                 console.log("The access token is expired, request a new one now.");
                 accessToken = await re.refreshToken(accessToken, refreshToken);
-            // }
+            }
 
 
             let searchRes = syncRequest('GET', 'https://api.spotify.com/v1/search?q=' + searchText + '&type=' + searchType + '&limit=' + searchLimit, {

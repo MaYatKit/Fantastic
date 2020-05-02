@@ -5,6 +5,9 @@ import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
 import api from '../api'
+import { MdAdd } from "react-icons/md";
+import { MdCheck } from "react-icons/md";
+
 
 class ConnectHostPage extends React.Component {
     constructor(props) {
@@ -19,6 +22,7 @@ class ConnectHostPage extends React.Component {
         };
 
         this.GetResult = this.GetResult.bind(this);
+        this.searchRef = React.createRef();
         // this.checkState = this.checkState.bind(this);
         // this.checkState();
     }
@@ -33,11 +37,13 @@ class ConnectHostPage extends React.Component {
         if (searchItem) {
             api.searchItem(searchItem)
             .then(array => {
-                console.log("search outcome: ", array)
-                this.setState({
-                    tracks: array,
-                    active: true 
-                });
+                if (this.searchRef.current.state.searching){
+                    console.log("search outcome: ", array);
+                    this.setState({
+                        tracks: array,
+                        active: true
+                    });
+                }
             })
         } else {
             this.setState({ tracks: [] });
@@ -57,7 +63,7 @@ class ConnectHostPage extends React.Component {
             <div className={'hostPage'}>
                 <SideBar userName={this.state.userName} roomId={this.state.roomId}> </SideBar>
                 <div style={{ marginLeft: '260px' }}>
-                    <SearchBar GetResult={this.GetResult}/>
+                    <SearchBar GetResult={this.GetResult} ref = {this.searchRef}/>
                     <div className={'page'}>
                         <div className={'search-results ' + (this.state.active ? '' : 'hidden')}>
                             {this.state.tracks.map((item, index) => {
@@ -80,6 +86,17 @@ class ConnectHostPage extends React.Component {
                                                 </span>
                                             </div>
                                         </div>
+                                        <div className={'addSong'} onClick={() => {
+                                            item.selected = true;
+                                            this.setState({
+                                                tracks: this.state.tracks,
+                                                active: true
+                                            });
+                                        }}>
+                                            {item.selected? <MdCheck className={'icon'}> </MdCheck> : <MdAdd className={'icon'}>
+                                            </MdAdd>}
+                                        </div>
+
                                     </div>
                                 );
                             })}

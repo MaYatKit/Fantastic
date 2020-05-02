@@ -45,7 +45,7 @@ function isLogin(){
                 })
             else
                 resolve(obj)
-            
+
         })
     })
 
@@ -65,7 +65,7 @@ function createParty(){
 
 function searchItem(searchItem){
     // search music by keyword
-    // return Promise, The promise return a array of music when resolved 
+    // return Promise, The promise return a array of music when resolved
 
     let url = 'http://localhost:1000/search?q=' + searchItem + '&type=track&limit=10'
     return fetch(url, {
@@ -85,13 +85,14 @@ function searchItem(searchItem){
             console.error("need log in");
             return []
         }
-        
+
         let goodArray = obj.tracks.items.map(e => {
             return {
                 trackName: e.name,
                 albumName: e.album.name,
                 artistName: e.artists[0].name,
-                albumArt: e.album.images[0].url
+                albumArt: e.album.images[0].url,
+                selected: false
             }
         })
 
