@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-rou
 import './App.css';
 import { HostPage } from './components/hostPage';
 import  {ReduxLandingPage}  from './components/landingPage'
-import GuestPage from './components/GuestPage'
+import {GuestPage} from './components/GuestPage'
 import * as Playback from './playBack';
 // import oauth from './oauth'
 import api from './api'
