@@ -28,15 +28,18 @@ router.get("/", async (req,res,next)=>{
 })
 
 router.post("/", async (req,res,next) =>{
-    let track = req.body.track
-    await HostModel.findOneAndUpdate(
-        { id: req.cookies.user},
-        { $push: {'party.tracks': track }}
-        ).then(()=>{
-            HostModel.findOne({id:"234"}).then((result)=>{
-                assert.equal(result.party.tracks.length, 1)
-            })
-    })
+    let tracks = req.body.tracks
+    try{
+        await Host.findOneAndUpdate(
+            { "party.id": req.body.id},
+            { "party.tracks": tracks }
+        )
+        res.status(200).json({message: "successfully updated"})
+
+    }catch(err){
+        res.status(500).json({message: err.message});
+        res.end();
+    }
 })
 
 module.exports = router
