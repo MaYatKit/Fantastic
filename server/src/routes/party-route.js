@@ -27,6 +27,30 @@ router.get("/", async (req,res,next)=>{
     }
 })
 
+router.get("/{partyid}", async (req,res,next)=>{
+    try{
+        await Host.findOne({"party.id": req.query.partyId}).then( async partyExists =>{
+            if (partyExists){
+                let partyDetails = await Host.aggregate([
+                    { "$match": { "party.id": req.body.id} },
+                    { "$group": {_id: null,
+                        id: {"$first": "$party.id"},
+                        name: {"$first": "$name"},
+                        tracks: {"$push": "$party.tracks"}}
+                    },
+                    { "$project": {id: 1, tracks: 1 ,name: 1, _id: 0} }
+                ])
+                res.status(200).json(partyDetails)
+            }else{
+                res.status(404).json({message: "couldn't find party"})
+            }
+        })
+    }catch(err){
+        res.status(500).json({message: err.message})
+        res.end();
+    }
+})
+
 router.post("/", async (req,res,next) =>{
     let tracks = req.body.tracks
     try{
