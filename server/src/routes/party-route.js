@@ -27,12 +27,12 @@ router.get("/", async (req,res,next)=>{
     }
 })
 
-router.get("/{partyid}", async (req,res,next)=>{
+router.get("/:partyid", async (req,res,next)=>{
     try{
-        await Host.findOne({"party.id": req.query.partyId}).then( async partyExists =>{
+        await Host.findOne({"party.id": req.params.partyid}).then( async partyExists =>{
             if (partyExists){
                 let partyDetails = await Host.aggregate([
-                    { "$match": { "party.id": req.body.id} },
+                    { "$match": { "party.id": req.params.partyid} },
                     { "$group": {_id: null,
                         id: {"$first": "$party.id"},
                         name: {"$first": "$name"},
