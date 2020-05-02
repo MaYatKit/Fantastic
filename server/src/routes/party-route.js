@@ -4,8 +4,6 @@ const Host = require("../models/host")
 
 router.get("/", async (req,res,next)=>{
     try{
-        //Find from database the party id, user name and tracks
-        //of a party given the host username.
         let partyDetails = await Host.aggregate([
             { "$match": { id: req.cookies.user} },
             { "$group": {_id: null,
@@ -25,6 +23,21 @@ router.get("/", async (req,res,next)=>{
 
     }catch(err){
         res.status(500).json({message: err.message})
+        res.end();
+    }
+})
+
+router.post("/", async (req,res,next) =>{
+    let tracks = req.body.tracks
+    try{
+        await Host.findOneAndUpdate(
+            { "party.id": req.body.id},
+            { "party.tracks": tracks }
+        )
+        res.status(200).json({message: "successfully updated"})
+
+    }catch(err){
+        res.status(500).json({message: err.message});
         res.end();
     }
 })
