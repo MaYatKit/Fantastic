@@ -36,11 +36,15 @@ function appReducer(prevState = initState, action) {
             const newState = JSON.parse(JSON.stringify(prevState));
             sessionStorage.setItem('roomId',action.data[0]["id"] );
             sessionStorage.setItem('userName',action.data[0]["name"] );
-            sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
+            // sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
             newState.roomId = action.data[0]["id"];
-            newState.userName = action.data[0]["id"];
-            newState.musicInfo = action.data[0]["tracks"];
+            newState.userName = action.data[0]["name"];
+            // newState.musicInfo = action.data[0]["tracks"];
             return newState;
+        case 'REFREASH_PLAYLIST':
+            const state = JSON.parse(JSON.stringify(prevState));
+            sessionStorage.setItem('musicInfo',JSON.stringify(action.data));
+            state.musicInfo = action.data;
         default:
             return Object.assign({}, prevState);
     }

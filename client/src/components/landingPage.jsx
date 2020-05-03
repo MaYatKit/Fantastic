@@ -131,7 +131,7 @@ const mapDispatchToProps = dispatch => {
     return {
         refreshHostPage: data => dispatch(refreshHostPage(data))
     }
-}
+};
 
 export const ReduxLandingPage = connect(null, mapDispatchToProps)(LandingPage);
 

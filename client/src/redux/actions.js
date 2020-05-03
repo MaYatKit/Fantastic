@@ -1,9 +1,9 @@
 // Define action types here
 
 const TEST_ACTION = "TEST_ACTION"
-const TEST_ADD_MOCKDATA = "TEST_ADD_MOCKDATA"
-const REFREASH_HOSTPAGE = "REFREASH_HOSTPAGE"
-
+const TEST_ADD_MOCKDATA = "TEST_ADD_MOCKDATA";
+const REFREASH_HOSTPAGE = "REFREASH_HOSTPAGE";
+const REFREASH_PLAYLIST = "REFREASH_PLAYLIST";
 
 
 
@@ -23,5 +23,13 @@ let refreshHostPage = (data) => {
     }
 };
 
+// define action creators here
+let refreshPlaylist = (data) => {
+    return {
+        type: REFREASH_PLAYLIST,
+        data: data
+    }
+};
 
-export {testActionCreator, refreshHostPage}
+
+export {testActionCreator, refreshHostPage, refreshPlaylist}

@@ -88,6 +88,12 @@ function searchItem(searchItem){
 
         let goodArray = obj.tracks.items.map(e => {
             return {
+                id : e.id,
+                uri: e.uri,
+                albumIcon:{
+                    "small": e.album.images[2],
+                    "large": e.album.images[1]
+                },
                 trackName: e.name,
                 albumName: e.album.name,
                 artistName: e.artists[0].name,
