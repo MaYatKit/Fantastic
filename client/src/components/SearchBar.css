@@ -14,16 +14,25 @@
     color: #aaaaaa;
 }
 
-.form-wrapper>.icon {
+.search_icon {
     width: 30px;
     height: 30px;
     margin: 5px 15px 5px 10px;
     color: white;
+    position: relative;
 }
 
 .form-wrapper {
     width: 100%;
     display: flex;
+    flex-direction: row;
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
+.search_layout{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+

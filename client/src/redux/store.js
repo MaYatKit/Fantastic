@@ -32,10 +32,6 @@ function appReducer(prevState = initState, action) {
         return Object.assign({}, testData);
     }
     switch (action.type) {
-        case 'TEST_ACTION':
-            return Object.assign({}, prevState, {text:action.content});
-        case 'TEST_ADD_MOCKDATA':
-            return Object.assign({}, prevState);
         case 'REFREASH_HOSTPAGE':
             const newState = JSON.parse(JSON.stringify(prevState));
             sessionStorage.setItem('roomId',action.data[0]["id"] );
@@ -65,7 +61,6 @@ let store = createStore(
 
 // The only way to mutate the internal state is to dispatch an action.
 // The actions can be serialized, logged or stored and later replayed.
-store.dispatch({ type: 'TEST_ADD_MOCKDATA' })
 
 
 export default store;
