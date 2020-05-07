@@ -104,6 +104,7 @@ export default class SideBar extends React.Component {
                                 item={entry.item}
                                 icon={entry.icon}
                                 index={index}
+                                key={index}
                                 to={entry.to}
                                 itemOnclick={this.itemOnclick}>
                             </SideBarItem>);
