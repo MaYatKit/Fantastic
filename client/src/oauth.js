@@ -38,7 +38,7 @@ function requestToken(){
         'streaming',
         'user-read-email',
         'user-read-private',
-        'user-modify-playback-state'
+        'user-modify-playback-state'    // getting user devices
     ];
 
     // If there is no token, redirect to Spotify authorization

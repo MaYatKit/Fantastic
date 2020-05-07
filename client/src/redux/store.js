@@ -1,5 +1,5 @@
-import { createStore } from 'redux'
-import testData from './testData'
+import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 /**
  * This is a reducer, a pure function with (state, action) => state signature.
  * It describes how an action transforms the state into the next state.
@@ -13,6 +13,8 @@ import testData from './testData'
  * project.
  */
 const initState = {
+    activeMusicUri: undefined,
+    activeMusicState: 'PAUSE',    // 'PAUSE' or 'PLAYING'
     testNum : 2222,
     roomId : sessionStorage.getItem('roomId')!=="undefined"?sessionStorage.getItem('roomId'):0,
     userName : sessionStorage.getItem('userName')!=="undefined"?sessionStorage.getItem('userName'):"initial name",
@@ -29,8 +31,11 @@ const initState = {
 
 function appReducer(prevState = initState, action) {
     if (typeof prevState === 'undefined') {
-        return Object.assign({}, testData);
+        return Object.assign({}, initState);
     }
+
+    let newS = JSON.parse(JSON.stringify(prevState))
+
     switch (action.type) {
         case 'REFREASH_HOSTPAGE':
             const newState = JSON.parse(JSON.stringify(prevState));
@@ -39,12 +44,26 @@ function appReducer(prevState = initState, action) {
             // sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
             newState.roomId = action.data[0]["id"];
             newState.userName = action.data[0]["name"];
-            // newState.musicInfo = action.data[0]["tracks"];
+            newState.musicInfo = action.data[0]["tracks"];
             return newState;
         case 'REFREASH_PLAYLIST':
             const state = JSON.parse(JSON.stringify(prevState));
             sessionStorage.setItem('musicInfo',JSON.stringify(action.data));
             state.musicInfo = action.data;
+            break;
+
+        case 'UPDATE_ACTIVE_MUSIC':
+            
+            Object.assign(newS, {
+                activeMusicUri: action.data,
+                activeMusicState: 'PLAYING'
+            })
+            return newS;
+
+        case 'UPDATE_ACTIVE_MUSIC_STATE':
+            Object.assign(newS, {activeMusicState: action.data})
+            return newS;;
+
         default:
             return Object.assign({}, prevState);
     }
@@ -52,9 +71,14 @@ function appReducer(prevState = initState, action) {
 
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
+
+// It looks like you are passing several store enhancers to createStore(). 
+// This is not supported. Instead, compose them together to a single function
+const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 let store = createStore(
     appReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    composeEnhancer(applyMiddleware(thunk))
 )
 
 // You can use subscribe() to update the UI in response to state changes.
