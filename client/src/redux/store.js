@@ -12,21 +12,22 @@ import thunk from 'redux-thunk';
  * follows a different convention (such as function maps) if it makes sense for your
  * project.
  */
+// const initState = {
+//     activeMusicUri: undefined,
+//     activeMusicState: 'PAUSE',    // 'PAUSE' or 'PLAYING'
+//     roomId : sessionStorage.getItem('roomId')!=="undefined"?sessionStorage.getItem('roomId'):0,
+//     userName : sessionStorage.getItem('userName')!=="undefined"?sessionStorage.getItem('userName'):"initial name",
+//     musicInfo : sessionStorage.getItem('musicInfo')!=="undefined"?JSON.parse(sessionStorage.getItem('musicInfo')):[],
+// };
+
 const initState = {
-    activeMusicUri: undefined,
-    activeMusicState: 'PAUSE',    // 'PAUSE' or 'PLAYING'
-    testNum : 2222,
-    roomId : sessionStorage.getItem('roomId')!=="undefined"?sessionStorage.getItem('roomId'):0,
-    userName : sessionStorage.getItem('userName')!=="undefined"?sessionStorage.getItem('userName'):"initial name",
-    musicInfo : sessionStorage.getItem('musicInfo')!=="undefined"?JSON.parse(sessionStorage.getItem('musicInfo')):[
-        {
-            name: "Norway Ice",
-            album: "Ice 2004",
-            icon: "https://1.bp.blogspot.com/-PjjZ8IdgL4o/XFdM0rw8jgI/AAAAAAAAAbA/n5PceMU_W4g2qCkBL--1CN531O15GNQuACLcBGAs/s1600/bandcamp-button-square-green-256.png",
-            votes: 6
-        }
-    ],
-};
+        activeMusicUri: undefined,
+        activeMusicState: 'PAUSE',    // 'PAUSE' or 'PLAYING'
+        roomId : undefined,
+        userName : undefined,
+        musicInfo : []
+    };
+
 
 
 function appReducer(prevState = initState, action) {
@@ -39,18 +40,31 @@ function appReducer(prevState = initState, action) {
     switch (action.type) {
         case 'REFREASH_HOSTPAGE':
             const newState = JSON.parse(JSON.stringify(prevState));
-            sessionStorage.setItem('roomId',action.data[0]["id"] );
-            sessionStorage.setItem('userName',action.data[0]["name"] );
+            // sessionStorage.setItem('roomId',action.data[0]["id"] );
+            // sessionStorage.setItem('userName',action.data[0]["name"] );
             // sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
             newState.roomId = action.data[0]["id"];
             newState.userName = action.data[0]["name"];
-            newState.musicInfo = action.data[0]["tracks"];
+            newState.musicInfo = action.data[0]["tracks"][0].sort(e => -e.votes);
+            if(newState.musicInfo.length > 0){
+                newState.activeMusicUri = newState.musicInfo[0].uri
+            }
             return newState;
         case 'REFREASH_PLAYLIST':
             const state = JSON.parse(JSON.stringify(prevState));
             sessionStorage.setItem('musicInfo',JSON.stringify(action.data));
             state.musicInfo = action.data;
             break;
+
+        case 'UPDATE_PLAYLIST':
+            let musicInfo = action.data.sort(e => -e.votes)
+            Object.assign(newS, {
+                musicInfo: musicInfo,
+                activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
+                activeMusicState: 'PAUSE'
+            })
+            return newS
+
 
         case 'UPDATE_ACTIVE_MUSIC':
             

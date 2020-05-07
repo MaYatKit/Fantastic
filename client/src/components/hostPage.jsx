@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import api from '../api';
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
-import {refreshPlaylist, play, pause} from '../redux/actions';
+import {updatePlaylist, refreshPlaylist, play, pause} from '../redux/actions';
 
 
 class ConnectHostPage extends React.Component {
@@ -43,6 +43,32 @@ class ConnectHostPage extends React.Component {
         else if(nextState === 'PLAYING'){
             return this.props.dispatch( play(uri) )
         }
+    }
+
+    playNext(){
+        if(this.props.musicInfo.length < 2){
+            alert("you can't play next when there is only one")
+            return;
+        }
+
+        let prevUri = this.props.activeMusicUri
+        let nextUri = this.props.musicInfo[1].uri
+        let newMusicInfo = [].concat(this.props.musicInfo)
+
+        this.playControl(nextUri, 'PLAYING')
+        .then(response => {
+            let oldIndex = newMusicInfo.findIndex(e => e.uri === prevUri)
+            newMusicInfo.splice(oldIndex, 1)
+            this.props.dispatch( updatePlaylist(newMusicInfo) )
+        })
+    }
+
+    removeAMusic(uri){
+        // remove a music that is not being played
+        let newMusicInfo = [].concat(this.props.musicInfo)
+        let i = newMusicInfo.findIndex(e => e.uri === uri)
+        newMusicInfo.splice(i, 1)
+        this.props.dispatch( updatePlaylist(newMusicInfo) )
     }
 
     GetResult(searchItem) {
@@ -156,16 +182,19 @@ class ConnectHostPage extends React.Component {
                         </div>
                         <div className={'tracklist'}>
                             {
-                                this.props.musicInfo.length !== 0 ? this.props.musicInfo[0].map((entry, index) => {
+                                this.props.musicInfo.length !== 0 ? this.props.musicInfo.map((entry, index) => {
                                     return (
                                         <MusicLi name={entry.name}
                                                  album={entry.album}
                                                  votes={entry.votes}
                                                  icon={entry.albumIcon['large']}
                                                  uri = {entry.uri}
+                                                 activeMusicUri = {this.props.activeMusicUri}
                                                  playControl = {this.playControl.bind(this)}
+                                                 playNext = {this.playNext.bind(this)}
+                                                 removeAMusic = {this.removeAMusic.bind(this)}
                                                  index={index}
-                                                 key={index}>
+                                                 key={entry.uri}>
                                         </MusicLi>
                                     );
                                 }) : <span className={'hint'}> Search to add musics </span>
@@ -180,12 +209,14 @@ class ConnectHostPage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+
     return {
         userName: state.userName,
         roomId: state.roomId,
 
         // existing playlist
-        musicInfo: state.musicInfo ? state.musicInfo : []
+        musicInfo: [].concat(state.musicInfo),
+        activeMusicUri: state.activeMusicUri
     };
 };
 

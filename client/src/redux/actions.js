@@ -2,22 +2,13 @@ import playBack from '../playBack'
 
 // Define action types here
 
-const TEST_ACTION = "TEST_ACTION"
-const TEST_ADD_MOCKDATA = "TEST_ADD_MOCKDATA";
+
 const REFREASH_HOSTPAGE = "REFREASH_HOSTPAGE";
 const REFREASH_PLAYLIST = "REFREASH_PLAYLIST";
+const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
 const UPDATE_ACTIVE_MUSIC_STATE = "UPDATE_ACTIVE_MUSIC_STATE";
 const UPDATE_ACTIVE_MUSIC = "UPDATE_ACTIVE_MUSIC";
 
-
-
-// define action creators here
-let testActionCreator = (content) => {
-    return {
-        type: TEST_ACTION,
-        content: content
-    }
-}
 
 // define action creators here
 let refreshHostPage = (data) => {
@@ -31,6 +22,14 @@ let refreshHostPage = (data) => {
 let refreshPlaylist = (data) => {
     return {
         type: REFREASH_PLAYLIST,
+        data: data
+    }
+};
+
+let updatePlaylist = (data) => {
+    // data: array of music info
+    return {
+        type: UPDATE_PLAYLIST,
         data: data
     }
 };
@@ -98,7 +97,7 @@ function pause(){
 
 
 
-export {testActionCreator, 
+export {updatePlaylist, 
         refreshHostPage, 
         refreshPlaylist, 
         updateActiveMusicState, 
