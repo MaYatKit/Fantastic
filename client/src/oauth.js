@@ -18,11 +18,17 @@ function getHashObject(){
 }
 
 function getTokenFromURL(){
+    // #access_token=#####
+    // &token_type=Bearer
+    // &expires_in=3600 (seconds)
     let token = getHashObject()["access_token"];
+    let expire_len = getHashObject()["expires_in"];
+    let expire_by = Date.now() + expire_len * 1000
     if(token === undefined){
         return null
     }else{
-        sessionStorage.setItem('spotify_token', token);
+        sessionStorage.setItem('spotify_token_implicit', token);
+        sessionStorage.setItem('spotify_token_implicit_expire', expire_by)
         window.location.hash = '';
         return token;
     }
@@ -47,8 +53,10 @@ function requestToken(){
 }
 
 function getToken(){
-    let token = sessionStorage.getItem('spotify_token');
-    if(token !== null)
+    let token = sessionStorage.getItem('spotify_token_implicit');
+    let expire_by = new Date(Number(sessionStorage.getItem('spotify_token_implicit_expire')))
+
+    if(token !== null && Date.now() < expire_by)
         return token;
 
     token = getTokenFromURL();
