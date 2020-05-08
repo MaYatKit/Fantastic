@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { testActionCreator } from '../redux/actions'
 import MusicLi from './MusicLi'
 
 
@@ -11,10 +10,6 @@ const mapStateToProps = state => {
 
 class MusicLiWrapper extends React.Component {
 
-    triggerDispatch = () => {
-        // dispatches actions to add todo
-        this.props.testActionCreator("test_text")
-    }
 
 render(){
     return(
@@ -41,5 +36,5 @@ render(){
 
 export default connect(
     mapStateToProps,
-    {testActionCreator}
+    null
 )(MusicLiWrapper)

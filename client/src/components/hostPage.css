@@ -19,6 +19,14 @@
     text-align: center;
 }
 
+
+.tracklist > .hint{
+    font-size: 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+
 .hidden {
     height: 0;
     opacity: 0;

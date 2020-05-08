@@ -57,7 +57,7 @@ router.post("/", async (req,res,next) =>{
         await Host.findOneAndUpdate(
             { "party.id": req.body.id},
             { "party.tracks": tracks }
-        )
+        );
         res.status(200).json({message: "successfully updated"})
 
     }catch(err){

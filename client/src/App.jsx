@@ -5,14 +5,13 @@ import './App.css';
 import { HostPage } from './components/hostPage';
 import  {ReduxLandingPage}  from './components/landingPage'
 import {GuestPage} from './components/GuestPage'
-import * as Playback from './playBack';
+import playBack from './playBack';
 // import oauth from './oauth'
 import api from './api'
 
 window.api = api;
-let testSideBarInfo = { username: 'user1' };
-
-// Playback.init();
+window.playBack = playBack
+playBack.init();
 
 function App() {
     return (
