@@ -23,9 +23,9 @@ import thunk from 'redux-thunk';
 const initState = {
         activeMusicUri: undefined,
         activeMusicState: 'PAUSE',    // 'PAUSE' or 'PLAYING'
-        roomId : undefined,
-        userName : undefined,
-        musicInfo : []
+        roomId : sessionStorage.getItem('roomId'),
+        userName : sessionStorage.getItem('userName'),
+        musicInfo : sessionStorage.getItem('musicInfo')!==undefined?JSON.parse(sessionStorage.getItem('musicInfo')):[],
     };
 
 
@@ -40,12 +40,11 @@ function appReducer(prevState = initState, action) {
     switch (action.type) {
         case 'REFREASH_HOSTPAGE':
             const newState = JSON.parse(JSON.stringify(prevState));
-            // sessionStorage.setItem('roomId',action.data[0]["id"] );
-            // sessionStorage.setItem('userName',action.data[0]["name"] );
-            // sessionStorage.setItem('musicInfo',JSON.stringify(action.data[0]["tracks"]));
             newState.roomId = action.data[0]["id"];
             newState.userName = action.data[0]["name"];
             newState.musicInfo = action.data[0]["tracks"][0].sort(e => -e.votes);
+            sessionStorage.setItem('roomId',newState.roomId);
+            sessionStorage.setItem('userName',newState.userName);
             if(newState.musicInfo.length > 0){
                 newState.activeMusicUri = newState.musicInfo[0].uri
             }
@@ -63,11 +62,12 @@ function appReducer(prevState = initState, action) {
                 activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
                 activeMusicState: 'PAUSE'
             })
+            sessionStorage.setItem('musicInfo',JSON.stringify(musicInfo));
             return newS
 
 
         case 'UPDATE_ACTIVE_MUSIC':
-            
+
             Object.assign(newS, {
                 activeMusicUri: action.data,
                 activeMusicState: 'PLAYING'
@@ -86,7 +86,7 @@ function appReducer(prevState = initState, action) {
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
 
-// It looks like you are passing several store enhancers to createStore(). 
+// It looks like you are passing several store enhancers to createStore().
 // This is not supported. Instead, compose them together to a single function
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

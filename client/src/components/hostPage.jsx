@@ -17,22 +17,16 @@ class ConnectHostPage extends React.Component {
         this.state = {
             tracks: [],     // store search result
             active: false,
-            // userName: this.props.userName,      
+            // userName: this.props.userName,
             // roomId: this.props.roomId,
             // musicInfo: this.props.musicInfo
         };
 
         this.GetResult = this.GetResult.bind(this);
         this.searchRef = React.createRef();
-        this.savePlaylist = this.savePlaylist.bind(this);
     }
 
-    savePlaylist() {
-        if (this.state.musicInfo.length !== 0) {
-            // this.props.refreshPlaylist(this.state.musicInfo);
-            this.props.dispatch( refreshPlaylist(this.state.musicInfo) )
-        }
-    }
+
 
     playControl(uri, nextState){
         // nextState: 'PAUSE' or 'PLAYING'
@@ -65,10 +59,10 @@ class ConnectHostPage extends React.Component {
 
     removeAMusic(uri){
         // remove a music that is not being played
-        let newMusicInfo = [].concat(this.props.musicInfo)
-        let i = newMusicInfo.findIndex(e => e.uri === uri)
-        newMusicInfo.splice(i, 1)
-        this.props.dispatch( updatePlaylist(newMusicInfo) )
+        let newMusicInfo = [].concat(this.props.musicInfo);
+        let i = newMusicInfo.findIndex(e => e.uri === uri);
+        newMusicInfo.splice(i, 1);
+        this.props.dispatch( updatePlaylist(newMusicInfo) );
     }
 
     GetResult(searchItem) {
@@ -101,16 +95,16 @@ class ConnectHostPage extends React.Component {
     selectSearchItem(item) {
         if (item.selected) {
             item.selected = false;
-            for (let i = 0; i < this.state.musicInfo.length; i++) {
-                if (this.state.musicInfo[i]['_id'] === item['id']) {
-                    this.state.musicInfo.splice(i, 1);
+            for (let i = 0; i < this.props.musicInfo.length; i++) {
+                if (this.props.musicInfo[i]['_id'] === item['id']) {
+                    this.props.musicInfo.splice(i, 1);
                     break;
                 }
             }
 
         } else {
             item.selected = true;
-            this.state.musicInfo[this.state.musicInfo.length] = {
+            this.props.musicInfo[this.props.musicInfo.length] = {
                 'votes': 1,
                 '_id': item['id'],
                 'name': item['trackName'],
@@ -123,11 +117,12 @@ class ConnectHostPage extends React.Component {
                 }
             };
         }
-        this.setState({
-            tracks: this.state.tracks,
-            active: true,
-            musicInfo: this.state.musicInfo
-        });
+        this.props.dispatch( updatePlaylist(this.props.musicInfo) )
+        // this.setState({
+        //     tracks: this.state.tracks,
+        //     active: true,
+        //     musicInfo: this.state.musicInfo
+        // });
     }
 
     render() {
@@ -141,7 +136,7 @@ class ConnectHostPage extends React.Component {
                              onClick={() => {
                                  this.setState({ active: false });
                                  this.searchRef.current.state.searching = false;
-                                 this.savePlaylist();
+                                 // this.savePlaylist();
                              }}>
                             {this.state.tracks.map((item, index) => {
                                 return (
@@ -210,6 +205,7 @@ class ConnectHostPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
 
+    api.uploadPlayList(state.roomId, state.musicInfo);
     return {
         userName: state.userName,
         roomId: state.roomId,
@@ -219,6 +215,7 @@ const mapStateToProps = (state, ownProps) => {
         activeMusicUri: state.activeMusicUri
     };
 };
+
 
 // const mapDispatchToProps = dispatch => {
 //     return {
