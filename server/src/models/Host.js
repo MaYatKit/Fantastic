@@ -6,6 +6,7 @@ var trackSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    name: String,
     artist: String,
     album: String,
     votes: {
@@ -38,6 +39,7 @@ var hostSchema = new mongoose.Schema({
     name: String,
     accessToken: String,
     refreshToken: String,
+    expireTime: String,
     party: partySchema
 })
 

@@ -20,6 +20,14 @@
     text-align: center;
 }
 
+
+.tracklist > .hint{
+    font-size: 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+
 .hidden {
     height: 0;
     opacity: 0;
@@ -37,6 +45,7 @@
     transition: background 0.25s ease-out;
     box-sizing: border-box;
     cursor: pointer;
+    position: relative;
 }
 
 .result:hover {
@@ -77,3 +86,20 @@
 .result > .info > .bottom .dot {
     display: inline-block;
 }
+
+.result > .addSong{
+    float: right;
+    text-align: right;
+    position: absolute;
+    top: 30%;
+    right: 2%;
+}
+
+
+.result > .addSong > .icon{
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+}
+
+

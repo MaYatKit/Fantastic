@@ -1,8 +1,8 @@
 import React from 'react';
 
 import './SearchBar.css';
-import { MdArrowBack } from "react-icons/md";
-import { MdAlbum } from "react-icons/md";
+import { MdArrowBack } from 'react-icons/md';
+import { MdSearch } from 'react-icons/md';
 
 export default class SearchBar extends React.Component {
 
@@ -12,41 +12,50 @@ export default class SearchBar extends React.Component {
         this.state = {
             searching: false
         };
+
+        this.inputRef = React.createRef();
     }
 
-    handleKeyPress(event) {
-        return (event.target.value.match(/[A-Za-z0-9]+/g));
-    }
-
-    handleOnChange(event){
-        if(event.target.value){
-            this.setState({searching: true});
-        }else{
-            this.setState({searching: false});
+    handleOnChange(event) {
+        if (event.target.value) {
+            this.setState({ searching: true });
+        } else {
+            this.setState({ searching: false });
         }
-
-        event.target.value.replace(/\s/g, "%20");
-        this.props.GetResult(event.target.value);
+        if (event.target.value === ' ') {
+            this.props.GetResult('%20');
+        } else {
+            this.props.GetResult(event.target.value);
+        }
     }
 
-    render () {
+
+    click_icon(event) {
+        this.props.GetResult('');
+        this.setState({ searching: false });
+        this.inputRef.current.value = '';
+    }
+
+    render() {
         let icon;
 
-        if (this.state.searching){
-            icon = <MdArrowBack className="icon" />
-        }else{
-            icon = <MdAlbum className="icon"/>
+        if (this.state.searching) {
+            icon = <MdArrowBack className="search_icon" onClick={event => this.click_icon(event)}/>;
+        } else {
+            icon = <MdSearch className="search_icon"/>;
+            if (this.inputRef.current) {
+                this.inputRef.current.value = '';
+            }
         }
 
-        return(
-            <div>
+        return (
+            <div className={'search_layout'}>
+                {icon}
                 <form className="form-wrapper">
-                    <div className={"image"}>{ icon }</div>
-                    <input className = "input-field"
-                    onKeyPress={event => this.handleKeyPress(event)}
-                    type = "text"
-                    placeholder = "Add Tracks"
-                    onChange = {event => this.handleOnChange(event)}
+                    <input className="input-field" ref={this.inputRef}
+                           type="text"
+                           placeholder="Add Tracks"
+                           onChange={event => this.handleOnChange(event)}
                     />
                 </form>
             </div>

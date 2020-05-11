@@ -29,6 +29,12 @@ html {
     place-items: center;
 }
 
+.login {
+    margin-top: 10%;
+    height: 110px;
+    display: grid;
+    place-items: center;
+}
 .joining {
     margin-top: 10%;
     height: 110px;

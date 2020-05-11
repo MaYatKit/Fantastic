@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter as NavLink } from 'react-router-dom';
 
 
 import './SideBarItem.css';
@@ -14,7 +15,7 @@ export default class SideBarItem extends React.Component {
 
 
     itemClick(item) {
-        this.props.itemOnclick(item);
+        // this.props.itemOnclick(item);
     }
 
 
@@ -27,13 +28,13 @@ export default class SideBarItem extends React.Component {
         const Icon = this.props.icon;
 
         return (
-            <div className={"layout " + (this.props.selected ? 'layout_selected' : '')} onClick={() => this.itemClick(this.props.item)}>
+            <NavLink to={this.props.to} exact className="layout" activeClassName="select">
                 <Icon className={this.props.selected ? 'icon_selected' : 'icon'}> </Icon>
                 <div className="item">
-                    <span className={this.props.selected ? 'text_selected' : 'text'}>
+                    <span className={'text'}>
                         {this.props.item}
                     </span>
                 </div>
-            </div>);
+            </NavLink>);
     }
 }

@@ -15,36 +15,57 @@ import {
 import SideBarItem from './SideBarItem';
 
 
-let items = [{
+let host_items = [{
     item: 'Queue',
     icon: MdQueueMusic,
-    selected: true
+    to: '/host'
 }, {
     item: 'Settings',
     icon: MdSettings,
-    selected: false
+    to: '/host/setting'
 }, {
     item: 'Share',
     icon: MdShare,
-    selected: false
+    to: '/host/share'
 }, {
     item: 'TV mode',
     icon: MdTv,
-    selected: false
+    to: '/host/tv'
 }, {
     item: 'Homepage',
     icon: MdHome,
-    selected: false
+    to: '/'
 }, {
     item: 'Exit Party',
     icon: MdHighlightOff,
-    selected: false
+    to: '/'
 }, {
     item: 'Logout',
     icon: MdExitToApp,
-    selected: false
+    to: '/host/logout'
 }];
 
+let guest_items = [{
+    item: 'Queue',
+    icon: MdQueueMusic,
+    to: '/guest'
+}, {
+    item: 'Settings',
+    icon: MdSettings,
+    to: '/guest/setting'
+}, {
+    item: 'Share',
+    icon: MdShare,
+    to: '/guest/share'
+}, {
+    item: 'Homepage',
+    icon: MdHome,
+    to: '/'
+}, {
+    item: 'Exit Party',
+    icon: MdHighlightOff,
+    to: '/'
+}];
 
 export default class SideBar extends React.Component {
 
@@ -52,27 +73,27 @@ export default class SideBar extends React.Component {
         super(props);
         this.itemOnclick = this.itemOnclick.bind(this);
         this.state = {
-            data: items
         };
     }
 
 
     itemOnclick(item, changeStyle) {
-        items.map((entry, index) => {
+        // items.map((entry, index) => {
 
-            entry.selected = entry.item === item;
-        });
-        this.setState({data:items});
+        //     entry.selected = entry.item === item;
+        // });
+        // this.setState({data:items});
 
         // this.render();
     }
 
     render() {
+        let items = this.props.isGuest ? guest_items : host_items
         return (
             <div className={'side_bar'}>
 
                 <SideBarIcon className={'side_bar_icon'}
-                             username={this.props.username}> </SideBarIcon>
+                             userName={this.props.userName} roomId = {this.props.roomId}> </SideBarIcon>
 
 
                 <div className={'side_bar_item_list'}>
@@ -83,7 +104,8 @@ export default class SideBar extends React.Component {
                                 item={entry.item}
                                 icon={entry.icon}
                                 index={index}
-                                selected={entry.selected}
+                                key={index}
+                                to={entry.to}
                                 itemOnclick={this.itemOnclick}>
                             </SideBarItem>);
                         }
