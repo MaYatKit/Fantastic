@@ -64,3 +64,20 @@ html {
 .arrow:active {
     transform: scale(0.99);
 }
+
+@keyframes shake {
+    0%   {left:0px; top:0px;}
+    25%  {left:10px; top:0px;}
+    50%  {left:0px; top:0px;}
+    75%  {left:10px; top:0px;}
+    100% {left:0px; top:0px;}
+}
+
+.error {
+    font-size: 1rem;
+    color:#ef5350;
+    margin-bottom: 5%;
+    position: relative;
+    animation-name: shake;
+    animation-duration: 0.5s;
+}
