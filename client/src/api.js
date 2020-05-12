@@ -112,14 +112,12 @@ function searchItem(searchItem) {
 function uploadPlayList(roomId, playList) {
     // search music by keyword
     // return Promise, The promise return a array of music when resolved
-    console.log("called")
     let url = 'http://localhost:1000/party/';
 
     let data = {
         id: roomId,
         tracks: playList
     };
-    console.log(JSON.stringify(data))
 
     fetch(url, {
         method: 'POST',

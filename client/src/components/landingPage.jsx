@@ -75,7 +75,6 @@ class LandingPage extends React.Component{
     }
 
     checkGuestCode(){
-        console.log("input" + this.state.input)
         api.checkPartyCode(this.state.input)
         .then(response =>{
             if (response["status"] == 404){
@@ -93,40 +92,14 @@ class LandingPage extends React.Component{
     }
 
     testPlaylistUpload(){
-        let data = [
-            {
-              "votes": 1,
-              "_id": "5e9f68fe0aab73b103e78d85",
-              "name": "tester",
-              "uri": "spotify:track:0GjEhVFGZW8afUYGChu3Rr",
-              "artist": "ABBA",
-              "album": "Arrival",
-              "albumIcon": {
-                "small": "https://i.scdn.co/image/ab67616d0000485170f7a1b35d5165c85b95a0e0",
-                "large": "https://i.scdn.co/image/ab67616d0000b27370f7a1b35d5165c85b95a0e0"
-              }
-            },
-            {
-              "votes": 0,
-              "_id": "5e9f68fe0aab73b103e78d86",
-              "name": "tester",
-              "uri": "spotify:track:3oEkrIfXfSh9zGnE7eBzSV",
-              "artist": "ABBA",
-              "album": "Super Trouper",
-              "albumIcon": {
-                "small": "https://i.scdn.co/image/ab67616d000048514d08fc99eff4ed52dfce91fa",
-                "large": "https://i.scdn.co/image/ab67616d0000b2734d08fc99eff4ed52dfce91fa"
-              }
-            }]
-
         api.uploadPlayList("12345", data)
     }
 
     handleChange(event){
-            this.setState({
-                input: event.target.value,
-                incorrectCode: false
-            })
+        this.setState({
+            input: event.target.value,
+            incorrectCode: false
+        })
     }
 
     render() {
