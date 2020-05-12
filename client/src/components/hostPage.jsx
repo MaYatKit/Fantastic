@@ -47,7 +47,7 @@ class ConnectHostPage extends React.Component {
 
         let prevUri = this.props.activeMusicUri
         let nextUri = this.props.musicInfo[1].uri
-        let newMusicInfo = [].concat(this.props.musicInfo)
+        let newMusicInfo = this.props.musicInfo
 
         this.playControl(nextUri, 'PLAYING')
         .then(response => {
@@ -59,7 +59,7 @@ class ConnectHostPage extends React.Component {
 
     removeAMusic(uri){
         // remove a music that is not being played
-        let newMusicInfo = [].concat(this.props.musicInfo);
+        let newMusicInfo = this.props.musicInfo;
         let i = newMusicInfo.findIndex(e => e.uri === uri);
         newMusicInfo.splice(i, 1);
         this.props.dispatch( updatePlaylist(newMusicInfo) );
@@ -83,13 +83,13 @@ class ConnectHostPage extends React.Component {
         }
     }
 
-    componentDidMount() {
-        api.isLogin()
-            .catch(obj => {
-                alert('you need log in to see this page');
-                api.login();
-            });
-    }
+    // componentDidMount() {
+    //     api.isLogin()
+    //         .catch(obj => {
+    //             alert('you need log in to see this page');
+    //             api.login();
+    //         });
+    // }
 
 
     selectSearchItem(item) {
@@ -211,7 +211,7 @@ const mapStateToProps = (state, ownProps) => {
         roomId: state.roomId,
 
         // existing playlist
-        musicInfo: [].concat(state.musicInfo),
+        musicInfo: state.musicInfo,
         activeMusicUri: state.activeMusicUri
     };
 };
