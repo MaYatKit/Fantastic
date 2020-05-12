@@ -55,7 +55,7 @@ export default class SearchBar extends React.Component {
                     <input className="input-field" ref={this.inputRef}
                            type="text"
                            placeholder="Add Tracks"
-                           onChange={event => this.handleOnChange(event)}
+                           onChange={event => this.handleChange(event)}
                     />
                 </form>
             </div>

@@ -112,14 +112,14 @@ function searchItem(searchItem) {
 function uploadPlayList(roomId, playList) {
     // search music by keyword
     // return Promise, The promise return a array of music when resolved
-
+    console.log("called")
     let url = 'http://localhost:1000/party/';
 
     let data = {
         id: roomId,
         tracks: playList
     };
-
+    console.log(JSON.stringify(data))
 
     fetch(url, {
         method: 'POST',
@@ -138,11 +138,24 @@ function uploadPlayList(roomId, playList) {
         });
 }
 
+function checkPartyCode(partyCode){
+    let url = prefix + "/party/"+ partyCode
+
+    return fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type' : 'application/json;charset=utf-8'
+        }
+    })
+}
 
 export default {
     login,
     isLogin,
     createParty,
     searchItem,
-    uploadPlayList
+    uploadPlayList,
+    checkPartyCode
 }

@@ -8,11 +8,15 @@ import logo from "./../image/logo.png"
 import { refreshHostPage } from '../redux/actions'
 import { connect } from 'react-redux'
 
+import { Link, BrowserRouter} from "react-router-dom";
+
 class LandingPage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
             pagePosition: 1,
+            input:"",
+            incorrectCode: false
         };
         this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
@@ -48,9 +52,6 @@ class LandingPage extends React.Component{
 
     login(){
         api.login()
-
-
-
         // fetch('http://localhost:1000/auth/spotify', {
         //     method: 'GET',
         //     mode: 'no-cors',
@@ -71,6 +72,61 @@ class LandingPage extends React.Component{
         // }).catch(function (e) {
         //     console.log("Login failed: " + e);
         // });
+    }
+
+    checkGuestCode(){
+        console.log("input" + this.state.input)
+        api.checkPartyCode(this.state.input)
+        .then(response =>{
+            if (response["status"] == 404){
+                console.log("login failed!")
+                this.setState({
+                    incorrectCode: true
+                })
+            }else{
+                this.setState({
+                    incorrectCode: false
+                })
+                
+            }
+        })
+    }
+
+    testPlaylistUpload(){
+        let data = [
+            {
+              "votes": 1,
+              "_id": "5e9f68fe0aab73b103e78d85",
+              "name": "tester",
+              "uri": "spotify:track:0GjEhVFGZW8afUYGChu3Rr",
+              "artist": "ABBA",
+              "album": "Arrival",
+              "albumIcon": {
+                "small": "https://i.scdn.co/image/ab67616d0000485170f7a1b35d5165c85b95a0e0",
+                "large": "https://i.scdn.co/image/ab67616d0000b27370f7a1b35d5165c85b95a0e0"
+              }
+            },
+            {
+              "votes": 0,
+              "_id": "5e9f68fe0aab73b103e78d86",
+              "name": "tester",
+              "uri": "spotify:track:3oEkrIfXfSh9zGnE7eBzSV",
+              "artist": "ABBA",
+              "album": "Super Trouper",
+              "albumIcon": {
+                "small": "https://i.scdn.co/image/ab67616d000048514d08fc99eff4ed52dfce91fa",
+                "large": "https://i.scdn.co/image/ab67616d0000b2734d08fc99eff4ed52dfce91fa"
+              }
+            }]
+
+        api.uploadPlayList("12345", data)
+    }
+
+    handleChange(event){
+            this.setState({
+                input: event.target.value,
+                incorrectCode: false
+            })
     }
 
     render() {
@@ -100,11 +156,12 @@ class LandingPage extends React.Component{
                     <div className={"landingPage"}>
                         <img className={"logo"} src={logo} alt={"logo"} />
                         <div className={"joining"}>
+                            { this.state.incorrectCode && <span className={"error"}> Couldn't find party, please try again.</span> }
                             <div className={"inputArea"}>
                                 <button className={"arrow"} onClick={() => this.changePagePosition(0)}><FaArrowLeft/></button>
-                                <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} />
+                                <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} onChange={event => this.handleChange(event)}/>
                             </div>
-                            <Button name={"JOIN"} type={"main"} />
+                            <button className={"button animateIn main"} type={"main"} onClick={() => this.checkGuestCode()}>JOIN</button>
                         </div>
                     </div>
                 );

@@ -3,6 +3,7 @@ const router = express.Router()
 const Host = require("../models/host")
 
 router.get("/", async (req,res,next)=>{
+    console.log("cookies " + req.cookies.user)
     try{
         let partyDetails = await Host.aggregate([
             { "$match": { id: req.cookies.user} },
