@@ -2,7 +2,7 @@ import playBack from '../playBack'
 
 // Define action types here
 
-
+const READ_LOCAL_LIST = "READ_LOCAL_LIST";
 const REFREASH_HOSTPAGE = "REFREASH_HOSTPAGE";
 const REFREASH_PLAYLIST = "REFREASH_PLAYLIST";
 const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
@@ -18,7 +18,13 @@ let refreshHostPage = (data) => {
     }
 };
 
-// define action creators here
+let readLocalList = () => {
+    return{
+        type: READ_LOCAL_LIST,
+        data: undefined
+    }
+}
+
 let refreshPlaylist = (data) => {
     return {
         type: REFREASH_PLAYLIST,
@@ -51,24 +57,29 @@ let updateActiveMusic = (uri) => {
 
 // ---------------async actions-----------------
 
-function play(uri){
+function play(event){
+    // {
+    //     nextState: 'PAUSE' or 'PLAYING'
+    //     uri,
+    //     resume: boolean
+    // }
     return function(dispatch, getState){
         // getState(): return a object containing the redux state
         let s = getState()
         let fetchFn, dispatchFn, dArg;
 
         // play a new one or resume 
-        if( uri !== s.activeMusicUri ){
-            fetchFn = playBack.play
-            dispatchFn = updateActiveMusic
-            dArg = uri
-        }else{
+        if( event.resume ){
             fetchFn = playBack.resume
             dispatchFn = updateActiveMusicState
-            dArg = 'PLAYING'
+            dArg = event.nextState
+        }else{
+            fetchFn = playBack.play
+            dispatchFn = updateActiveMusic
+            dArg = event.uri
         }
 
-        return fetchFn(uri)
+        return fetchFn(event.uri)
         .then(response => {
                 console.log('Player response: ' + response.url + ', status = ' + response.status);
                 if (response.status === 204) {
@@ -98,6 +109,7 @@ function pause(){
 
 
 export {updatePlaylist, 
+        readLocalList,
         refreshHostPage, 
         refreshPlaylist, 
         updateActiveMusicState, 
