@@ -22,10 +22,10 @@ import thunk from 'redux-thunk';
 
 const initState = {
         activeMusicUri: undefined,
-        activeMusicState: 'PAUSE',    // 'PAUSE' or 'PLAYING'
-        roomId : sessionStorage.getItem('roomId'),
-        userName : sessionStorage.getItem('userName'),
-        musicInfo : sessionStorage.getItem('musicInfo')!==undefined?JSON.parse(sessionStorage.getItem('musicInfo')):[],
+        activeMusicState: 'STOP',    // 'STOP', 'PAUSE' or 'PLAYING'
+        roomId : 0,
+        userName : '',
+        musicInfo : []
     };
 
 
@@ -58,6 +58,18 @@ function appReducer(prevState = initState, action) {
             sessionStorage.setItem('musicInfo',JSON.stringify(action.data));
             state.musicInfo = action.data;
             break;
+
+        case 'READ_LOCAL_LIST':
+            let local = {
+                activeMusicUri: undefined,
+                activeMusicState: 'STOP',    // 'STOP', 'PAUSE' or 'PLAYING'
+                roomId : sessionStorage.getItem('roomId'),
+                userName : sessionStorage.getItem('userName'),
+                musicInfo : sessionStorage.getItem('musicInfo')!==undefined?JSON.parse(sessionStorage.getItem('musicInfo')):[],
+            };
+            local.musicInfo = local.musicInfo.sort(e => -e.votes)
+            local.activeMusicUri = local.musicInfo.length > 0 ? local.musicInfo[0].uri : undefined
+            return local
 
         case 'UPDATE_PLAYLIST':
             let musicInfo = action.data.sort(e => -e.votes)

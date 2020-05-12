@@ -2,8 +2,9 @@ import React from 'react';
 import "./MusicLi.css"
 import PlayBtn from './PlayBtn'
 import NextRemoveBtn from './NextRemoveBtn'
+import { connect } from 'react-redux';
 
-export default class MusicLi extends React.Component {
+class MusicLi extends React.Component {
 
     constructor(props) {
         super(props);
@@ -15,9 +16,29 @@ export default class MusicLi extends React.Component {
         return text;
     }
 
-    playControlMli(nextState){
-        // nextState: 'PAUSE' or 'PLAYING'
-        this.props.playControl(this.props.uri, nextState)
+    IsActive(){
+        return this.props.uri === this.props.activeMusicUri
+    }
+
+    playControlMli(info){
+        // stop/pause -> playing
+        // playing -> pause
+
+        if(!this.IsActive())
+            // control button only appear in the topmost music
+            return
+        let nextState, resume
+        let uri = this.props.uri
+        let s = this.props.activeMusicState
+
+        if(s === 'PAUSE' || s === 'STOP')
+            nextState = 'PLAYING'
+        else if(s === 'PLAYING')
+            nextState = 'PAUSE'
+
+        resume = (s !== 'STOP')
+
+        this.props.playControl({uri, nextState, resume})
     }
 
     nextOrRemove(type){
@@ -51,7 +72,16 @@ export default class MusicLi extends React.Component {
             </div>
 
             <div className="control">
-                <PlayBtn playControl={this.playControlMli.bind(this)}></PlayBtn>
+                
+
+                {
+                    this.props.uri === this.props.activeMusicUri ?
+                    <PlayBtn playControl={this.playControlMli.bind(this)}
+                        playState={this.props.activeMusicState}>                           
+                    </PlayBtn> 
+                    : ''
+                }
+
                 {
                     this.props.uri === this.props.activeMusicUri ?
                     <NextRemoveBtn type={'NEXT'} 
@@ -66,3 +96,14 @@ export default class MusicLi extends React.Component {
         );
     }   
 }
+
+const mapStateToProps = (state, ownProps) => {
+
+    return {
+        musicInfo: state.musicInfo,
+        activeMusicUri: state.activeMusicUri,
+        activeMusicState: state.activeMusicState
+    };
+};
+
+export default connect(mapStateToProps, null)(MusicLi)

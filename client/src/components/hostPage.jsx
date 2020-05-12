@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import api from '../api';
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
-import {updatePlaylist, refreshPlaylist, play, pause} from '../redux/actions';
+import {updatePlaylist, refreshPlaylist, readLocalList, play, pause, updateActiveMusic, updateActiveMusicState} from '../redux/actions';
 
 
 class ConnectHostPage extends React.Component {
@@ -28,14 +28,18 @@ class ConnectHostPage extends React.Component {
 
 
 
-    playControl(uri, nextState){
-        // nextState: 'PAUSE' or 'PLAYING'
-        if (nextState === 'PAUSE'){
-            return this.props.dispatch( pause(uri) )
+    playControl(event){
+        // {
+        //     nextState: 'PAUSE' or 'PLAYING'
+        //     uri,
+        //     resume: boolean
+        // }
+        if (event.nextState === 'PAUSE'){
+            return this.props.dispatch( pause(event.uri) )
         }
 
-        else if(nextState === 'PLAYING'){
-            return this.props.dispatch( play(uri) )
+        else if(event.nextState === 'PLAYING'){
+            return this.props.dispatch( play(event) )
         }
     }
 
@@ -49,11 +53,16 @@ class ConnectHostPage extends React.Component {
         let nextUri = this.props.musicInfo[1].uri
         let newMusicInfo = this.props.musicInfo
 
-        this.playControl(nextUri, 'PLAYING')
+        this.playControl({
+            uri: nextUri,
+            nextState: 'PLAYING',
+            resume: false
+        })
         .then(response => {
             let oldIndex = newMusicInfo.findIndex(e => e.uri === prevUri)
             newMusicInfo.splice(oldIndex, 1)
             this.props.dispatch( updatePlaylist(newMusicInfo) )
+            this.props.dispatch( updateActiveMusicState('PLAYING') )
         })
     }
 
@@ -83,13 +92,15 @@ class ConnectHostPage extends React.Component {
         }
     }
 
-    // componentDidMount() {
-    //     api.isLogin()
-    //         .catch(obj => {
-    //             alert('you need log in to see this page');
-    //             api.login();
-    //         });
-    // }
+    componentDidMount() {
+        // api.isLogin()
+        //     .catch(obj => {
+        //         alert('you need log in to see this page');
+        //         api.login();
+        //     });
+
+        this.props.dispatch( readLocalList() )
+    }
 
 
     selectSearchItem(item) {

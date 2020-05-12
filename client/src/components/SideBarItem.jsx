@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, NavLink } from 'react-router-dom';
 
 
 import './SideBarItem.css';
@@ -28,7 +28,7 @@ export default class SideBarItem extends React.Component {
         const Icon = this.props.icon;
 
         return (
-            <NavLink to={this.props.to} exact className="layout" activeClassName="select">
+            <NavLink to={this.props.to} exact className={"layout"} activeClassName="select">
                 <Icon className={this.props.selected ? 'icon_selected' : 'icon'}> </Icon>
                 <div className="item">
                     <span className={'text'}>

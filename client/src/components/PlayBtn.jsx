@@ -15,28 +15,27 @@ export default class MusicLi extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            play: "PAUSE"   // 'PAUSE' or 'PLAYING'
+            // play: "PAUSE"   // 'PAUSE' or 'PLAYING'
         };
     }
 
     handleClick(){
-        let nextState;
-        if(this.state.play === 'PAUSE')
-            nextState = 'PLAYING'
-        else if(this.state.play === 'PLAYING')
-            nextState = 'PAUSE'
+        // let nextState;
+        // let resume = this.props.playState !== 'STOP'
+        // if(this.props.playState === 'PAUSE' || this.props.playState === 'STOP')
+        //     nextState = 'PLAYING'
+        // else if(this.props.playState === 'PLAYING')
+        //     nextState = 'PAUSE'
 
-        this.props.playControl(nextState)
-
-        this.setState({play: nextState})
-        
+        // this.props.playControl({nextState, resume})
+        this.props.playControl()
 
     }
 
     iconFn(){
-        if(this.state.play === "PLAYING")
+        if(this.props.playState === "PLAYING")
             return (<MdPause className="icon"></MdPause>)
-        else if(this.state.play === "PAUSE")
+        else if(this.props.playState === "PAUSE" || this.props.playState === 'STOP')
             return (<MdPlayArrow className="icon"></MdPlayArrow>)
     }
 
