@@ -1,6 +1,7 @@
 import React from 'react';
 import "./MusicLi.css"
 import PlayBtn from './PlayBtn'
+import LikeBtn from './LikeBtn'
 import NextRemoveBtn from './NextRemoveBtn'
 import { connect } from 'react-redux';
 
@@ -14,6 +15,10 @@ class MusicLi extends React.Component {
     musicStateText(props){
         let text = props.votes === 0 ? "Not in Queue" : `${props.votes} votes`;
         return text;
+    }
+
+    clickLike(){
+        console.log("you clicked like button")
     }
 
     IsActive(){
@@ -75,7 +80,7 @@ class MusicLi extends React.Component {
                 
 
                 {
-                    this.props.uri === this.props.activeMusicUri ?
+                    this.IsActive() ?
                     <PlayBtn playControl={this.playControlMli.bind(this)}
                         playState={this.props.activeMusicState}>                           
                     </PlayBtn> 
@@ -83,13 +88,22 @@ class MusicLi extends React.Component {
                 }
 
                 {
-                    this.props.uri === this.props.activeMusicUri ?
+                    this.IsActive() ?
                     <NextRemoveBtn type={'NEXT'} 
                         parentHandler={this.nextOrRemove.bind(this)}>
                     </NextRemoveBtn> :
                     <NextRemoveBtn type={'REMOVE'}
                         parentHandler={this.nextOrRemove.bind(this)}>
                     </NextRemoveBtn>
+                }
+
+                {
+                    !this.IsActive() ?
+                    <LikeBtn votes={this.props.votes}
+                        liked={false}
+                        clickLike={this.clickLike.bind(this)}>
+                    </LikeBtn>
+                    : ''
                 }
             </div>
         </div>

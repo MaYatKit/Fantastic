@@ -136,6 +136,18 @@ function uploadPlayList(roomId, playList) {
         });
 }
 
+function getPartyInfo(partyId){
+    // /guest ?
+    let url = `${prefix}/auth/guest?id=${encodeURIComponent(partyId)}`
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+    })
+}
+
 function checkPartyCode(partyCode){
     let url = prefix + "/party/"+ partyCode
 
@@ -155,5 +167,6 @@ export default {
     createParty,
     searchItem,
     uploadPlayList,
+    getPartyInfo,
     checkPartyCode
 }

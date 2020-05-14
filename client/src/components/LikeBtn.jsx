@@ -1,55 +1,39 @@
 import React from 'react';
-
 import style from "./MliBtns.css"
-
 // import icons
-
 import {FiPlus} from "react-icons/fi"
 import {MdFavorite} from "react-icons/md"
 import {MdFavoriteBorder} from "react-icons/md"
 
-// all possible states
-// const s = ["NOT_IN_QUEUE", "LIKED", "NOT_LIKE"];
 
-export default class MusicLi extends React.Component {
+export default class LikeBtn extends React.Component {
 
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      play: "NOT_IN_QUEUE"
-    };
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-    // https://stackoverflow.com/questions/33973648/react-this-is-undefined-inside-a-component-function
-    this.clickHdl = this.clickHdl.bind(this);
-  }
+    clickHdl(event){
+        this.props.clickLike()
+    }
 
-  clickHdl(event){
-    if(this.state.play == "NOT_IN_QUEUE")
-      return this.setState({
-        play: "LIKED"
-      })
+    iconFn(){
+        if(!this.props.liked && this.props.votes === 0)
+            return (<FiPlus className="icon"></FiPlus>)
 
-    let next = this.state.play === "LIKED" ? "NOT_LIKE" : "LIKED";
-    this.setState({
-      play: next
-    })
-  }
+        else if(!this.props.liked && this.props.votes !== 0)
+            return (<MdFavoriteBorder className="icon"></MdFavoriteBorder>)
 
-  iconFn(){
-    if(this.state.play == "NOT_IN_QUEUE")
-      return (<FiPlus className="icon"></FiPlus>)
-    else if (this.state.play == "LIKED")
-      return (<MdFavorite className="icon"></MdFavorite>)
-    else
-      return (<MdFavoriteBorder className="icon"></MdFavoriteBorder>)
-  }
+        else if (this.props.liked)
+            return (<MdFavorite className="icon"></MdFavorite>)
+    }
 
-  render(){
-    return (
-      <div className="likebtn" onClick={this.clickHdl}>
-        { this.iconFn() }
-      </div>
-    );
-  }   
+    render(){
+        return (
+        <div className="likebtn" onClick={this.clickHdl.bind(this)}>
+            { this.iconFn() }
+        </div>
+        );
+    }   
 }
