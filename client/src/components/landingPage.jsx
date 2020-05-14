@@ -69,7 +69,6 @@ class LandingPage extends React.Component{
         })
         .catch(e=> {
             console.log("Create room failed: " + e);
-            this.changePagePosition(3);
         });
     }
 
@@ -87,10 +86,10 @@ class LandingPage extends React.Component{
             return response.json()
         })
         .then(data => {
-            this.props.updatePlaylist(data[0].tracks[0])
+            this.props.updatePlaylist(data['tracks'])
             this.props.updateActiveMusicState('STOP')
 
-            window.location.href = '/host'
+            window.location.href = '/guest?roomId=' + data['room_id'] + "&host_name=" + data['name']
         })
         .catch(console.error.bind(this))
     }
@@ -131,7 +130,7 @@ class LandingPage extends React.Component{
     //             this.setState({
     //                 incorrectCode: false
     //             })
-                
+
     //         }
     //     })
     // }
@@ -146,7 +145,7 @@ class LandingPage extends React.Component{
         if(!this.state.joining && !this.state.displayLogin){
                 content = (
                 <div className={"landing"}>
-                    <button className={`button animateIn main`} 
+                    <button className={`button animateIn main`}
                         onClick={this.create}>
                         CREATE PARTY
                     </button>
@@ -156,25 +155,25 @@ class LandingPage extends React.Component{
                         <span>JOIN PARTY</span>
                     </button>
                 </div>)
-                
+
         }
         else if(this.state.joining && !this.state.displayLogin){
             content = (
             <div className={"joining"}>
                 <div className={"inputArea"}>
 
-                    <button className={"arrow"} 
+                    <button className={"arrow"}
                         onClick={this.changeIntention.bind(this)}>
                         <FaArrowLeft/>
                     </button>
 
-                    <input className={"codeInput"} 
-                        type={"text"} 
-                        placeholder={"ENTER CODE"} 
+                    <input className={"codeInput"}
+                        type={"text"}
+                        placeholder={"ENTER CODE"}
                         onChange={this.inputChange.bind(this)}
                     />
                 </div>
-                <button className={`button animateIn main`} 
+                <button className={`button animateIn main`}
                     onClick={this.joinParty.bind(this)}>
                     JOIN
                 </button>
@@ -183,11 +182,11 @@ class LandingPage extends React.Component{
         else if(this.state.displayLogin){
             content = (
             <div className={"creating"}>
-                <button className={"button animateIn main"} 
-                    onClick={() => this.login()}> 
-                    LOGIN 
+                <button className={"button animateIn main"}
+                    onClick={() => this.login()}>
+                    LOGIN
                 </button>
-                <button className={`button animateIn main`} 
+                <button className={`button animateIn main`}
                     onClick={() => {this.setState({displayLogin: false, joining: true})}}>
                     JOIN PARTY
                 </button>

@@ -5,28 +5,37 @@ import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
 import api from '../api'
+import { readLocalList } from '../redux/actions';
 
 class ConnectGuestPage extends React.Component {
     constructor(props) {
         super(props);
+        this.getParamFromUrl = this.getParamFromUrl.bind(this);
 
+        let param = this.getParamFromUrl();
         this.state = {
             tracks: [],     // store search result
             active: false,
-            userName: this.props.userName,      // should use redux
-            roomId: this.props.roomId,
+            userName: param['host_name'],      // should use redux
+            roomId: param['roomId'],
             musicInfo: this.props.musicInfo
         };
 
         this.GetResult = this.GetResult.bind(this);
-        // this.checkState = this.checkState.bind(this);
-        // this.checkState();
     }
 
-    checkState() {
-        if (this.state.musicInfo === undefined) {
-            // after refresh page, need to query data from sever again
+
+    getParamFromUrl(){
+        let query = window.location.search.split('&');
+        query[0] = query[0].split('?')[1];
+        let param = {};
+        for (let i = 0; i < query.length; i++) {
+            let q = query[i].split('=');
+            if (q.length === 2) {
+                param[q[0]] = q[1].replace("%20", ' ');
+            }
         }
+        return param
     }
 
     GetResult(searchItem) {
@@ -36,7 +45,7 @@ class ConnectGuestPage extends React.Component {
                 console.log("search outcome: ", array)
                 this.setState({
                     tracks: array,
-                    active: true 
+                    active: true
                 });
             })
         } else {
@@ -50,12 +59,14 @@ class ConnectGuestPage extends React.Component {
         //     alert("you need log in to see this page")
         //     api.login();
         // })
+        this.props.dispatch( readLocalList() );
+        this.render();
     }
 
     render() {
         return (
             <div className={'hostPage'}>
-                <SideBar userName={this.state.userName} 
+                <SideBar userName={this.state.userName + '\'s party'}
                     roomId={this.state.roomId}
                     isGuest={true}>
                 </SideBar>
@@ -88,7 +99,7 @@ class ConnectGuestPage extends React.Component {
                             })}
                         </div>
                         <div className={'tracklist'}>
-                            {this.state.musicInfo[0].map((entry, index) => {
+                            {this.props.musicInfo.map((entry, index) => {
                                 return (
                                     <MusicLi name={entry.name}
                                              album={entry.album}
@@ -109,9 +120,6 @@ class ConnectGuestPage extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        userName: state.userName,
-        roomId: state.roomId,
-
         // existing playlist
         musicInfo: state.musicInfo
     };

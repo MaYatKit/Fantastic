@@ -34,14 +34,14 @@ router.get("/:partyid", async (req,res,next)=>{
             if (partyExists){
                 let partyDetails = await Host.aggregate([
                     { "$match": { "party.id": req.params.partyid} },
-                    { "$group": {_id: null,
-                        id: {"$first": "$party.id"},
-                        name: {"$first": "$name"},
-                        tracks: {"$push": "$party.tracks"}}
+                    { "$group": {_id: "$party.id",
+                            room_id: {"$first": "$party.id"},
+                            name: {"$first": "$name"},
+                            tracks: {"$first": "$party.tracks"}}
                     },
-                    { "$project": {id: 1, tracks: 1 ,name: 1, _id: 0} }
+                    { "$project": {room_id: 1, tracks: 1 ,name: 1, _id: 0} }
                 ])
-                res.status(200).json(partyDetails)
+                res.status(200).json(partyDetails[0])
             }else{
                 res.status(404).json({message: "couldn't find party"})
             }

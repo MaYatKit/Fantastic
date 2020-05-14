@@ -1,13 +1,13 @@
 import oauth from './oauth'
 
 
-let _token = oauth.getToken();
+let _token = "oauth.getToken()";
 let readyToPlay = false;
 var deviceId = null;
 
 
 function insertTag(){
-    
+
     var my_awesome_script = document.createElement('script');
 
     my_awesome_script.setAttribute('src','https://sdk.scdn.co/spotify-player.js');
