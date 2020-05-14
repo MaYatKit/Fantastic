@@ -138,11 +138,23 @@ function uploadPlayList(roomId, playList) {
         });
 }
 
+function getPartyInfo(partyId){
+    let url = `${prefix}/auth/guest?id=${encodeURIComponent(partyId)}`
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+    })
+}
+
 
 export default {
     login,
     isLogin,
     createParty,
     searchItem,
-    uploadPlayList
+    uploadPlayList,
+    getPartyInfo
 }

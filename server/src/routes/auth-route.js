@@ -17,10 +17,10 @@ router.get("/spotify/callback/", passport.authenticate("spotify", {session: fals
 
 router.get("/guest", async (req,res,next)=>{
     try{
-        await Host.findOne({"party.id": req.body.id}).then( async partyExists =>{
+        await Host.findOne({"party.id": req.query.id}).then( async partyExists =>{
             if (partyExists){
                 let partyDetails = await Host.aggregate([
-                    { "$match": { "party.id": req.body.id} },
+                    { "$match": { "party.id": req.query.id} },
                     { "$group": {_id: null,
                         id: {"$first": "$party.id"},
                         name: {"$first": "$name"},

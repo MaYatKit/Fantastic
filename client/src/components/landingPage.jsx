@@ -5,23 +5,37 @@ import api from '../api'
 
 import {FaArrowLeft} from "react-icons/fa";
 import logo from "./../image/logo.png"
-import { refreshHostPage } from '../redux/actions'
+import { refreshHostPage, updatePlaylist, updateActiveMusicState } from '../redux/actions'
 import { connect } from 'react-redux'
 
 class LandingPage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            spotifyLoggedIn: false,
+            joining: false,
+            inputPartyCode: '',
             pagePosition: 1,
         };
-        this.changePagePosition = this.changePagePosition.bind(this);
+        // this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
         this.login = this.login.bind(this);
-        this.create();
     }
 
-    changePagePosition(pos) {
-        this.setState({pagePosition: pos});
+    inputChange(event){
+        this.setState({
+            inputPartyCode: event.target.value
+        })
+    }
+
+    // changePagePosition(pos) {
+    //     this.setState({pagePosition: pos});
+    // }
+
+    changeIntention(){
+        this.setState(
+            { joining: !this.state.joining }
+        )
     }
 
 
@@ -44,6 +58,32 @@ class LandingPage extends React.Component{
             console.log("Create room failed: " + e);
             this.changePagePosition(3);
         });
+    }
+
+    joinParty(){
+        let id = this.state.inputPartyCode.trim()
+        if(id === '')
+            return
+
+        api.getPartyInfo(id)
+        .then(response => {
+            if(response.status !== 200){
+                alert('cannot join')
+                return Promise.reject(response)
+            }
+            return response.json()
+        })
+        .then(data => {
+            this.props.updatePlaylist(data[0].tracks[0])
+            this.props.updateActiveMusicState('STOP')
+
+            window.location.href = '/host'
+        })
+        .catch(console.error.bind(this))
+    }
+
+    getPartyInfo(partyId){
+        api.getPartyInfo(partyId)
     }
 
     login(){
@@ -73,63 +113,113 @@ class LandingPage extends React.Component{
         // });
     }
 
-    render() {
-        switch (this.state.pagePosition) {
-            case 0:
-                return (
-                    <div className={"landingPage"}>
-                        <img className={"logo"} src={logo} alt={"logo"} />
-                        <div className={"landing"}>
-                            <Button name={"CREATE PARTY"} type={"main"} pos={1} changePagePosition={this.changePagePosition} />
-                            <Button name={"JOIN PARTY"} type={"main"} pos={2} changePagePosition={this.changePagePosition} />
-                        </div>
-                    </div>
-                );
-            case 1:
-                return (
-                    <div className={"landingPage"}>
-                        <img className={"logo"} src={logo} alt={"logo"} />
-                        <div className={"creating"}>
-                            <Button name={"AUTHORIZING"} type={"main"} pos={0} disable = {true} changePagePosition={this.changePagePosition}/>
-                            <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
-                        </div>
-                    </div>
-                );
-            case 2:
-                return (
-                    <div className={"landingPage"}>
-                        <img className={"logo"} src={logo} alt={"logo"} />
-                        <div className={"joining"}>
-                            <div className={"inputArea"}>
-                                <button className={"arrow"} onClick={() => this.changePagePosition(0)}><FaArrowLeft/></button>
-                                <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} />
-                            </div>
-                            <Button name={"JOIN"} type={"main"} />
-                        </div>
-                    </div>
-                );
-            case 3:
-                return (
-                    <div className={"landingPage"}>
-                        <img className={"logo"} src={logo} alt={"logo"} />
-                        <div className={"joining"}>
-                            <div className={"login"}>
-                                <button className={"button animateIn main"} type={"main"} onClick={() => this.login()}> LOGIN </button>
-                                <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
-                            </div>
-                        </div>
-                    </div>
-                );
-            default:
-                break;
+    render(){
+        let content;
+        if(!this.state.joining){
+                content = (
+                <div className={"landing"}>
+                    <button className={`button animateIn main`} 
+                        onChange={this.create.bind(this)}>
+                        CREATE PARTY
+                    </button>
+
+                    <button className={`button main`}
+                        onClick={this.changeIntention.bind(this)}>
+                        <span>JOIN PARTY</span>
+                    </button>
+                </div>)
+                
         }
+        else if(this.state.joining){
+            content = (
+            <div className={"joining"}>
+                <div className={"inputArea"}>
+
+                    <button className={"arrow"} 
+                        onClick={this.changeIntention.bind(this)}>
+                        <FaArrowLeft/>
+                    </button>
+
+                    <input className={"codeInput"} 
+                        type={"text"} 
+                        placeholder={"ENTER CODE"} 
+                        onChange={this.inputChange.bind(this)}
+                    />
+                </div>
+                <button className={`button animateIn main`} 
+                    onClick={this.joinParty.bind(this)}>
+                    JOIN
+                </button>
+            </div>)
+        }
+
+        return (
+            <div className={"landingPage"}>
+                <img className={"logo"} src={logo} alt={"logo"} />
+                {content}
+            </div>
+        )
     }
+
+    // render2() {
+    //     switch (this.state.pagePosition) {
+    //         case 0:
+    //             return (
+    //                 <div className={"landingPage"}>
+    //                     <img className={"logo"} src={logo} alt={"logo"} />
+    //                     <div className={"landing"}>
+    //                         <Button name={"CREATE PARTY"} type={"main"} pos={1} changePagePosition={this.changePagePosition} />
+    //                         <Button name={"JOIN PARTY"} type={"main"} pos={2} changePagePosition={this.changePagePosition} />
+    //                     </div>
+    //                 </div>
+    //             );
+    //         case 1:
+    //             return (
+    //                 <div className={"landingPage"}>
+    //                     <img className={"logo"} src={logo} alt={"logo"} />
+    //                     <div className={"creating"}>
+    //                         <Button name={"AUTHORIZING"} type={"main"} pos={0} disable = {true} changePagePosition={this.changePagePosition}/>
+    //                         <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
+    //                     </div>
+    //                 </div>
+    //             );
+    //         case 2:
+    //             return (
+    //                 <div className={"landingPage"}>
+    //                     <img className={"logo"} src={logo} alt={"logo"} />
+    //                     <div className={"joining"}>
+    //                         <div className={"inputArea"}>
+    //                             <button className={"arrow"} onClick={() => this.changePagePosition(0)}><FaArrowLeft/></button>
+    //                             <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} />
+    //                         </div>
+    //                         <Button name={"JOIN"} type={"main"} />
+    //                     </div>
+    //                 </div>
+    //             );
+    //         case 3:
+    //             return (
+    //                 <div className={"landingPage"}>
+    //                     <img className={"logo"} src={logo} alt={"logo"} />
+    //                     <div className={"joining"}>
+    //                         <div className={"login"}>
+    //                             <button className={"button animateIn main"} type={"main"} onClick={() => this.login()}> LOGIN </button>
+    //                             <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             );
+    //         default:
+    //             break;
+    //     }
+    // }
 }
 
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshHostPage: data => dispatch(refreshHostPage(data))
+        refreshHostPage: data => dispatch(refreshHostPage(data)),
+        updatePlaylist: data => dispatch( updatePlaylist(data) ),
+        updateActiveMusicState: data => dispatch( updateActiveMusicState(data) ),
     }
 };
 

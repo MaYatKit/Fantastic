@@ -66,13 +66,14 @@ function appReducer(prevState = initState, action) {
                 activeMusicState: 'STOP',    // 'STOP', 'PAUSE' or 'PLAYING'
                 roomId : sessionStorage.getItem('roomId'),
                 userName : sessionStorage.getItem('userName'),
-                musicInfo : sessionStorage.getItem('musicInfo')!==undefined?JSON.parse(sessionStorage.getItem('musicInfo')):[],
+                musicInfo : sessionStorage.getItem('musicInfo')!==null?JSON.parse(sessionStorage.getItem('musicInfo')):[],
             };
             local.musicInfo = local.musicInfo.sort(e => -e.votes)
             local.activeMusicUri = local.musicInfo.length > 0 ? local.musicInfo[0].uri : undefined
             return local
 
         case 'UPDATE_PLAYLIST':
+            // expected input: Object[]
             let musicInfo = action.data.sort(e => -e.votes)
             Object.assign(newS, {
                 musicInfo: musicInfo,

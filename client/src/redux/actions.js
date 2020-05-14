@@ -41,7 +41,7 @@ let updatePlaylist = (data) => {
 };
 
 let updateActiveMusicState = (s) => {
-    // s: 'PAUSE' or 'PLAYING'
+    // s: 'PAUSE' or 'PLAYING' or 'STOP'
     return {
         type: UPDATE_ACTIVE_MUSIC_STATE,
         data: s
