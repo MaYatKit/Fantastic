@@ -29,7 +29,6 @@ const initState = {
     };
 
 
-
 function appReducer(prevState = initState, action) {
     if (typeof prevState === 'undefined') {
         return Object.assign({}, initState);

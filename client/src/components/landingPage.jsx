@@ -8,6 +8,8 @@ import logo from "./../image/logo.png"
 import { refreshHostPage, updatePlaylist, updateActiveMusicState } from '../redux/actions'
 import { connect } from 'react-redux'
 
+import { Link, BrowserRouter} from "react-router-dom";
+
 class LandingPage extends React.Component{
     constructor(props) {
         super(props);
@@ -16,7 +18,8 @@ class LandingPage extends React.Component{
             joining: false,
             displayLogin: false,
             inputPartyCode: '',
-            pagePosition: 1,
+            // pagePosition: 1,
+            incorrectCode: false
         };
         // this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
@@ -25,7 +28,8 @@ class LandingPage extends React.Component{
 
     inputChange(event){
         this.setState({
-            inputPartyCode: event.target.value
+            inputPartyCode: event.target.value,
+            incorrectCode: false
         })
     }
 
@@ -74,7 +78,7 @@ class LandingPage extends React.Component{
         if(id === '')
             return
 
-        api.getPartyInfo(id)
+        api.checkPartyCode(id)
         .then(response => {
             if(response.status !== 200){
                 alert('cannot join')
@@ -91,15 +95,8 @@ class LandingPage extends React.Component{
         .catch(console.error.bind(this))
     }
 
-    getPartyInfo(partyId){
-        api.getPartyInfo(partyId)
-    }
-
     login(){
         api.login()
-
-
-
         // fetch('http://localhost:1000/auth/spotify', {
         //     method: 'GET',
         //     mode: 'no-cors',
@@ -121,6 +118,28 @@ class LandingPage extends React.Component{
         //     console.log("Login failed: " + e);
         // });
     }
+
+    // checkGuestCode(){
+    //     api.checkPartyCode(this.state.input)
+    //     .then(response =>{
+    //         if (response["status"] == 404){
+    //             console.log("login failed!")
+    //             this.setState({
+    //                 incorrectCode: true
+    //             })
+    //         }else{
+    //             this.setState({
+    //                 incorrectCode: false
+    //             })
+                
+    //         }
+    //     })
+    // }
+
+    // testPlaylistUpload(){
+    //     api.uploadPlayList("12345", data)
+    // }
+
 
     render(){
         let content;

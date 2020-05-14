@@ -117,7 +117,6 @@ class ConnectHostPage extends React.Component {
             item.selected = true;
             this.props.musicInfo[this.props.musicInfo.length] = {
                 'votes': 1,
-                '_id': item['id'],
                 'name': item['trackName'],
                 'uri': item['uri'],
                 'artist': item['artistName'],
@@ -215,7 +214,6 @@ class ConnectHostPage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
     api.uploadPlayList(state.roomId, state.musicInfo);
     return {
         userName: state.userName,
