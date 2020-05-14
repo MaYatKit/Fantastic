@@ -14,6 +14,7 @@ class LandingPage extends React.Component{
         this.state = {
             spotifyLoggedIn: false,
             joining: false,
+            displayLogin: false,
             inputPartyCode: '',
             pagePosition: 1,
         };
@@ -46,15 +47,23 @@ class LandingPage extends React.Component{
             // console.log(response.json());
             if (response["status"] === 404){
                 console.log("Authorize fail!!! Need to login!!!");
-                this.changePagePosition(3);
-            }else if (response["status"] === 200){
-                console.log("Authorize successful!!!");
-                response.json().then(json => {
-                        this.props.refreshHostPage(json);
-                        this.changePagePosition(0);
-                });
+                // this.changePagePosition(3);
+                this.setState({ displayLogin: true })
+                return Promise.reject(response)
             }
-        }).catch(e=> {
+            else if (response["status"] === 200){
+                console.log("Authorize successful!!!");
+                return response.json()
+            }else{
+                return Promise.reject(response)
+            }
+        })
+        .then(json => {
+            this.props.refreshHostPage(json);
+            window.location.href = '/host'
+            // this.changePagePosition(0);
+        })
+        .catch(e=> {
             console.log("Create room failed: " + e);
             this.changePagePosition(3);
         });
@@ -115,11 +124,11 @@ class LandingPage extends React.Component{
 
     render(){
         let content;
-        if(!this.state.joining){
+        if(!this.state.joining && !this.state.displayLogin){
                 content = (
                 <div className={"landing"}>
                     <button className={`button animateIn main`} 
-                        onChange={this.create.bind(this)}>
+                        onClick={this.create}>
                         CREATE PARTY
                     </button>
 
@@ -130,7 +139,7 @@ class LandingPage extends React.Component{
                 </div>)
                 
         }
-        else if(this.state.joining){
+        else if(this.state.joining && !this.state.displayLogin){
             content = (
             <div className={"joining"}>
                 <div className={"inputArea"}>
@@ -151,6 +160,20 @@ class LandingPage extends React.Component{
                     JOIN
                 </button>
             </div>)
+        }
+        else if(this.state.displayLogin){
+            content = (
+            <div className={"creating"}>
+                <button className={"button animateIn main"} 
+                    onClick={() => this.login()}> 
+                    LOGIN 
+                </button>
+                <button className={`button animateIn main`} 
+                    onClick={() => {this.setState({displayLogin: false, joining: true})}}>
+                    JOIN PARTY
+                </button>
+            </div>
+            )
         }
 
         return (
