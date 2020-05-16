@@ -8,9 +8,17 @@ import api from '../api';
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
 import {updatePlaylist, refreshPlaylist, readLocalList, play, pause, updateActiveMusic, updateActiveMusicState} from '../redux/actions';
+import io from 'socket.io-client';
+
+
+const socket = io('http://localhost:1002');
+
+let needNotify = false;
 
 
 class ConnectHostPage extends React.Component {
+
+
     constructor(props) {
         super(props);
 
@@ -24,8 +32,15 @@ class ConnectHostPage extends React.Component {
 
         this.GetResult = this.GetResult.bind(this);
         this.searchRef = React.createRef();
+        this.initWs = this.initWs.bind(this);
+        this.initWs();
     }
 
+    initWs(){
+        socket.on('refresh_play_list', (data) => {
+            console.log("refresh_play_list recieved", data);
+        });
+    }
 
 
     playControl(event){
@@ -60,9 +75,10 @@ class ConnectHostPage extends React.Component {
         })
         .then(response => {
             let oldIndex = newMusicInfo.findIndex(e => e.uri === prevUri)
-            newMusicInfo.splice(oldIndex, 1)
-            this.props.dispatch( updatePlaylist(newMusicInfo) )
+            newMusicInfo.splice(oldIndex, 1);
+            this.props.dispatch( updatePlaylist(newMusicInfo) );
             this.props.dispatch( updateActiveMusicState('PLAYING') )
+            needNotify = true;
         })
     }
 
@@ -72,6 +88,7 @@ class ConnectHostPage extends React.Component {
         let i = newMusicInfo.findIndex(e => e.uri === uri);
         newMusicInfo.splice(i, 1);
         this.props.dispatch( updatePlaylist(newMusicInfo) );
+        needNotify = true;
     }
 
     GetResult(searchItem) {
@@ -116,6 +133,7 @@ class ConnectHostPage extends React.Component {
         } else {
             item.selected = true;
             this.props.musicInfo[this.props.musicInfo.length] = {
+                'play_state':0,
                 'votes': 1,
                 'name': item['trackName'],
                 'uri': item['uri'],
@@ -127,7 +145,8 @@ class ConnectHostPage extends React.Component {
                 }
             };
         }
-        this.props.dispatch( updatePlaylist(this.props.musicInfo) )
+        this.props.dispatch( updatePlaylist(this.props.musicInfo) );
+        needNotify = true;
         // this.setState({
         //     tracks: this.state.tracks,
         //     active: true,
@@ -186,7 +205,7 @@ class ConnectHostPage extends React.Component {
                             })}
                         </div>
                         <div className={'tracklist'}>
-                            {
+                            {//todo Need to sort by votes
                                 this.props.musicInfo.length !== 0 ? this.props.musicInfo.map((entry, index) => {
                                     return (
                                         <MusicLi name={entry.name}
@@ -214,7 +233,16 @@ class ConnectHostPage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    api.uploadPlayList(state.roomId, state.musicInfo);
+    api.uploadPlayList(state.roomId, state.musicInfo, ()=>{
+        if (needNotify){
+            socket.emit('change_request', (data) => {
+                // callback
+                console.log("server responded: ", data);
+            });
+            needNotify = false;
+        }
+    });
+
     return {
         userName: state.userName,
         roomId: state.roomId,

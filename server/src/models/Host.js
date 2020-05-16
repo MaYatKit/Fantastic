@@ -9,6 +9,10 @@ var trackSchema = new mongoose.Schema({
     name: String,
     artist: String,
     album: String,
+    play_state: {
+        type: Number,
+        default: 0
+    },
     votes: {
         type: Number,
         default: 0

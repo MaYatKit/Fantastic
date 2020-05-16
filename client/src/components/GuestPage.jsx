@@ -4,8 +4,16 @@ import './hostPage.css';
 import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
-import api from '../api'
-import { readLocalList } from '../redux/actions';
+import api from '../api';
+import { readLocalList, updatePlaylist } from '../redux/actions';
+import io from 'socket.io-client';
+import { MdAdd } from 'react-icons/md';
+import { MdCheck } from 'react-icons/md';
+
+
+const socket = io('http://localhost:1002');
+
+let needNotify = false;
 
 class ConnectGuestPage extends React.Component {
     constructor(props) {
@@ -22,53 +30,111 @@ class ConnectGuestPage extends React.Component {
         };
 
         this.GetResult = this.GetResult.bind(this);
+        this.initWs = this.initWs.bind(this);
+        this.initWs();
     }
 
 
-    getParamFromUrl(){
+    getParamFromUrl() {
+        if (window.location.search === '') {
+            window.location.href = '/';
+        }
         let query = window.location.search.split('&');
         query[0] = query[0].split('?')[1];
         let param = {};
         for (let i = 0; i < query.length; i++) {
             let q = query[i].split('=');
             if (q.length === 2) {
-                param[q[0]] = q[1].replace("%20", ' ');
+                param[q[0]] = q[1].replace('%20', ' ');
             }
         }
-        return param
+        return param;
     }
+
+    initWs() {
+
+        socket.on('refresh_play_list', () => {
+            console.log('Guest: refresh_play_list received!!');
+
+            api.checkPartyCode(this.state.roomId)
+                .then(response => {
+                    if(response.status !== 200){
+                        alert('cannot join');
+                        return Promise.reject(response)
+                    }
+                    return response.json();
+                }).then(data => {
+                this.props.dispatch(updatePlaylist(data['tracks']));
+            }).catch(console.error.bind(this));
+        });
+    }
+
+
+
+
 
     GetResult(searchItem) {
         if (searchItem) {
             api.searchItem(searchItem)
-            .then(array => {
-                console.log("search outcome: ", array)
-                this.setState({
-                    tracks: array,
-                    active: true
+                .then(array => {
+                    console.log('search outcome: ', array);
+                    this.setState({
+                        tracks: array,
+                        active: true
+                    });
                 });
-            })
         } else {
             this.setState({ tracks: [] });
             this.setState({ active: false });
         }
     }
 
-    componentDidMount(){
+    selectSearchItem(item) {
+        if (item.selected) {
+            item.selected = false;
+            for (let i = 0; i < this.props.musicInfo.length; i++) {
+                if (this.props.musicInfo[i]['_id'] === item['id']) {
+                    this.props.musicInfo.splice(i, 1);
+                    break;
+                }
+            }
+
+        } else {
+            item.selected = true;
+            this.props.musicInfo[this.props.musicInfo.length] = {
+                'play_state': 0,
+                'votes': 1,
+                'name': item['trackName'],
+                'uri': item['uri'],
+                'artist': item['artistName'],
+                'album': item['albumName'],
+                'albumIcon': {
+                    'small': item.albumIcon['small'].url,
+                    'large': item.albumIcon['large'].url
+                }
+            };
+        }
+        this.props.dispatch(updatePlaylist(this.props.musicInfo));
+
+        needNotify = true;
+    }
+
+
+    componentDidMount() {
         // api.isLogin().catch(obj => {
         //     alert("you need log in to see this page")
         //     api.login();
         // })
-        this.props.dispatch( readLocalList() );
-        this.render();
+        this.props.dispatch(readLocalList());
+        // this.render();
     }
 
     render() {
         return (
             <div className={'hostPage'}>
                 <SideBar userName={this.state.userName + '\'s party'}
-                    roomId={this.state.roomId}
-                    isGuest={true}>
+                         roomId={this.state.roomId}
+                         isGuest={true}>
                 </SideBar>
                 <div style={{ marginLeft: '260px' }}>
                     <SearchBar GetResult={this.GetResult}/>
@@ -76,7 +142,10 @@ class ConnectGuestPage extends React.Component {
                         <div className={'search-results ' + (this.state.active ? '' : 'hidden')}>
                             {this.state.tracks.map((item, index) => {
                                 return (
-                                    <div className={'result'} key={index}>
+                                    <div className={'result'} key={index} onClick={event => {
+                                        this.selectSearchItem(item);
+                                        event.stopPropagation();
+                                    }}>
                                         <div className="img">
                                             <img src={item.albumArt} alt=""/>
                                         </div>
@@ -94,19 +163,30 @@ class ConnectGuestPage extends React.Component {
                                                 </span>
                                             </div>
                                         </div>
+                                        <div className={'addSong'} onClick={event => {
+                                            this.selectSearchItem(item);
+                                            event.stopPropagation();
+                                        }}>
+                                            {item.selected ?
+                                                <MdCheck className={'icon'}> </MdCheck> :
+                                                <MdAdd className={'icon'}>
+                                                </MdAdd>}
+                                        </div>
+
                                     </div>
                                 );
                             })}
                         </div>
                         <div className={'tracklist'}>
                             {this.props.musicInfo.map((entry, index) => {
-                                return (
+                                return (//todo Need to sort by votes
                                     <MusicLi name={entry.name}
                                              album={entry.album}
                                              votes={entry.votes}
                                              icon={entry.albumIcon['large']}
                                              index={index}
-                                             key={index}>
+                                             key={index}
+                                             isGuest = {true}>
                                     </MusicLi>
                                 );
                             })}
@@ -119,6 +199,15 @@ class ConnectGuestPage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    api.uploadPlayList(state.roomId, state.musicInfo, () => {
+        if (needNotify) {
+            socket.emit('change_request', (data) => {
+                // callback
+                console.log('server responded: ', data);
+            });
+            needNotify = false;
+        }
+    });
     return {
         // existing playlist
         musicInfo: state.musicInfo
@@ -126,5 +215,5 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 
-export const GuestPage = connect(mapStateToProps)(ConnectGuestPage);
+export const GuestPage = connect(mapStateToProps, null)(ConnectGuestPage);
 

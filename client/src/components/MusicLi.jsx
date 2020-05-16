@@ -76,39 +76,60 @@ class MusicLi extends React.Component {
             </div>
             </div>
 
-            <div className="control">
-                
 
-                {
-                    this.IsActive() ?
-                    <PlayBtn playControl={this.playControlMli.bind(this)}
-                        playState={this.props.activeMusicState}>                           
-                    </PlayBtn> 
-                    : ''
-                }
 
-                {
-                    this.IsActive() ?
-                    <NextRemoveBtn type={'NEXT'} 
-                        parentHandler={this.nextOrRemove.bind(this)}>
-                    </NextRemoveBtn> :
-                    <NextRemoveBtn type={'REMOVE'}
-                        parentHandler={this.nextOrRemove.bind(this)}>
-                    </NextRemoveBtn>
-                }
+            {this.props.isGuest ?
+                <div className="control">
+                    {
+                        this.props.activeMusicState === 'PLAYING' ?
+                            <PlayBtn playControl={this.playControlMli.bind(this)}
+                                     playState={this.props.activeMusicState}>
+                            </PlayBtn>
+                            : <LikeBtn votes={this.props.votes}
+                                       liked={false}
+                                       clickLike={this.clickLike.bind(this)}>
+                            </LikeBtn>
+                    }
+                </div>
 
-                {
-                    !this.IsActive() ?
-                    <LikeBtn votes={this.props.votes}
-                        liked={false}
-                        clickLike={this.clickLike.bind(this)}>
-                    </LikeBtn>
-                    : ''
-                }
-            </div>
+                :
+
+                <div className="control">
+                    {
+                        this.IsActive() ?
+                            <PlayBtn playControl={this.playControlMli.bind(this)}
+                                     playState={this.props.activeMusicState}>
+                            </PlayBtn>
+                            : ''
+                    }
+
+                    {
+                        this.IsActive() ?
+                            <NextRemoveBtn type={'NEXT'}
+                                           parentHandler={this.nextOrRemove.bind(this)}>
+                            </NextRemoveBtn> :
+                            <NextRemoveBtn type={'REMOVE'}
+                                           parentHandler={this.nextOrRemove.bind(this)}>
+                            </NextRemoveBtn>
+                    }
+
+                    {
+                        !this.IsActive() ?
+                            <LikeBtn votes={this.props.votes}
+                                     liked={false}
+                                     clickLike={this.clickLike.bind(this)}>
+                            </LikeBtn>
+                            : ''
+                    }
+
+
+                </div>
+
+            }
+
         </div>
         );
-    }   
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {

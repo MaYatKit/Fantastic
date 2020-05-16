@@ -22,8 +22,8 @@ function App() {
                 <HostPage></HostPage>
             </Route>
 
-            <Route path="/guest">
-                <GuestPage></GuestPage>
+            <Route path="/guest" component={GuestPage}>
+                <GuestPage></GuestPage >
             </Route>
 
             <Route path="/">
