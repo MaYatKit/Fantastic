@@ -45,10 +45,9 @@ router.get('/', async (req, res) => {
             let refreshToken = userInfo[0].refreshToken;
             let expireTime = userInfo[0].expireTime;
 
-
-
             if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                 console.log("The access token is expired, request a new one now.");
+                console.log("refreshToken " + refreshToken)
                 accessToken = await re.refreshToken(accessToken, refreshToken);
             }
 
@@ -64,6 +63,7 @@ router.get('/', async (req, res) => {
             if(searchRes.statusCode === 200){
                 let response = searchRes.getBody('utf8');
                 let jsonResult = JSON.parse(response);
+                console.log("search results " + jsonResult)
                 res.status(200).json(jsonResult);
                 res.end();
             }else {

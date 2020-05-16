@@ -107,6 +107,7 @@ class ConnectHostPage extends React.Component {
         let newMusicInfo = this.props.musicInfo;
         let i = newMusicInfo.findIndex(e => e.uri === uri);
         newMusicInfo.splice(i, 1);
+        console.log("spliced")
         this.props.dispatch(updatePlaylist(newMusicInfo));
         needNotify = true;
     }
@@ -157,15 +158,15 @@ class ConnectHostPage extends React.Component {
     }
 
     selectSearchItem(item) {
+        console.log(item.selected)
         if (item.selected) {
             item.selected = false;
             for (let i = 0; i < this.props.musicInfo.length; i++) {
-                if (this.props.musicInfo[i]['_id'] === item['id']) {
+                if (this.props.musicInfo[i]['name'] === item['name']) {
                     this.props.musicInfo.splice(i, 1);
                     break;
                 }
             }
-
         } else {
             item.selected = true;
             this.props.musicInfo[this.props.musicInfo.length] = {
@@ -181,6 +182,7 @@ class ConnectHostPage extends React.Component {
                 }
             };
         }
+        console.log("musicInfo " + JSON.stringify(this.props.musicInfo))
         this.props.dispatch(updatePlaylist(this.props.musicInfo));
         needNotify = true;
         // this.setState({

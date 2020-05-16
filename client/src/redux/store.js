@@ -67,14 +67,15 @@ function appReducer(prevState = initState, action) {
                 userName : sessionStorage.getItem('userName'),
                 musicInfo : sessionStorage.getItem('musicInfo')!==null?JSON.parse(sessionStorage.getItem('musicInfo')):[],
             };
-            // local.musicInfo = local.musicInfo.sort(e => -e.votes)
+            local.musicInfo = sort(local.musicInfo)
+            console.log("musicInfo " + sort(local.musicInfo))
             local.activeMusicUri = local.musicInfo.length > 0 ? local.musicInfo[0].uri : undefined
             return local
 
         case 'UPDATE_PLAYLIST':
             // expected input: Object[]
-            // let musicInfo = action.data.sort(e => -e.votes)
-            let musicInfo = Array.from(action.data);
+            console.log("update playlist")
+            let musicInfo = sort(action.data)
             Object.assign(newS, {
                 musicInfo: musicInfo,
                 activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
@@ -82,7 +83,6 @@ function appReducer(prevState = initState, action) {
             })
             sessionStorage.setItem('musicInfo',JSON.stringify(musicInfo));
             return newS
-
 
         case 'UPDATE_ACTIVE_MUSIC':
 
@@ -112,6 +112,27 @@ let store = createStore(
     appReducer,
     composeEnhancer(applyMiddleware(thunk))
 )
+
+function sort(arr){
+    if (arr.length <= 1) return arr;
+
+    //sort from the second song in order of votes and then name
+    let tracksToSort = arr.slice(1,arr.length)
+    let sortedArray = tracksToSort.sort(function(trackA, trackB){
+        let order = trackB.votes - trackA.votes
+        if(order != 0){
+            return order
+        }else{
+            if (trackA.name < trackB.name){
+                return -1
+            }else {
+                return 1
+            }
+        }
+    })
+    sortedArray.unshift(arr[0])
+    return sortedArray
+}
 
 // You can use subscribe() to update the UI in response to state changes.
 // Normally you'd use a view binding library (e.g. React Redux) rather than subscribe() directly.
