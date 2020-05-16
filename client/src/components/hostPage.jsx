@@ -52,7 +52,7 @@ class ConnectHostPage extends React.Component {
             api.checkPartyCode(this.props.roomId)
                 .then(response => {
                     if (response.status !== 200) {
-                        alert('cannot join');
+                        alert('Couldn\'t find party, please try again');
                         return Promise.reject(response);
                     }
                     return response.json();
