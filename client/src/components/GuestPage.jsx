@@ -30,6 +30,7 @@ class ConnectGuestPage extends React.Component {
         };
 
         this.GetResult = this.GetResult.bind(this);
+        this.searchRef = React.createRef();
         this.initWs = this.initWs.bind(this);
         this.initWs();
     }
@@ -137,9 +138,12 @@ class ConnectGuestPage extends React.Component {
                          isGuest={true}>
                 </SideBar>
                 <div style={{ marginLeft: '260px' }}>
-                    <SearchBar GetResult={this.GetResult}/>
+                    <SearchBar GetResult={this.GetResult} ref={this.searchRef}/>
                     <div className={'page'}>
-                        <div className={'search-results ' + (this.state.active ? '' : 'hidden')}>
+                        <div className={'search-results ' + (this.state.active ? '' : 'hidden') } onClick={() => {
+                            this.setState({ active: false });
+                            this.searchRef.current.state.searching = false;
+                        }}>
                             {this.state.tracks.map((item, index) => {
                                 return (
                                     <div className={'result'} key={index} onClick={event => {
@@ -179,7 +183,7 @@ class ConnectGuestPage extends React.Component {
                         </div>
                         <div className={'tracklist'}>
                             {this.props.musicInfo.map((entry, index) => {
-                                return (//todo Need to sort by votes
+                                return (//todo Need to sort by votes, only sort from the second song
                                     <MusicLi name={entry.name}
                                              album={entry.album}
                                              votes={entry.votes}

@@ -39,6 +39,17 @@ class ConnectHostPage extends React.Component {
     initWs(){
         socket.on('refresh_play_list', (data) => {
             console.log("refresh_play_list recieved", data);
+
+            api.checkPartyCode(this.props.roomId)
+                .then(response => {
+                    if(response.status !== 200){
+                        alert('cannot join');
+                        return Promise.reject(response)
+                    }
+                    return response.json();
+                }).then(data => {
+                this.props.dispatch(updatePlaylist(data['tracks']));
+            }).catch(console.error.bind(this));
         });
     }
 
@@ -205,7 +216,7 @@ class ConnectHostPage extends React.Component {
                             })}
                         </div>
                         <div className={'tracklist'}>
-                            {//todo Need to sort by votes
+                            {//todo Need to sort by votes, only sort from the second song
                                 this.props.musicInfo.length !== 0 ? this.props.musicInfo.map((entry, index) => {
                                     return (
                                         <MusicLi name={entry.name}

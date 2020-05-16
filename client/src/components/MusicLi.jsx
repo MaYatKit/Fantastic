@@ -81,9 +81,9 @@ class MusicLi extends React.Component {
             {this.props.isGuest ?
                 <div className="control">
                     {
-                        this.props.activeMusicState === 'PLAYING' ?
-                            <PlayBtn playControl={this.playControlMli.bind(this)}
-                                     playState={this.props.activeMusicState}>
+                        this.props.index === 0 ?
+                            <PlayBtn
+                                     playState={this.props.play_state === 1?  "PLAYING":  "PAUSE"}>
                             </PlayBtn>
                             : <LikeBtn votes={this.props.votes}
                                        liked={false}
