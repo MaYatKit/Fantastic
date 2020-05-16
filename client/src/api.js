@@ -109,7 +109,7 @@ function searchItem(searchItem) {
         });
 }
 
-function uploadPlayList(roomId, playList) {
+function uploadPlayList(roomId, playList, successCallback) {
     // search music by keyword
     // return Promise, The promise return a array of music when resolved
     let url = 'http://localhost:1000/party/';
@@ -130,6 +130,7 @@ function uploadPlayList(roomId, playList) {
         .then(response => {
             if (response['status'] === 200) {
                 console.log('Success to upload playlist!!');
+                successCallback();
             } else {
                 console.log('Fail to upload playList!!! status code = ' + response['status']);
             }
@@ -149,7 +150,7 @@ function getPartyInfo(partyId){
 }
 
 function checkPartyCode(partyCode){
-    let url = prefix + "/party/"+ partyCode
+    let url = prefix + "/party/"+ partyCode;
 
     return fetch(url, {
         method: 'GET',

@@ -12,9 +12,19 @@ socket.on('update_local', (data) => {
 function fire_change(num){
     socket.emit('change_request', num, (data) => {
         // callback
-        console.log("server responded: ", data); 
+        console.log("server responded: ", data);
+    });
+}
+
+const socket2 = io('http://localhost:1002');
+
+
+function playListChanged(){
+    socket2.emit('change_request', (data) => {
+        // callback
+        console.log("server responded: ", data);
     });
 }
 
 
-export default { fire_change, socket }
+export default { fire_change, socket, playListChanged, socket2}

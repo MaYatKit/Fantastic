@@ -41,6 +41,7 @@ router.get("/:partyid", async (req,res,next)=>{
                     },
                     { "$project": {room_id: 1, tracks: 1 ,name: 1, _id: 0} }
                 ])
+
                 res.status(200).json(partyDetails[0])
             }else{
                 res.status(404).json({message: "couldn't find party"})

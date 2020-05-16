@@ -44,7 +44,7 @@ function appReducer(prevState = initState, action) {
             if (action.data["tracks"] == null){
                 newState.musicInfo = []
             }else {
-                newState.musicInfo = action.data["tracks"].sort(e => -e.votes);
+                newState.musicInfo = Array.from(action.data["tracks"]);
             }
             sessionStorage.setItem('roomId',newState.roomId);
             sessionStorage.setItem('userName',newState.userName);
@@ -67,13 +67,14 @@ function appReducer(prevState = initState, action) {
                 userName : sessionStorage.getItem('userName'),
                 musicInfo : sessionStorage.getItem('musicInfo')!==null?JSON.parse(sessionStorage.getItem('musicInfo')):[],
             };
-            local.musicInfo = local.musicInfo.sort(e => -e.votes)
+            // local.musicInfo = local.musicInfo.sort(e => -e.votes)
             local.activeMusicUri = local.musicInfo.length > 0 ? local.musicInfo[0].uri : undefined
             return local
 
         case 'UPDATE_PLAYLIST':
             // expected input: Object[]
-            let musicInfo = action.data.sort(e => -e.votes)
+            // let musicInfo = action.data.sort(e => -e.votes)
+            let musicInfo = Array.from(action.data);
             Object.assign(newS, {
                 musicInfo: musicInfo,
                 activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
