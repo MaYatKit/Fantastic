@@ -15,6 +15,9 @@ const socket = io('http://localhost:1002');
 
 let needNotify = false;
 
+let likeDict = {};
+
+
 class ConnectGuestPage extends React.Component {
     constructor(props) {
         super(props);
@@ -71,7 +74,19 @@ class ConnectGuestPage extends React.Component {
     }
 
 
-
+    likeStateChanged(index, isLike) {
+        console.log('index = ' + index + ', isLike = ' + isLike);
+        let newList = Array.from(this.props.musicInfo);
+        if (isLike) {
+            likeDict[index] = 1;
+            newList[index]['votes'] = newList[index]['votes'] + 1;
+        } else {
+            likeDict[index] = 0;
+            newList[index]['votes'] = newList[index]['votes'] - 1;
+        }
+        this.props.dispatch(updatePlaylist(this.props.musicInfo));
+        needNotify = true;
+    }
 
 
     GetResult(searchItem) {
@@ -190,7 +205,9 @@ class ConnectGuestPage extends React.Component {
                                              icon={entry.albumIcon['large']}
                                              index={index}
                                              key={index}
-                                             isGuest = {true}>
+                                             isGuest = {true}
+                                             clickLike={this.likeStateChanged.bind(this)}
+                                             liked={likeDict[index] === 1}>
                                     </MusicLi>
                                 );
                             })}

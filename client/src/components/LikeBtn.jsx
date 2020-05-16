@@ -1,9 +1,9 @@
 import React from 'react';
-import style from "./MliBtns.css"
+import style from './MliBtns.css';
 // import icons
-import {FiPlus} from "react-icons/fi"
-import {MdFavorite} from "react-icons/md"
-import {MdFavoriteBorder} from "react-icons/md"
+import { FiPlus } from 'react-icons/fi';
+import { MdFavorite } from 'react-icons/md';
+import { MdFavoriteBorder } from 'react-icons/md';
 
 
 export default class LikeBtn extends React.Component {
@@ -14,26 +14,31 @@ export default class LikeBtn extends React.Component {
         this.state = {};
     }
 
-    clickHdl(event){
-        this.props.clickLike()
+    clickHdl(event) {
+        this.props.clickLike(this.props.index, !this.props.liked);
     }
 
-    iconFn(){
-        if(!this.props.liked && this.props.votes === 0)
-            return (<FiPlus className="icon"></FiPlus>)
-
-        else if(!this.props.liked && this.props.votes !== 0)
-            return (<MdFavoriteBorder className="icon"></MdFavoriteBorder>)
-
-        else if (this.props.liked)
-            return (<MdFavorite className="icon"></MdFavorite>)
+    iconFn() {
+        if (this.props.liked) {
+            return (<MdFavorite className="icon"></MdFavorite>);
+        } else {
+            return (<MdFavoriteBorder className="icon"></MdFavoriteBorder>);
+        }
+        // if(!this.props.liked && this.props.votes === 0)
+        //     return (<FiPlus className="icon"></FiPlus>)
+        //
+        // else if(!this.props.liked && this.props.votes !== 0)
+        //     return (<MdFavoriteBorder className="icon"></MdFavoriteBorder>)
+        //
+        // else if (this.props.liked)
+        //     return (<MdFavorite className="icon"></MdFavorite>)
     }
 
-    render(){
+    render() {
         return (
-        <div className="likebtn" onClick={this.clickHdl.bind(this)}>
-            { this.iconFn() }
-        </div>
+            <div className="likebtn" onClick={this.clickHdl.bind(this)}>
+                {this.iconFn()}
+            </div>
         );
-    }   
+    }
 }

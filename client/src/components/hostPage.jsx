@@ -7,7 +7,15 @@ import { connect } from 'react-redux';
 import api from '../api';
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
-import {updatePlaylist, refreshPlaylist, readLocalList, play, pause, updateActiveMusic, updateActiveMusicState} from '../redux/actions';
+import {
+    updatePlaylist,
+    refreshPlaylist,
+    readLocalList,
+    play,
+    pause,
+    updateActiveMusic,
+    updateActiveMusicState
+} from '../redux/actions';
 import io from 'socket.io-client';
 
 
@@ -15,6 +23,7 @@ const socket = io('http://localhost:1002');
 
 let needNotify = false;
 
+let likeDict = {};
 
 class ConnectHostPage extends React.Component {
 
@@ -36,69 +45,69 @@ class ConnectHostPage extends React.Component {
         this.initWs();
     }
 
-    initWs(){
+    initWs() {
         socket.on('refresh_play_list', (data) => {
-            console.log("refresh_play_list recieved", data);
+            console.log('refresh_play_list recieved', data);
 
             api.checkPartyCode(this.props.roomId)
                 .then(response => {
-                    if(response.status !== 200){
+                    if (response.status !== 200) {
                         alert('cannot join');
-                        return Promise.reject(response)
+                        return Promise.reject(response);
                     }
                     return response.json();
-                }).then(data => {
-                this.props.dispatch(updatePlaylist(data['tracks']));
-            }).catch(console.error.bind(this));
+                })
+                .then(data => {
+                    this.props.dispatch(updatePlaylist(data['tracks']));
+                })
+                .catch(console.error.bind(this));
         });
     }
 
 
-    playControl(event){
+    playControl(event) {
         // {
         //     nextState: 'PAUSE' or 'PLAYING'
         //     uri,
         //     resume: boolean
         // }
-        if (event.nextState === 'PAUSE'){
-            return this.props.dispatch( pause(event.uri) )
-        }
-
-        else if(event.nextState === 'PLAYING'){
-            return this.props.dispatch( play(event) )
+        if (event.nextState === 'PAUSE') {
+            return this.props.dispatch(pause(event.uri));
+        } else if (event.nextState === 'PLAYING') {
+            return this.props.dispatch(play(event));
         }
     }
 
-    playNext(){
-        if(this.props.musicInfo.length < 2){
-            alert("you can't play next when there is only one")
+    playNext() {
+        if (this.props.musicInfo.length < 2) {
+            alert('you can\'t play next when there is only one');
             return;
         }
 
-        let prevUri = this.props.activeMusicUri
-        let nextUri = this.props.musicInfo[1].uri
-        let newMusicInfo = this.props.musicInfo
+        let prevUri = this.props.activeMusicUri;
+        let nextUri = this.props.musicInfo[1].uri;
+        let newMusicInfo = this.props.musicInfo;
 
         this.playControl({
             uri: nextUri,
             nextState: 'PLAYING',
             resume: false
         })
-        .then(response => {
-            let oldIndex = newMusicInfo.findIndex(e => e.uri === prevUri)
-            newMusicInfo.splice(oldIndex, 1);
-            this.props.dispatch( updatePlaylist(newMusicInfo) );
-            this.props.dispatch( updateActiveMusicState('PLAYING') )
-            needNotify = true;
-        })
+            .then(response => {
+                let oldIndex = newMusicInfo.findIndex(e => e.uri === prevUri);
+                newMusicInfo.splice(oldIndex, 1);
+                this.props.dispatch(updatePlaylist(newMusicInfo));
+                this.props.dispatch(updateActiveMusicState('PLAYING'));
+                needNotify = true;
+            });
     }
 
-    removeAMusic(uri){
+    removeAMusic(uri) {
         // remove a music that is not being played
         let newMusicInfo = this.props.musicInfo;
         let i = newMusicInfo.findIndex(e => e.uri === uri);
         newMusicInfo.splice(i, 1);
-        this.props.dispatch( updatePlaylist(newMusicInfo) );
+        this.props.dispatch(updatePlaylist(newMusicInfo));
         needNotify = true;
     }
 
@@ -127,9 +136,25 @@ class ConnectHostPage extends React.Component {
         //         api.login();
         //     });
 
-        this.props.dispatch( readLocalList() )
+        this.props.dispatch(readLocalList());
     }
 
+
+    likeStateChanged(index, isLike) {
+        console.log('index = ' + index + ', isLike = ' + isLike);
+        let newList = Array.from(this.props.musicInfo);
+        if (isLike) {
+            likeDict[index] = 1;
+            newList[index]['votes'] = newList[index]['votes'] + 1;
+        } else {
+            likeDict[index] = 0;
+            newList[index]['votes'] = newList[index]['votes'] - 1;
+        }
+        this.props.dispatch(updatePlaylist(this.props.musicInfo));
+        needNotify = true;
+
+
+    }
 
     selectSearchItem(item) {
         if (item.selected) {
@@ -144,8 +169,8 @@ class ConnectHostPage extends React.Component {
         } else {
             item.selected = true;
             this.props.musicInfo[this.props.musicInfo.length] = {
-                'play_state':0,
-                'votes': 1,
+                'play_state': 0,
+                'votes': 0,
                 'name': item['trackName'],
                 'uri': item['uri'],
                 'artist': item['artistName'],
@@ -156,7 +181,7 @@ class ConnectHostPage extends React.Component {
                 }
             };
         }
-        this.props.dispatch( updatePlaylist(this.props.musicInfo) );
+        this.props.dispatch(updatePlaylist(this.props.musicInfo));
         needNotify = true;
         // this.setState({
         //     tracks: this.state.tracks,
@@ -216,20 +241,22 @@ class ConnectHostPage extends React.Component {
                             })}
                         </div>
                         <div className={'tracklist'}>
-                            {//todo Need to sort by votes, only sort from the second song
+                            {//todo Need to sort by votes, only sort from the second song and resort likeDict which storage local like state
                                 this.props.musicInfo.length !== 0 ? this.props.musicInfo.map((entry, index) => {
                                     return (
                                         <MusicLi name={entry.name}
                                                  album={entry.album}
                                                  votes={entry.votes}
                                                  icon={entry.albumIcon['large']}
-                                                 uri = {entry.uri}
-                                                 activeMusicUri = {this.props.activeMusicUri}
-                                                 playControl = {this.playControl.bind(this)}
-                                                 playNext = {this.playNext.bind(this)}
-                                                 removeAMusic = {this.removeAMusic.bind(this)}
+                                                 uri={entry.uri}
+                                                 activeMusicUri={this.props.activeMusicUri}
+                                                 playControl={this.playControl.bind(this)}
+                                                 playNext={this.playNext.bind(this)}
+                                                 removeAMusic={this.removeAMusic.bind(this)}
                                                  index={index}
-                                                 key={entry.uri}>
+                                                 key={entry.uri}
+                                                 clickLike={this.likeStateChanged.bind(this)}
+                                                 liked={likeDict[index] === 1}>
                                         </MusicLi>
                                     );
                                 }) : <span className={'hint'}> Search to add musics </span>
@@ -244,11 +271,11 @@ class ConnectHostPage extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    api.uploadPlayList(state.roomId, state.musicInfo, ()=>{
-        if (needNotify){
+    api.uploadPlayList(state.roomId, state.musicInfo, () => {
+        if (needNotify) {
             socket.emit('change_request', (data) => {
                 // callback
-                console.log("server responded: ", data);
+                console.log('server responded: ', data);
             });
             needNotify = false;
         }

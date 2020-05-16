@@ -85,9 +85,10 @@ class MusicLi extends React.Component {
                             <PlayBtn
                                      playState={this.props.play_state === 1?  "PLAYING":  "PAUSE"}>
                             </PlayBtn>
-                            : <LikeBtn votes={this.props.votes}
-                                       liked={false}
-                                       clickLike={this.clickLike.bind(this)}>
+                            : <LikeBtn
+                                       clickLike={this.props.clickLike}
+                                       liked = {this.props.liked}
+                                       index = {this.props.index}>
                             </LikeBtn>
                     }
                 </div>
@@ -115,9 +116,10 @@ class MusicLi extends React.Component {
 
                     {
                         !this.IsActive() ?
-                            <LikeBtn votes={this.props.votes}
-                                     liked={false}
-                                     clickLike={this.clickLike.bind(this)}>
+                            <LikeBtn
+                                clickLike={this.props.clickLike}
+                                liked = {this.props.liked}
+                                index = {this.props.index}>
                             </LikeBtn>
                             : ''
                     }

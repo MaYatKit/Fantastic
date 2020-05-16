@@ -11,7 +11,7 @@ import api from './api'
 
 window.api = api;
 window.playBack = playBack
-// playBack.init();
+playBack.init();
 
 function App() {
     return (
