@@ -1,7 +1,7 @@
 import oauth from './oauth'
 
 
-let _token = "oauth.getToken()";
+let _token = oauth.getToken();
 let readyToPlay = false;
 var deviceId = null;
 
