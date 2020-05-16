@@ -15,6 +15,9 @@ const socket = io('http://localhost:1002');
 
 let needNotify = false;
 
+let likeDict = {};
+
+
 class ConnectGuestPage extends React.Component {
     constructor(props) {
         super(props);
@@ -30,6 +33,7 @@ class ConnectGuestPage extends React.Component {
         };
 
         this.GetResult = this.GetResult.bind(this);
+        this.searchRef = React.createRef();
         this.initWs = this.initWs.bind(this);
         this.initWs();
     }
@@ -70,7 +74,19 @@ class ConnectGuestPage extends React.Component {
     }
 
 
-
+    likeStateChanged(index, isLike) {
+        console.log('index = ' + index + ', isLike = ' + isLike);
+        let newList = Array.from(this.props.musicInfo);
+        if (isLike) {
+            likeDict[index] = 1;
+            newList[index]['votes'] = newList[index]['votes'] + 1;
+        } else {
+            likeDict[index] = 0;
+            newList[index]['votes'] = newList[index]['votes'] - 1;
+        }
+        this.props.dispatch(updatePlaylist(this.props.musicInfo));
+        needNotify = true;
+    }
 
 
     GetResult(searchItem) {
@@ -137,9 +153,12 @@ class ConnectGuestPage extends React.Component {
                          isGuest={true}>
                 </SideBar>
                 <div style={{ marginLeft: '260px' }}>
-                    <SearchBar GetResult={this.GetResult}/>
+                    <SearchBar GetResult={this.GetResult} ref={this.searchRef}/>
                     <div className={'page'}>
-                        <div className={'search-results ' + (this.state.active ? '' : 'hidden')}>
+                        <div className={'search-results ' + (this.state.active ? '' : 'hidden') } onClick={() => {
+                            this.setState({ active: false });
+                            this.searchRef.current.state.searching = false;
+                        }}>
                             {this.state.tracks.map((item, index) => {
                                 return (
                                     <div className={'result'} key={index} onClick={event => {
@@ -179,14 +198,16 @@ class ConnectGuestPage extends React.Component {
                         </div>
                         <div className={'tracklist'}>
                             {this.props.musicInfo.map((entry, index) => {
-                                return (//todo Need to sort by votes
+                                return (//todo Need to sort by votes, only sort from the second song
                                     <MusicLi name={entry.name}
                                              album={entry.album}
                                              votes={entry.votes}
                                              icon={entry.albumIcon['large']}
                                              index={index}
                                              key={index}
-                                             isGuest = {true}>
+                                             isGuest = {true}
+                                             clickLike={this.likeStateChanged.bind(this)}
+                                             liked={likeDict[index] === 1}>
                                     </MusicLi>
                                 );
                             })}
