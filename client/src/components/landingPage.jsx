@@ -5,8 +5,9 @@ import api from '../api'
 
 import {FaArrowLeft} from "react-icons/fa";
 import logo from "./../image/logo.png"
-import { refreshHostPage, updatePlaylist, updateActiveMusicState } from '../redux/actions'
+import { updateRoomInfo, updatePlaylist, updateActiveMusicState } from '../redux/actions'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import { Link, BrowserRouter} from "react-router-dom";
 
@@ -18,8 +19,10 @@ class LandingPage extends React.Component{
             joining: false,
             displayLogin: false,
             inputPartyCode: '',
-            // pagePosition: 1,
-            incorrectCode: false
+            incorrectCode: false,
+            // for redirect
+            redirect: false,
+            path: undefined
         };
         // this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
@@ -48,10 +51,8 @@ class LandingPage extends React.Component{
         console.log("Create room!!");
         api.createParty()
         .then(response => {
-            // console.log(response.json());
             if (response["status"] === 404){
                 console.log("Authorize fail!!! Need to login!!!");
-                // this.changePagePosition(3);
                 this.setState({ displayLogin: true })
                 return Promise.reject(response)
             }
@@ -62,10 +63,17 @@ class LandingPage extends React.Component{
                 return Promise.reject(response)
             }
         })
-        .then(json => {
-            this.props.refreshHostPage(json);
-            window.location.href = '/host'
-            // this.changePagePosition(0);
+        .then(data => {
+            // before redirecting to the host page
+            // local store are updated 
+            this.props.updateRoomInfo({
+                userName: data.name,
+                roomId: data.room_id,
+                iniAtLanding: true
+            })
+            this.props.updatePlaylist(data['tracks'])
+            this.props.updateActiveMusicState('STOP')
+            this.setRedirect('/host')
         })
         .catch(e=> {
             console.log("Create room failed: " + e);
@@ -86,12 +94,32 @@ class LandingPage extends React.Component{
             return response.json()
         })
         .then(data => {
+            // before redirecting to the guest page
+            // local store are updated 
+            this.props.updateRoomInfo({
+                name: data.name,
+                roomId: data.room_id,
+                iniAtLanding: true
+            })
             this.props.updatePlaylist(data['tracks'])
             this.props.updateActiveMusicState('STOP')
-
-            window.location.href = '/guest?roomId=' + data['room_id'] + "&host_name=" + data['name']
+            let str = '/guest?roomId=' + data['room_id'] + "&host_name=" + data['name']
+            this.setRedirect(str)
         })
+
         .catch(console.error.bind(this))
+    }
+
+    setRedirect = (path) => {
+        this.setState({
+            redirect: true,
+            path: path
+        })
+    }
+    renderRedirect = (path) => {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.path} />
+        }
     }
 
     login(){
@@ -195,7 +223,9 @@ class LandingPage extends React.Component{
         }
 
         return (
+            
             <div className={"landingPage"}>
+                {this.renderRedirect()}
                 <img className={"logo"} src={logo} alt={"logo"} />
                 {content}
             </div>
@@ -258,7 +288,7 @@ class LandingPage extends React.Component{
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshHostPage: data => dispatch(refreshHostPage(data)),
+        updateRoomInfo: data => dispatch( updateRoomInfo(data) ),
         updatePlaylist: data => dispatch( updatePlaylist(data) ),
         updateActiveMusicState: data => dispatch( updateActiveMusicState(data) ),
     }

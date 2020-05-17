@@ -82,7 +82,7 @@ class MusicLi extends React.Component {
                 <div className="control">
                     {
                         this.props.index === 0 ?
-                            <PlayBtn
+                            <PlayBtn disabled={true}
                                      playState={this.props.play_state === 1?  "PLAYING":  "PAUSE"}>
                             </PlayBtn>
                             : <LikeBtn

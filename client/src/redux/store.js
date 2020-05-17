@@ -23,9 +23,10 @@ import thunk from 'redux-thunk';
 const initState = {
         activeMusicUri: undefined,
         activeMusicState: 'STOP',    // 'STOP', 'PAUSE' or 'PLAYING'
-        roomId : 0,
-        userName : '',
-        musicInfo : []
+        roomId : 0, 
+        userName : '',      // host's name
+        musicInfo : [],
+        iniAtLanding: false     // prevent multiple request when redirected to host/guest page through landing page
     };
 
 
@@ -37,40 +38,44 @@ function appReducer(prevState = initState, action) {
     let newS = JSON.parse(JSON.stringify(prevState))
 
     switch (action.type) {
-        case 'REFREASH_HOSTPAGE':
-            const newState = JSON.parse(JSON.stringify(prevState));
-            newState.roomId = action.data["room_id"];
-            newState.userName = action.data["name"];
-            if (action.data["tracks"] == null){
-                newState.musicInfo = []
-            }else {
-                newState.musicInfo = Array.from(action.data["tracks"]);
-            }
-            sessionStorage.setItem('roomId',newState.roomId);
-            sessionStorage.setItem('userName',newState.userName);
-            sessionStorage.setItem('musicInfo',JSON.stringify(newState.musicInfo));
-            if(newState.musicInfo.length > 0){
-                newState.activeMusicUri = newState.musicInfo[0].uri
-            }
-            return newState;
-        case 'REFREASH_PLAYLIST':
-            const state = JSON.parse(JSON.stringify(prevState));
-            sessionStorage.setItem('musicInfo',JSON.stringify(action.data));
-            state.musicInfo = action.data;
-            break;
+        // case 'REFREASH_HOSTPAGE':
+        //     const newState = JSON.parse(JSON.stringify(prevState));
+        //     newState.roomId = action.data["room_id"];
+        //     newState.userName = action.data["name"];
+        //     if (action.data["tracks"] == null){
+        //         newState.musicInfo = []
+        //     }else {
+        //         newState.musicInfo = Array.from(action.data["tracks"]);
+        //     }
+        //     sessionStorage.setItem('roomId',newState.roomId);
+        //     sessionStorage.setItem('userName',newState.userName);
+        //     sessionStorage.setItem('musicInfo',JSON.stringify(newState.musicInfo));
+        //     if(newState.musicInfo.length > 0){
+        //         newState.activeMusicUri = newState.musicInfo[0].uri
+        //     }
+        //     return newState;
+        // case 'REFREASH_PLAYLIST':
+        //     const state = JSON.parse(JSON.stringify(prevState));
+        //     sessionStorage.setItem('musicInfo',JSON.stringify(action.data));
+        //     state.musicInfo = action.data;
+        //     break;
 
-        case 'READ_LOCAL_LIST':
-            let local = {
-                activeMusicUri: undefined,
-                activeMusicState: 'STOP',    // 'STOP', 'PAUSE' or 'PLAYING'
-                roomId : sessionStorage.getItem('roomId'),
-                userName : sessionStorage.getItem('userName'),
-                musicInfo : sessionStorage.getItem('musicInfo')!==null?JSON.parse(sessionStorage.getItem('musicInfo')):[],
-            };
-            local.musicInfo = sort(local.musicInfo)
-            console.log("musicInfo " + sort(local.musicInfo))
-            local.activeMusicUri = local.musicInfo.length > 0 ? local.musicInfo[0].uri : undefined
-            return local
+        // case 'READ_LOCAL_LIST':
+            // let local = {
+            //     activeMusicUri: undefined,
+            //     activeMusicState: 'STOP',    // 'STOP', 'PAUSE' or 'PLAYING'
+            //     roomId : sessionStorage.getItem('roomId'),
+            //     userName : sessionStorage.getItem('userName'),
+            //     musicInfo : sessionStorage.getItem('musicInfo')!==null?JSON.parse(sessionStorage.getItem('musicInfo')):[],
+            // };
+            // // local.musicInfo = local.musicInfo.sort(e => -e.votes)
+            // local.activeMusicUri = local.musicInfo.length > 0 ? local.musicInfo[0].uri : undefined
+            // return local
+
+        case 'UPDATE_ROOM_INFO':
+            // expected input: a object that has matching attributes of the store
+            // local playlist is not updated here
+            return Object.assign(newS, action.data)
 
         case 'UPDATE_PLAYLIST':
             // expected input: Object[]
@@ -81,7 +86,7 @@ function appReducer(prevState = initState, action) {
                 activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
                 activeMusicState: 'PAUSE'
             })
-            sessionStorage.setItem('musicInfo',JSON.stringify(musicInfo));
+            // sessionStorage.setItem('musicInfo',JSON.stringify(musicInfo));
             return newS
 
         case 'UPDATE_ACTIVE_MUSIC':

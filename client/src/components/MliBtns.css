@@ -14,6 +14,12 @@
   cursor: pointer;
 }
 
+.playbtn.disabled{
+  background-color: #764848;
+  color: #959595;
+  cursor: not-allowed;
+}
+
 .playbtn > .icon{
   width: 100%;
   height: 100%;
