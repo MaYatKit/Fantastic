@@ -9,10 +9,9 @@ import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
 import {
     updatePlaylist,
-    refreshPlaylist,
-    readLocalList,
     play,
     pause,
+    updateRoomInfo,
     updateActiveMusic,
     updateActiveMusicState
 } from '../redux/actions';
@@ -34,9 +33,6 @@ class ConnectHostPage extends React.Component {
         this.state = {
             tracks: [],     // store search result
             active: false,
-            // userName: this.props.userName,
-            // roomId: this.props.roomId,
-            // musicInfo: this.props.musicInfo
         };
 
         this.GetResult = this.GetResult.bind(this);
@@ -46,24 +42,26 @@ class ConnectHostPage extends React.Component {
     }
 
     initWs() {
-        socket.on('refresh_play_list', (data) => {
-            console.log('refresh_play_list recieved', data);
 
-            api.checkPartyCode(this.props.roomId)
-                .then(response => {
-                    if (response.status !== 200) {
-                        alert('cannot join');
-                        return Promise.reject(response);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    this.props.dispatch(updatePlaylist(data['tracks']));
-                })
-                .catch(console.error.bind(this));
+        socket.on('refresh_play_list', () => {
+            console.log('Guest: refresh_play_list received!!');
+            this.clientRequestData()
+            .then(data => {
+                this.props.dispatch(updatePlaylist(data['tracks']));
+            }).catch(console.error.bind(this));
         });
     }
 
+    clientRequestData(){
+        return api.checkPartyCode(this.state.roomId)
+        .then(response => {
+            if(response.status !== 200){
+                alert('cannot join');
+                return Promise.reject(response)
+            }
+            return response.json();
+        })
+    }
 
     playControl(event) {
         // {
@@ -130,13 +128,26 @@ class ConnectHostPage extends React.Component {
     }
 
     componentDidMount() {
-        // api.isLogin()
-        //     .catch(obj => {
-        //         alert('you need log in to see this page');
-        //         api.login();
-        //     });
+        if(this.props.iniAtLanding)
+            return
 
-        this.props.dispatch(readLocalList());
+        // refresh page at path /host
+        api.createParty()
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            this.props.dispatch( updateRoomInfo({
+                userName: data.name,
+                roomId: data.room_id,
+                iniAtLanding: false
+            }))
+            this.props.dispatch(updatePlaylist(data['tracks']));
+        })
+        .catch(error => {
+            console.error("host page: ", error)
+            alert("error: see console")
+        })
     }
 
 

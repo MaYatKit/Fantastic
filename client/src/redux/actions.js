@@ -5,29 +5,38 @@ import playBack from '../playBack'
 const READ_LOCAL_LIST = "READ_LOCAL_LIST";
 const REFREASH_HOSTPAGE = "REFREASH_HOSTPAGE";
 const REFREASH_PLAYLIST = "REFREASH_PLAYLIST";
+const UPDATE_ROOM_INFO = "UPDATE_ROOM_INFO";
 const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
 const UPDATE_ACTIVE_MUSIC_STATE = "UPDATE_ACTIVE_MUSIC_STATE";
 const UPDATE_ACTIVE_MUSIC = "UPDATE_ACTIVE_MUSIC";
 
 
 // define action creators here
-let refreshHostPage = (data) => {
-    return {
-        type: REFREASH_HOSTPAGE,
-        data: data
-    }
-};
+// let refreshHostPage = (data) => {
+//     return {
+//         type: REFREASH_HOSTPAGE,
+//         data: data
+//     }
+// };
 
-let readLocalList = () => {
-    return{
-        type: READ_LOCAL_LIST,
-        data: undefined
-    }
-}
+// let readLocalList = () => {
+//     return{
+//         type: READ_LOCAL_LIST,
+//         data: undefined
+//     }
+// }
 
-let refreshPlaylist = (data) => {
+// let refreshPlaylist = (data) => {
+//     return {
+//         type: REFREASH_PLAYLIST,
+//         data: data
+//     }
+// };
+
+let updateRoomInfo = (data) => {
+    // expected input: a object that has matching attributes of the store
     return {
-        type: REFREASH_PLAYLIST,
+        type: UPDATE_ROOM_INFO,
         data: data
     }
 };
@@ -109,9 +118,10 @@ function pause(){
 
 
 export {updatePlaylist, 
-        readLocalList,
-        refreshHostPage, 
-        refreshPlaylist, 
+        // readLocalList,
+        // refreshHostPage, 
+        // refreshPlaylist, 
+        updateRoomInfo,
         updateActiveMusicState, 
         updateActiveMusic, 
         play,
