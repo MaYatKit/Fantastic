@@ -5,7 +5,7 @@ import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
 import api from '../api';
-import { readLocalList, updatePlaylist } from '../redux/actions';
+import { updatePlaylist, updateRoomInfo } from '../redux/actions';
 import io from 'socket.io-client';
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
@@ -59,18 +59,22 @@ class ConnectGuestPage extends React.Component {
 
         socket.on('refresh_play_list', () => {
             console.log('Guest: refresh_play_list received!!');
-
-            api.checkPartyCode(this.state.roomId)
-                .then(response => {
-                    if(response.status !== 200){
-                        alert('cannot join');
-                        return Promise.reject(response)
-                    }
-                    return response.json();
-                }).then(data => {
+            this.clientRequestData()
+            .then(data => {
                 this.props.dispatch(updatePlaylist(data['tracks']));
             }).catch(console.error.bind(this));
         });
+    }
+
+    clientRequestData(){
+        return api.checkPartyCode(this.state.roomId)
+        .then(response => {
+            if(response.status !== 200){
+                alert('cannot join');
+                return Promise.reject(response)
+            }
+            return response.json();
+        })
     }
 
 
@@ -137,12 +141,23 @@ class ConnectGuestPage extends React.Component {
 
 
     componentDidMount() {
-        // api.isLogin().catch(obj => {
-        //     alert("you need log in to see this page")
-        //     api.login();
-        // })
-        this.props.dispatch(readLocalList());
-        // this.render();
+        if(this.props.iniAtLanding)
+            return
+
+        // refresh page at path /guest
+        if(!this.state.roomId){
+            return alert("please go back to landing page")
+        }
+
+        this.clientRequestData()
+        .then(data => {
+            this.props.dispatch( updateRoomInfo({
+                userName: data.name,
+                roomId: data.room_id,
+                iniAtLanding: false
+            }) )
+            this.props.dispatch(updatePlaylist(data['tracks']));
+        })
     }
 
     render() {
@@ -231,7 +246,8 @@ const mapStateToProps = (state, ownProps) => {
     });
     return {
         // existing playlist
-        musicInfo: state.musicInfo
+        musicInfo: state.musicInfo,
+        iniAtLanding: state.iniAtLanding
     };
 };
 

@@ -28,6 +28,8 @@ export default class MusicLi extends React.Component {
         //     nextState = 'PAUSE'
 
         // this.props.playControl({nextState, resume})
+        if(this.props.disabled)
+            return
         this.props.playControl()
 
     }
@@ -41,7 +43,8 @@ export default class MusicLi extends React.Component {
 
     render(){
         return (
-            <div className="playbtn" onClick={this.handleClick.bind(this)}>
+            <div className={"playbtn " + (this.props.disabled ? 'disabled' : '')} 
+                onClick={this.handleClick.bind(this)}>
                 { this.iconFn() }
             </div>
         );

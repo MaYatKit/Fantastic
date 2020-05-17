@@ -27,7 +27,7 @@ function App() {
             </Route>
 
             <Route path="/">
-                <div style={
+                {/* <div style={
                     {"position": "absolute",
                     "color": "white",
                     "top": 0,
@@ -36,7 +36,7 @@ function App() {
                     <NavLink to={`host`} style={{color: "white"}}>Host Page</NavLink>
                     <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <NavLink to={`guest`} style={{color: "white"}}>Guest Page</NavLink>
-                </div>
+                </div> */}
                 <ReduxLandingPage></ReduxLandingPage>
             </Route>
 
