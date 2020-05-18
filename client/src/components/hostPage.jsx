@@ -22,8 +22,6 @@ const socket = io('http://localhost:1002');
 
 let needNotify = false;
 
-let likeDict = {};
-
 class ConnectHostPage extends React.Component {
 
 
@@ -34,6 +32,8 @@ class ConnectHostPage extends React.Component {
             tracks: [],     // store search result
             active: false,
         };
+
+        if(!sessionStorage.getItem("likeArray")) sessionStorage.setItem("likeArray",JSON.stringify([]))
 
         this.GetResult = this.GetResult.bind(this);
         this.searchRef = React.createRef();
@@ -116,10 +116,12 @@ class ConnectHostPage extends React.Component {
     }
 
     removeAMusic(uri) {
-        // remove a music that is not being played
         let newMusicInfo = this.props.musicInfo;
         let i = newMusicInfo.findIndex(e => e.uri === uri);
         newMusicInfo.splice(i, 1);
+        
+        this.removeLikeIndex(i)
+
         this.props.dispatch(updatePlaylist(newMusicInfo));
         needNotify = true;
     }
@@ -171,33 +173,31 @@ class ConnectHostPage extends React.Component {
 
 
     likeStateChanged(index, isLike) {
-        console.log('index = ' + index + ', isLike = ' + isLike);
         let newList = Array.from(this.props.musicInfo);
         if (isLike) {
-            likeDict[index] = 1;
+            this.updateLikes(index, 1)
             newList[index]['votes'] = newList[index]['votes'] + 1;
         } else {
-            likeDict[index] = 0;
+            this.updateLikes(index,0)
             newList[index]['votes'] = newList[index]['votes'] - 1;
         }
         this.props.dispatch(updatePlaylist(this.props.musicInfo));
         needNotify = true;
-
-
     }
 
     selectSearchItem(item) {
         if (item.selected) {
             item.selected = false;
             for (let i = 0; i < this.props.musicInfo.length; i++) {
-                if (this.props.musicInfo[i]['_id'] === item['id']) {
+                if (this.props.musicInfo[i]['name'] === item['name']) {
                     this.props.musicInfo.splice(i, 1);
+                    this.removeLikeIndex(i)
                     break;
                 }
             }
-
         } else {
             item.selected = true;
+            this.updateLikes(this.props.musicInfo.length, 0)
             this.props.musicInfo[this.props.musicInfo.length] = {
                 'play_state': 0,
                 'votes': 0,
@@ -213,11 +213,18 @@ class ConnectHostPage extends React.Component {
         }
         this.props.dispatch(updatePlaylist(this.props.musicInfo));
         needNotify = true;
-        // this.setState({
-        //     tracks: this.state.tracks,
-        //     active: true,
-        //     musicInfo: this.state.musicInfo
-        // });
+    }
+
+    updateLikes(index, value){
+        let updatedLikeArray =JSON.parse(sessionStorage.getItem("likeArray"))
+        updatedLikeArray[index] = value
+        sessionStorage.setItem("likeArray",JSON.stringify(updatedLikeArray))
+    }
+
+    removeLikeIndex(index){
+        let newLikeArray = JSON.parse(sessionStorage.getItem("likeArray"))
+        newLikeArray.splice(index,1)
+        sessionStorage.setItem("likeArray", JSON.stringify(newLikeArray))
     }
 
     render() {
@@ -271,7 +278,7 @@ class ConnectHostPage extends React.Component {
                             })}
                         </div>
                         <div className={'tracklist'}>
-                            {//todo Need to sort by votes, only sort from the second song and resort likeDict which storage local like state
+                            {
                                 this.props.musicInfo.length !== 0 ? this.props.musicInfo.map((entry, index) => {
                                     return (
                                         <MusicLi name={entry.name}
@@ -286,7 +293,7 @@ class ConnectHostPage extends React.Component {
                                                  index={index}
                                                  key={entry.uri}
                                                  clickLike={this.likeStateChanged.bind(this)}
-                                                 liked={likeDict[index] === 1}>
+                                                 liked={JSON.parse(sessionStorage.getItem("likeArray"))[index] === 1}>
                                         </MusicLi>
                                     );
                                 }) : <span className={'hint'}> Search to add musics </span>
@@ -320,7 +327,6 @@ const mapStateToProps = (state, ownProps) => {
         activeMusicUri: state.activeMusicUri
     };
 };
-
 
 // const mapDispatchToProps = dispatch => {
 //     return {

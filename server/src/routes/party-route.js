@@ -55,7 +55,6 @@ router.get("/:partyid", async (req,res,next)=>{
 
 router.post("/", async (req,res,next) =>{
     let tracks = req.body.tracks
-    console.log("tracks " + JSON.stringify(tracks))
     try{
         await Host.findOneAndUpdate(
             { "party.id": req.body.id},
