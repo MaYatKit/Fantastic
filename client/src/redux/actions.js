@@ -41,7 +41,7 @@ let updateRoomInfo = (data) => {
     }
 };
 
-let updatePlaylist = (data) => {
+let updatePlaylist = (data, likeList) => {
     // data: array of music info
     return {
         type: UPDATE_PLAYLIST,

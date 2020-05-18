@@ -66,6 +66,7 @@ class LandingPage extends React.Component{
         .then(data => {
             // before redirecting to the host page
             // local store are updated 
+            if(!sessionStorage.getItem("likeArray"))sessionStorage.setItem("likeArray", JSON.stringify([]))
             this.props.updateRoomInfo({
                 userName: data.name,
                 roomId: data.room_id,
@@ -96,6 +97,7 @@ class LandingPage extends React.Component{
         .then(data => {
             // before redirecting to the guest page
             // local store are updated 
+            if(!sessionStorage.getItem("likeArray"))sessionStorage.setItem("likeArray", JSON.stringify([]))
             this.props.updateRoomInfo({
                 name: data.name,
                 roomId: data.room_id,

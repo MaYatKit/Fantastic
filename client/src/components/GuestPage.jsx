@@ -15,8 +15,6 @@ const socket = io('http://localhost:1002');
 
 let needNotify = false;
 
-let likeDict = {};
-
 
 class ConnectGuestPage extends React.Component {
     constructor(props) {
@@ -79,14 +77,13 @@ class ConnectGuestPage extends React.Component {
 
 
     likeStateChanged(index, isLike) {
-        console.log('index = ' + index + ', isLike = ' + isLike);
         let newList = Array.from(this.props.musicInfo);
         if (isLike) {
-            likeDict[index] = 1;
             newList[index]['votes'] = newList[index]['votes'] + 1;
+            this.updateLikes(index, 1)
         } else {
-            likeDict[index] = 0;
             newList[index]['votes'] = newList[index]['votes'] - 1;
+            this.updateLikes(index, 0)
         }
         this.props.dispatch(updatePlaylist(this.props.musicInfo));
         needNotify = true;
@@ -115,15 +112,17 @@ class ConnectGuestPage extends React.Component {
             for (let i = 0; i < this.props.musicInfo.length; i++) {
                 if (this.props.musicInfo[i]['_id'] === item['id']) {
                     this.props.musicInfo.splice(i, 1);
+                    this.removeLikeIndex(i)
                     break;
                 }
             }
 
         } else {
             item.selected = true;
+            this.updateLikes(this.props.musicInfo.length,0)
             this.props.musicInfo[this.props.musicInfo.length] = {
                 'play_state': 0,
-                'votes': 1,
+                'votes': 0,
                 'name': item['trackName'],
                 'uri': item['uri'],
                 'artist': item['artistName'],
@@ -158,6 +157,18 @@ class ConnectGuestPage extends React.Component {
             }) )
             this.props.dispatch(updatePlaylist(data['tracks']));
         })
+    }
+
+    updateLikes(index, value){
+        let updatedLikeArray =JSON.parse(sessionStorage.getItem("likeArray"))
+        updatedLikeArray[index] = value
+        sessionStorage.setItem("likeArray",JSON.stringify(updatedLikeArray))
+    }
+
+    removeLikeIndex(index){
+        let newLikeArray = JSON.parse(sessionStorage.getItem("likeArray"))
+        newLikeArray.splice(index,1)
+        sessionStorage.setItem("likeArray", JSON.stringify(newLikeArray))
     }
 
     render() {
@@ -222,7 +233,7 @@ class ConnectGuestPage extends React.Component {
                                              key={index}
                                              isGuest = {true}
                                              clickLike={this.likeStateChanged.bind(this)}
-                                             liked={likeDict[index] === 1}>
+                                             liked={JSON.parse(sessionStorage.getItem("likeArray"))[index] === 1}>
                                     </MusicLi>
                                 );
                             })}

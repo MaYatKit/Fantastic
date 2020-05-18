@@ -79,8 +79,9 @@ function appReducer(prevState = initState, action) {
 
         case 'UPDATE_PLAYLIST':
             // expected input: Object[]
-            console.log("update playlist")
-            let musicInfo = sort(action.data)
+            // let musicInfo = action.data.sort(e => -e.votes)
+            let musicInfo = sort(Array.from(action.data));
+
             Object.assign(newS, {
                 musicInfo: musicInfo,
                 activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
@@ -88,7 +89,6 @@ function appReducer(prevState = initState, action) {
             })
             // sessionStorage.setItem('musicInfo',JSON.stringify(musicInfo));
             return newS
-
         case 'UPDATE_ACTIVE_MUSIC':
 
             Object.assign(newS, {
@@ -119,9 +119,23 @@ let store = createStore(
 )
 
 function sort(arr){
-    if (arr.length <= 1) return arr;
+    let likeArray = JSON.parse(sessionStorage.getItem("likeArray"))
+    let combinedArray = []
+    for(var i = 0; i < arr.length; i++){
+        //combinedArray.push({'name':arr[i].name,'votes':arr[i].votes,'liked':likeArray[i]})
+        arr[i].liked = likeArray[i]
+    }
+    let sortedArray = sortTracks(arr)
+    for(var i = 0; i<arr.length; i++){
+       likeArray[i] = sortedArray[i].liked
+       delete sortedArray[i].liked
+    }
+    sessionStorage.setItem("likeArray", JSON.stringify(likeArray))
+    return sortedArray
+}
 
-    //sort from the second song in order of votes and then name
+function sortTracks(arr){
+    if (arr.length <= 1) return arr;
     let tracksToSort = arr.slice(1,arr.length)
     let sortedArray = tracksToSort.sort(function(trackA, trackB){
         let order = trackB.votes - trackA.votes
