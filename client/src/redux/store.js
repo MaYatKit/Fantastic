@@ -120,12 +120,13 @@ let store = createStore(
 
 function sort(arr){
     let likeArray = JSON.parse(sessionStorage.getItem("likeArray"))
-    let combinedArray = []
+
+    //Add like array to matching track object
     for(var i = 0; i < arr.length; i++){
-        //combinedArray.push({'name':arr[i].name,'votes':arr[i].votes,'liked':likeArray[i]})
         arr[i].liked = likeArray[i]
     }
     let sortedArray = sortTracks(arr)
+    //Seperate sorted like array and track array
     for(var i = 0; i<arr.length; i++){
        likeArray[i] = sortedArray[i].liked
        delete sortedArray[i].liked

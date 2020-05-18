@@ -22,8 +22,6 @@ const socket = io('http://localhost:1002');
 
 let needNotify = false;
 
-let likeArr = [];
-
 class ConnectHostPage extends React.Component {
 
 
@@ -169,7 +167,6 @@ class ConnectHostPage extends React.Component {
     }
 
     selectSearchItem(item) {
-        console.log(item.selected)
         if (item.selected) {
             item.selected = false;
             for (let i = 0; i < this.props.musicInfo.length; i++) {
