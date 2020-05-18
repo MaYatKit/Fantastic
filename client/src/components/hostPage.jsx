@@ -63,6 +63,7 @@ class ConnectHostPage extends React.Component {
         })
     }
 
+
     playControl(event) {
         // {
         //     nextState: 'PAUSE' or 'PLAYING'
@@ -70,8 +71,22 @@ class ConnectHostPage extends React.Component {
         //     resume: boolean
         // }
         if (event.nextState === 'PAUSE') {
+            this.props.musicInfo[0]['play_state'] = 0;
+            api.uploadPlayList(this.props.roomId, this.props.musicInfo, () => {
+                socket.emit('change_request', (data) => {
+                        // callback
+                        console.log('server responded: ', data);
+                });
+            });
             return this.props.dispatch(pause(event.uri));
         } else if (event.nextState === 'PLAYING') {
+            this.props.musicInfo[0]['play_state'] = 1;
+            api.uploadPlayList(this.props.roomId, this.props.musicInfo, () => {
+                socket.emit('change_request', (data) => {
+                    // callback
+                    console.log('server responded: ', data);
+                });
+            });
             return this.props.dispatch(play(event));
         }
     }
@@ -142,7 +157,11 @@ class ConnectHostPage extends React.Component {
                 roomId: data.room_id,
                 iniAtLanding: false
             }))
+            if (data['tracks'] !== undefined && data['tracks'].length !== 0){
+                data['tracks'][0]['play_state'] = 0;
+            }
             this.props.dispatch(updatePlaylist(data['tracks']));
+            needNotify = true;
         })
         .catch(error => {
             console.error("host page: ", error)

@@ -222,7 +222,8 @@ class ConnectGuestPage extends React.Component {
                                              key={index}
                                              isGuest = {true}
                                              clickLike={this.likeStateChanged.bind(this)}
-                                             liked={likeDict[index] === 1}>
+                                             liked={likeDict[index] === 1}
+                                             play_state = {entry.play_state}>
                                     </MusicLi>
                                 );
                             })}
