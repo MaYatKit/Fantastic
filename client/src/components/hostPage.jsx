@@ -53,7 +53,7 @@ class ConnectHostPage extends React.Component {
     }
 
     clientRequestData(){
-        return api.checkPartyCode(this.state.roomId)
+        return api.checkPartyCode(this.props.roomId)
         .then(response => {
             if(response.status !== 200){
                 alert('cannot join');
