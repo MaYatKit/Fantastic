@@ -6,6 +6,7 @@ const syncRequest = require('sync-request');
 
 
 let refreshToken = async function refreshToken(accessToken, refreshToken) {
+   
     let data = {
         grant_type: 'refresh_token',
         refresh_token: refreshToken
@@ -18,14 +19,14 @@ let refreshToken = async function refreshToken(accessToken, refreshToken) {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': body.length,
             'Authorization': 'Basic ' + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET)
-                .toString('base64')
+            .toString('base64')
         },
 
         body: body
     });
+
     let response = res.getBody('utf8');
 
-    console.log(response);
     let toJson = JSON.parse(response);
     let newAccessToken = toJson['access_token'];
     let newExpireTime = Math.floor(new Date().getTime() / 1000) + toJson['expires_in'];

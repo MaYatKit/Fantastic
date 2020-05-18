@@ -66,6 +66,7 @@ class LandingPage extends React.Component{
         .then(data => {
             // before redirecting to the host page
             // local store are updated 
+            if(!sessionStorage.getItem("likeArray"))sessionStorage.setItem("likeArray", JSON.stringify([]))
             this.props.updateRoomInfo({
                 userName: data.name,
                 roomId: data.room_id,
@@ -88,7 +89,7 @@ class LandingPage extends React.Component{
         api.checkPartyCode(id)
         .then(response => {
             if(response.status !== 200){
-                alert('cannot join')
+                alert('Couldn\'t find party, please try again')
                 return Promise.reject(response)
             }
             return response.json()
@@ -96,6 +97,7 @@ class LandingPage extends React.Component{
         .then(data => {
             // before redirecting to the guest page
             // local store are updated 
+            if(!sessionStorage.getItem("likeArray"))sessionStorage.setItem("likeArray", JSON.stringify([]))
             this.props.updateRoomInfo({
                 name: data.name,
                 roomId: data.room_id,

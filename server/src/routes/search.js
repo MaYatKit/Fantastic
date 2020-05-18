@@ -45,8 +45,6 @@ router.get('/', async (req, res) => {
             let refreshToken = userInfo[0].refreshToken;
             let expireTime = userInfo[0].expireTime;
 
-
-
             if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                 console.log("The access token is expired, request a new one now.");
                 accessToken = await re.refreshToken(accessToken, refreshToken);
