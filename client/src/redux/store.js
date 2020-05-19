@@ -85,7 +85,7 @@ function appReducer(prevState = initState, action) {
             Object.assign(newS, {
                 musicInfo: musicInfo,
                 activeMusicUri: musicInfo.length > 0 ? musicInfo[0].uri : undefined,
-                activeMusicState: 'PAUSE'
+                // activeMusicState: 'PAUSE'
             })
             // sessionStorage.setItem('musicInfo',JSON.stringify(musicInfo));
             return newS
