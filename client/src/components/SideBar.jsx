@@ -28,21 +28,9 @@ let host_items = [{
     icon: MdShare,
     to: '/host/share'
 }, {
-    item: 'TV mode',
-    icon: MdTv,
-    to: '/host/tv'
-}, {
-    item: 'Homepage',
-    icon: MdHome,
-    to: '/'
-}, {
     item: 'Exit Party',
     icon: MdHighlightOff,
     to: '/'
-}, {
-    item: 'Logout',
-    icon: MdExitToApp,
-    to: '/host/logout'
 }];
 
 let guest_items = [{
@@ -57,10 +45,6 @@ let guest_items = [{
     item: 'Share',
     icon: MdShare,
     to: '/guest/share'
-}, {
-    item: 'Homepage',
-    icon: MdHome,
-    to: '/'
 }, {
     item: 'Exit Party',
     icon: MdHighlightOff,
