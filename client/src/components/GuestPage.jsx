@@ -84,7 +84,7 @@ class ConnectGuestPage extends React.Component {
 
     getLikeArray(){
         let likeArray = JSON.parse(sessionStorage.getItem("likeArray"))
-        if(Array.isArray(likeArray)) 
+        if(Array.isArray(likeArray))
             return likeArray
         likeArray = this.props.musicInfo.map(e => {
             return 0
@@ -129,7 +129,7 @@ class ConnectGuestPage extends React.Component {
         let likeArray = this.getLikeArray()
 
         let itemInPlaylist = i !== -1
-        let index_out = i > likeArray.length 
+        let index_out = i > likeArray.length
         let liked = false
         if (!index_out) // may throw error if use condition expr
             liked = likeArray[i] > 0
@@ -260,6 +260,7 @@ class ConnectGuestPage extends React.Component {
                             {this.props.musicInfo.map((entry, index) => {
                                 return (//todo Need to sort by votes, only sort from the second song
                                     <MusicLi name={entry.name}
+                                             playState = {entry.play_state}
                                              album={entry.album}
                                              votes={entry.votes}
                                              icon={entry.albumIcon['large']}

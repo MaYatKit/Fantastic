@@ -66,7 +66,7 @@ class ConnectHostPage extends React.Component {
 
     getLikeArray(){
         let likeArray = JSON.parse(sessionStorage.getItem("likeArray"))
-        if(Array.isArray(likeArray)) 
+        if(Array.isArray(likeArray))
             return likeArray
         likeArray = this.props.musicInfo.map(e => {
             return 0
@@ -121,6 +121,7 @@ class ConnectHostPage extends React.Component {
             .then(response => {
                 let oldIndex = newMusicInfo.findIndex(e => e.uri === prevUri);
                 newMusicInfo.splice(oldIndex, 1);
+                newMusicInfo[0]['play_state'] = 1;
                 this.props.dispatch(updatePlaylist(newMusicInfo));
                 this.props.dispatch(updateActiveMusicState('PLAYING'));
                 needNotify = true;
@@ -131,7 +132,7 @@ class ConnectHostPage extends React.Component {
         let newMusicInfo = this.props.musicInfo;
         let i = newMusicInfo.findIndex(e => e.uri === uri);
         newMusicInfo.splice(i, 1);
-        
+
         this.removeLikeIndex(i)
 
         this.props.dispatch(updatePlaylist(newMusicInfo));
@@ -222,7 +223,7 @@ class ConnectHostPage extends React.Component {
         let likeArray = this.getLikeArray()
 
         let itemInPlaylist = i !== -1
-        let index_out = i > likeArray.length 
+        let index_out = i > likeArray.length
         let liked = false
         if (!index_out) // may throw error if use condition expr
             liked = likeArray[i] > 0

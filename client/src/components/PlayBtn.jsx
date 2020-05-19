@@ -9,7 +9,7 @@ import { MdPause } from "react-icons/md";
 // all possible states
 // const s = ["DISABLED", "PLAYING", "PAUSE"];
 
-export default class MusicLi extends React.Component {
+export default class PlayBtn extends React.Component {
 
 
     constructor(props) {
@@ -36,14 +36,14 @@ export default class MusicLi extends React.Component {
 
     iconFn(){
         if(this.props.playState === "PLAYING")
-            return (<MdPause className="icon"></MdPause>)
+            return (<MdPause className="icon"></MdPause>);
         else if(this.props.playState === "PAUSE" || this.props.playState === 'STOP')
-            return (<MdPlayArrow className="icon"></MdPlayArrow>)
+            return (<MdPlayArrow className="icon"></MdPlayArrow>);
     }
 
     render(){
         return (
-            <div className={"playbtn " + (this.props.disabled ? 'disabled' : '')} 
+            <div className={"playbtn " + (this.props.disabled ? 'disabled' : '')}
                 onClick={this.handleClick.bind(this)}>
                 { this.iconFn() }
             </div>
