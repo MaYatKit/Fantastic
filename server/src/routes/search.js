@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Host = require('../models/host');
-const re = require('./refreshToken');
 const syncRequest = require('sync-request');
 
 
@@ -47,7 +46,21 @@ router.get('/', async (req, res) => {
 
             if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                 console.log("The access token is expired, request a new one now.");
-                accessToken = await re.refreshToken(accessToken, refreshToken);
+                let body = {
+                    "refreshToken" : refreshToken,
+                    "accessToken" : accessToken
+                }
+
+                accessToken = fetch('http://localhost:1000/refresh', {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'include',
+                    body: body,
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json;charset=utf-8'
+                    }
+                })
             }
 
 
