@@ -13,6 +13,7 @@ import {
     pause,
     updateRoomInfo,
     updateActiveMusic,
+    restoreDefault,
     updateActiveMusicState
 } from '../redux/actions';
 import io from 'socket.io-client';
@@ -180,6 +181,25 @@ class ConnectHostPage extends React.Component {
             console.error("host page: ", error)
             alert("error: see console")
         })
+    }
+
+    componentWillUnmount(){
+        this.props.dispatch(pause())
+        .then(() => {
+            this.props.dispatch( updateActiveMusicState('STOP') );
+        })
+
+        this.props.musicInfo[0]['play_state'] = 0;
+        api.uploadPlayList(this.props.roomId, this.props.musicInfo, () => {
+            socket.emit('change_request', (data) => {
+                    // callback
+                    socket.close()
+                    console.log('server responded: ', data);
+            });
+        });
+        
+        this.props.dispatch(restoreDefault())
+        
     }
 
 

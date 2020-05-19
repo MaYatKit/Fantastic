@@ -5,7 +5,14 @@ import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
 import api from '../api';
-import { updatePlaylist, updateRoomInfo } from '../redux/actions';
+import {updatePlaylist,
+    play,
+    pause,
+    updateRoomInfo,
+    updateActiveMusic,
+    restoreDefault,
+    updateActiveMusicState 
+} from '../redux/actions';
 import io from 'socket.io-client';
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
@@ -179,6 +186,11 @@ class ConnectGuestPage extends React.Component {
             }) )
             this.props.dispatch(updatePlaylist(data['tracks']));
         })
+    }
+
+    componentWillUnmount(){
+        socket.close()
+        this.props.dispatch(restoreDefault())
     }
 
     updateLikes(index, value){

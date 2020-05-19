@@ -9,7 +9,7 @@ const UPDATE_ROOM_INFO = "UPDATE_ROOM_INFO";
 const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
 const UPDATE_ACTIVE_MUSIC_STATE = "UPDATE_ACTIVE_MUSIC_STATE";
 const UPDATE_ACTIVE_MUSIC = "UPDATE_ACTIVE_MUSIC";
-
+const RESTORE_DEFAULT = "RESTORE_DEFAULT";
 
 // define action creators here
 // let refreshHostPage = (data) => {
@@ -61,6 +61,13 @@ let updateActiveMusic = (uri) => {
     return {
         type: UPDATE_ACTIVE_MUSIC,
         data: uri
+    }
+};
+
+let restoreDefault = () => {
+    return {
+        type: RESTORE_DEFAULT,
+        data: undefined
     }
 };
 
@@ -124,5 +131,6 @@ export {updatePlaylist,
         updateRoomInfo,
         updateActiveMusicState, 
         updateActiveMusic, 
+        restoreDefault,
         play,
         pause}
