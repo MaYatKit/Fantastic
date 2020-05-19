@@ -78,8 +78,6 @@ function appReducer(prevState = initState, action) {
             return Object.assign(newS, action.data)
 
         case 'UPDATE_PLAYLIST':
-            // expected input: Object[]
-            // let musicInfo = action.data.sort(e => -e.votes)
             let musicInfo = sort(Array.from(action.data));
 
             Object.assign(newS, {
@@ -122,23 +120,6 @@ let store = createStore(
 )
 
 function sort(arr){
-    let likeArray = JSON.parse(sessionStorage.getItem("likeArray"))
-
-    //Add like array to matching track object
-    for(var i = 0; i < arr.length; i++){
-        arr[i].liked = likeArray[i]
-    }
-    let sortedArray = sortTracks(arr)
-    //Seperate sorted like array and track array
-    for(var i = 0; i<arr.length; i++){
-       likeArray[i] = sortedArray[i].liked
-       delete sortedArray[i].liked
-    }
-    sessionStorage.setItem("likeArray", JSON.stringify(likeArray))
-    return sortedArray
-}
-
-function sortTracks(arr){
     if (arr.length <= 1) return arr;
     let tracksToSort = arr.slice(1,arr.length)
     let sortedArray = tracksToSort.sort(function(trackA, trackB){

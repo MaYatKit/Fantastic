@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
         ]);
 
         if (!userInfo || userInfo.length === 0) {
-            res.status(500).json({ message: 'Hasn\'t login' });
+            res.status(500).json({ message: 'User not found' });
         } else {
             let searchType = req.query.type;
             let searchLimit = req.query.limit;
