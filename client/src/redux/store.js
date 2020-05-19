@@ -101,6 +101,9 @@ function appReducer(prevState = initState, action) {
             Object.assign(newS, {activeMusicState: action.data})
             return newS;;
 
+        case 'RESTORE_DEFAULT':
+            return Object.assign({}, initState);
+
         default:
             return Object.assign({}, prevState);
     }
