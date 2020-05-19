@@ -1,20 +1,21 @@
-require('dotenv')
-    .config();
+require('dotenv').config();
 const Host = require('../models/host');
 const querystring = require('querystring');
 const syncRequest = require('sync-request');
+const express = require('express');
+const router = express.Router();
 
 
-let refreshToken = async function refreshToken(accessToken, refreshToken) {
+router.get("/", async (req, res) => {
    
     let data = {
         grant_type: 'refresh_token',
-        refresh_token: refreshToken
+        refresh_token: req.body.refreshToken
     };
 
     let body = querystring.stringify(data);
 
-    let res = syncRequest('POST', 'https://accounts.spotify.com/api/token', {
+    let response = syncRequest('POST', 'https://accounts.spotify.com/api/token', {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': body.length,
@@ -25,23 +26,28 @@ let refreshToken = async function refreshToken(accessToken, refreshToken) {
         body: body
     });
 
-    let response = res.getBody('utf8');
-
-    let toJson = JSON.parse(response);
+    if(response.statusCode !== 200) res.status(response.statusCode).json({message: "couldn't refresh accessToken"})
+    
+    let responseBody = response.getBody('utf8');
+    let toJson = JSON.parse(responseBody);
     let newAccessToken = toJson['access_token'];
     let newExpireTime = Math.floor(new Date().getTime() / 1000) + toJson['expires_in'];
     console.log('newAccessToken: ' + newAccessToken);
     console.log('newExpireTime: ' + newExpireTime);
 
-
-    await Host.findOneAndUpdate({ accessToken: accessToken },
+    await Host.findOneAndUpdate({ accessToken: req.body.accessToken },
         {
             $set: {
                 accessToken: newAccessToken,
                 expireTime: Math.floor(new Date().getTime() / 1000) + toJson['expires_in']
             }
         });
-    return newAccessToken;
-};
 
-module.exports = { refreshToken };
+    let responseData = {
+        'accessToken': newAccessToken,
+        'newExpireTime' : newExpireTime
+    }
+    res.status(200).json(responseData)
+});
+
+module.exports = router;
