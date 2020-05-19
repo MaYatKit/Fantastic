@@ -1,8 +1,8 @@
 import React from 'react';
-import "./MusicLi.css"
-import PlayBtn from './PlayBtn'
-import LikeBtn from './LikeBtn'
-import NextRemoveBtn from './NextRemoveBtn'
+import './MusicLi.css';
+import PlayBtn from './PlayBtn';
+import LikeBtn from './LikeBtn';
+import NextRemoveBtn from './NextRemoveBtn';
 import { connect } from 'react-redux';
 
 class MusicLi extends React.Component {
@@ -12,124 +12,124 @@ class MusicLi extends React.Component {
         this.state = {};
     }
 
-    musicStateText(props){
-        let text = props.votes === 0 ? "Not in Queue" : `${props.votes} votes`;
+    musicStateText(props) {
+        let text = props.votes === 0 ? 'Not in Queue' : `${props.votes} votes`;
         return text;
     }
 
-    clickLike(){
-        console.log("you clicked like button")
+    clickLike() {
+        console.log('you clicked like button');
     }
 
-    IsActive(){
-        return this.props.uri === this.props.activeMusicUri
+    IsActive() {
+        return this.props.uri === this.props.activeMusicUri;
     }
 
-    playControlMli(info){
+    playControlMli(info) {
         // stop/pause -> playing
         // playing -> pause
 
-        if(!this.IsActive())
+        if (!this.IsActive())
             // control button only appear in the topmost music
-            return
-        let nextState, resume
-        let uri = this.props.uri
-        let s = this.props.activeMusicState
+        {
+            return;
+        }
+        let nextState,
+            resume;
+        let uri = this.props.uri;
+        let s = this.props.activeMusicState;
 
-        if(s === 'PAUSE' || s === 'STOP')
-            nextState = 'PLAYING'
-        else if(s === 'PLAYING')
-            nextState = 'PAUSE'
+        if (s === 'PAUSE' || s === 'STOP') {
+            nextState = 'PLAYING';
+        } else if (s === 'PLAYING') {
+            nextState = 'PAUSE';
+        }
 
-        resume = (s !== 'STOP')
+        resume = (s !== 'STOP');
 
-        this.props.playControl({uri, nextState, resume})
+        this.props.playControl({
+            uri,
+            nextState,
+            resume
+        });
     }
 
-    nextOrRemove(type){
-        if(type === 'NEXT'){
-            this.props.playNext()
-        }else if(type === 'REMOVE'){
-            this.props.removeAMusic(this.props.uri)
+    nextOrRemove(type) {
+        if (type === 'NEXT') {
+            this.props.playNext();
+        } else if (type === 'REMOVE') {
+            this.props.removeAMusic(this.props.uri);
         }
     }
 
-    render(){
+    render() {
         return (
-        <div className={"musicli " + (this.props.index % 2 === 0 ? "even" : "")}>
-            <div className="img">
-                <img src={this.props.icon} alt=""/>
-            </div>
+            <div className={'musicli ' + (this.props.index % 2 === 0 ? 'even' : '')}>
+                <div className="img">
+                    <img src={this.props.icon} alt=""/>
+                </div>
 
-            <div className="info">
-            <div className="top">
-                {this.props.name}
-            </div>
-            <div className="bottom clearfix">
+                <div className="info">
+                    <div className="top">
+                        {this.props.name}
+                    </div>
+                    <div className="bottom clearfix">
                 <span className="album-name">
                 {this.props.album}
                 </span>
-                <span className="dot">.</span>
-                <span className="state">
+                        <span className="dot">.</span>
+                        <span className="state">
                 {this.musicStateText(this.props)}
                 </span>
-            </div>
-            </div>
-
-
-
-            {this.props.isGuest ?
-                <div className="control">
-                    {
-                        this.props.index === 0 ?
-                            <PlayBtn disabled={true}
-                                     playState={this.props.play_state === 1?  "PLAYING":  "PAUSE"}>
-                            </PlayBtn>
-                            : <LikeBtn
-                                       clickLike={this.props.clickLike}
-                                       liked = {this.props.liked}
-                                       index = {this.props.index}>
-                            </LikeBtn>
-                    }
+                    </div>
                 </div>
 
-                :
 
-                <div className="control">
-                    {
-                        this.IsActive() ?
-                            <PlayBtn playControl={this.playControlMli.bind(this)}
-                                     playState={this.props.activeMusicState}>
-                            </PlayBtn>
-                            : ''
-                    }
+                {this.props.isGuest ?
+                    <div className="control">
+                        {
+                            this.props.index === 0 ? <PlayBtn disabled={true} playState={this.props.playState === 1 ? 'PLAYING' : 'PAUSE'}/>
+                                : <LikeBtn clickLike={this.props.clickLike} liked={this.props.liked} index={this.props.index}/>
+                        }
+                    </div>
 
-                    {
-                        this.IsActive() ?
-                            <NextRemoveBtn type={'NEXT'}
-                                           parentHandler={this.nextOrRemove.bind(this)}>
-                            </NextRemoveBtn> :
-                            <NextRemoveBtn type={'REMOVE'}
-                                           parentHandler={this.nextOrRemove.bind(this)}>
-                            </NextRemoveBtn>
-                    }
+                    :
 
-                    {
-                        !this.IsActive() ?
-                            <LikeBtn
-                                clickLike={this.props.clickLike}
-                                liked = {this.props.liked}
-                                index = {this.props.index}>
-                            </LikeBtn>
-                            : ''
-                    }
+                    <div className="control">
+                        {
+                            this.IsActive() ?
+                                <PlayBtn playControl={this.playControlMli.bind(this)}
+                                         playState={this.props.activeMusicState}>
+                                </PlayBtn>
+                                : ''
+                        }
+
+                        {
+                            this.IsActive() ?
+                                <NextRemoveBtn type={'NEXT'}
+                                               parentHandler={this.nextOrRemove.bind(this)}>
+                                </NextRemoveBtn> :
+                                <NextRemoveBtn type={'REMOVE'}
+                                               parentHandler={this.nextOrRemove.bind(this)}>
+                                </NextRemoveBtn>
+                        }
+
+                        {
+                            !this.IsActive() ?
+                                <LikeBtn
+                                    clickLike={this.props.clickLike}
+                                    liked={this.props.liked}
+                                    index={this.props.index}>
+                                </LikeBtn>
+                                : ''
+                        }
 
 
-                </div>
+                    </div>
 
-            }
+                }
 
-        </div>
+            </div>
         );
     }
 }
