@@ -34,8 +34,6 @@ class ConnectHostPage extends React.Component {
             active: false,
         };
 
-        if(!sessionStorage.getItem("likeArray")) sessionStorage.setItem("likeArray",JSON.stringify([]))
-
         this.GetResult = this.GetResult.bind(this);
         this.searchRef = React.createRef();
         this.initWs = this.initWs.bind(this);
@@ -63,18 +61,6 @@ class ConnectHostPage extends React.Component {
             return response.json();
         })
     }
-
-    getLikeArray(){
-        let likeArray = JSON.parse(sessionStorage.getItem("likeArray"))
-        if(Array.isArray(likeArray))
-            return likeArray
-        likeArray = this.props.musicInfo.map(e => {
-            return 0
-        })
-        sessionStorage.setItem("likeArray",JSON.stringify(likeArray))
-        return likeArray
-    }
-
 
     playControl(event) {
         // {
@@ -131,6 +117,7 @@ class ConnectHostPage extends React.Component {
     removeAMusic(uri) {
         let newMusicInfo = this.props.musicInfo;
         let i = newMusicInfo.findIndex(e => e.uri === uri);
+        this.removeTrackFromLiked(newMusicInfo[i].uri)
         newMusicInfo.splice(i, 1);
 
         this.removeLikeIndex(i)
@@ -207,10 +194,10 @@ class ConnectHostPage extends React.Component {
     likeStateChanged(index, isLike) {
         let newList = Array.from(this.props.musicInfo);
         if (isLike) {
-            this.updateLikes(index, 1)
+            this.addTrackToLiked(newList[index].uri)
             newList[index]['votes'] = newList[index]['votes'] + 1;
         } else {
-            this.updateLikes(index,0)
+            this.removeTrackFromLiked(newList[index].uri)
             newList[index]['votes'] = newList[index]['votes'] - 1;
         }
         this.props.dispatch(updatePlaylist(this.props.musicInfo));
@@ -219,28 +206,22 @@ class ConnectHostPage extends React.Component {
 
     selectSearchItem(item) {
         let musicInfoCopy = Array.from(this.props.musicInfo)
-        let i = musicInfoCopy.findIndex(e => e.uri === item.uri)
-        let likeArray = this.getLikeArray()
-
-        let itemInPlaylist = i !== -1
-        let index_out = i > likeArray.length
-        let liked = false
-        if (!index_out) // may throw error if use condition expr
-            liked = likeArray[i] > 0
-
-        if (itemInPlaylist && liked) {
-            this.removeLikeIndex(i)
-            musicInfoCopy[i].votes -= 1
-            item.selected = false
-            alert("this song already in list, you just **unvoted**")
-        }
-        else if(itemInPlaylist && !liked){
-            this.updateLikes(i, 1)
-            musicInfoCopy[i].votes += 1
-            item.selected = true
-            alert("this song already in list, you just **voted**")
-        }
-        else if(!itemInPlaylist){
+        let i = musicInfoCopy.findIndex(e => e.uri === item.uri) 
+        if (i !== -1){
+            let liked = this.trackIsLiked(musicInfoCopy[i].uri)
+            if (liked) {
+                this.removeTrackFromLiked(musicInfoCopy[i].uri)
+                musicInfoCopy[i].votes -= 1
+                item.selected = false
+                alert("This song already in the queue, you just **unvoted**")
+            }
+            else {
+                this.addTrackToLiked(musicInfoCopy[i].uri)
+                musicInfoCopy[i].votes += 1
+                item.selected = true
+                alert("This song already in the queue, you just **voted**")
+            }
+        }else {
             musicInfoCopy.push({
                 'play_state': 0,
                 'votes': 0,
@@ -253,7 +234,6 @@ class ConnectHostPage extends React.Component {
                     'large': item.albumIcon['large'].url
                 }
             })
-            this.updateLikes(musicInfoCopy.length, 0)
             item.selected = true
         }
 
@@ -261,16 +241,24 @@ class ConnectHostPage extends React.Component {
         needNotify = true;
     }
 
-    updateLikes(index, value){
-        let updatedLikeArray =JSON.parse(sessionStorage.getItem("likeArray"))
-        updatedLikeArray[index] = value
-        sessionStorage.setItem("likeArray",JSON.stringify(updatedLikeArray))
+    removeTrackFromLiked(trackUri){
+        let likedTracks = JSON.parse(sessionStorage.getItem("likedTracks"))
+        let indexOfTrack = likedTracks.indexOf(trackUri)
+        if(indexOfTrack !== -1) likedTracks.splice(indexOfTrack, 1)
+        sessionStorage.setItem("likedTracks", JSON.stringify(likedTracks))
     }
 
-    removeLikeIndex(index){
-        let newLikeArray = JSON.parse(sessionStorage.getItem("likeArray"))
-        newLikeArray.splice(index,1)
-        sessionStorage.setItem("likeArray", JSON.stringify(newLikeArray))
+    addTrackToLiked(trackUri){
+        let likedTracks=JSON.parse(sessionStorage.getItem("likedTracks"))
+        likedTracks.push(trackUri)
+        sessionStorage.setItem("likedTracks", JSON.stringify(likedTracks))
+    }
+
+    trackIsLiked(trackUri){
+        let likedTracks=JSON.parse(sessionStorage.getItem("likedTracks"))
+        let indexOfTrack = likedTracks.indexOf(trackUri)
+        if(indexOfTrack === -1) return false
+        return true
     }
 
     render() {
@@ -343,7 +331,7 @@ class ConnectHostPage extends React.Component {
                                                  index={index}
                                                  key={entry.uri}
                                                  clickLike={this.likeStateChanged.bind(this)}
-                                                 liked={JSON.parse(sessionStorage.getItem("likeArray"))[index] === 1}>
+                                                 liked={this.trackIsLiked(entry.uri)}>
                                         </MusicLi>
                                     );
                                 }) : <span className={'hint'}> Search to add musics </span>
@@ -387,6 +375,3 @@ const mapStateToProps = (state, ownProps) => {
 
 
 export const HostPage = connect(mapStateToProps, null)(ConnectHostPage);
-
-
-// export default HostPage;
