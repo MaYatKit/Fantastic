@@ -120,8 +120,6 @@ class ConnectHostPage extends React.Component {
         this.removeTrackFromLiked(newMusicInfo[i].uri)
         newMusicInfo.splice(i, 1);
 
-        this.removeLikeIndex(i)
-
         this.props.dispatch(updatePlaylist(newMusicInfo));
         needNotify = true;
     }
