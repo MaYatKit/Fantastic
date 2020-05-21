@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 import { Link, BrowserRouter} from "react-router-dom";
+import playBack from '../playBack';
 
 class LandingPage extends React.Component{
     constructor(props) {
@@ -27,6 +28,9 @@ class LandingPage extends React.Component{
         // this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
         this.login = this.login.bind(this);
+
+        // this.initPlayback = this.initPlayback.bind(this);
+        // this.initPlayback();
     }
 
     inputChange(event){
@@ -66,12 +70,12 @@ class LandingPage extends React.Component{
         .then(data => {
             // before redirecting to the host page
             // local store are updated
-            if(!sessionStorage.getItem("likedTracks"))sessionStorage.setItem("likedTracks", JSON.stringify([]))
+            if(!sessionStorage.getItem("likedTracks"))sessionStorage.setItem("likedTracks", JSON.stringify([]));
             this.props.updateRoomInfo({
                 userName: data.name,
                 roomId: data.room_id,
                 iniAtLanding: true
-            })
+            });
             this.props.updatePlaylist(data['tracks'])
             this.props.updateActiveMusicState('STOP')
             this.setRedirect('/host')
