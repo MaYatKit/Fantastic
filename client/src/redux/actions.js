@@ -84,7 +84,7 @@ function play(event){
         let s = getState()
         let fetchFn, dispatchFn, dArg;
 
-        // play a new one or resume 
+        // play a new one or resume
         if( event.resume ){
             fetchFn = playBack.resume
             dispatchFn = updateActiveMusicState
@@ -124,13 +124,13 @@ function pause(){
 
 
 
-export {updatePlaylist, 
+export {updatePlaylist,
         // readLocalList,
-        // refreshHostPage, 
-        // refreshPlaylist, 
+        // refreshHostPage,
+        // refreshPlaylist,
         updateRoomInfo,
-        updateActiveMusicState, 
-        updateActiveMusic, 
+        updateActiveMusicState,
+        updateActiveMusic,
         restoreDefault,
         play,
         pause}

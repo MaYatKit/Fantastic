@@ -4,20 +4,19 @@ const router = express.Router()
 const Host = require('../models/host')
 
 router.get("/spotify", passport.authenticate("spotify", {
-    scope: ["user-read-email","user-read-private"]}
+    scope: ["user-read-email","user-read-private", "streaming", "user-modify-playback-state"]}
 ))
 
 router.get("/spotify/callback/", passport.authenticate("spotify", {session: false}),
     (req, res)=>{
         //redirect the user to the frontend.
-        let body = {
-            accessToken: req.user.accessToken,
-            refreshToken: req.user.refreshToken,
-            expireTime: req.user.expireTime
-        }
+        // let body = {
+        //     accessToken: req.user.accessToken,
+        //     refreshToken: req.user.refreshToken,
+        //     expireTime: req.user.expireTime
+        // }
 
-        res.cookie("user", req.user.id)
-        res.body = body
+        res.cookie("user", req.user.id);
         res.redirect("http://localhost:3000")
     }
 )

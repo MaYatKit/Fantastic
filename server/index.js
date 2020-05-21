@@ -47,7 +47,7 @@ const search = require("./src/routes/search")
 app.use("/search", search)
 
 const refreshToken = require("./src/routes/refreshToken")
-app.use("/refresh", refreshToken)
+app.use("/refresh", refreshToken.router)
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

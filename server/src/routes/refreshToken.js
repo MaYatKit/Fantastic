@@ -6,48 +6,108 @@ const express = require('express');
 const router = express.Router();
 
 
-router.get("/", async (req, res) => {
-   
+let refreshToken = async function refreshToken(accessToken, refreshToken) {
+
     let data = {
         grant_type: 'refresh_token',
-        refresh_token: req.body.refreshToken
+        refresh_token: refreshToken
     };
 
     let body = querystring.stringify(data);
 
-    let response = syncRequest('POST', 'https://accounts.spotify.com/api/token', {
+    let res = syncRequest('POST', 'https://accounts.spotify.com/api/token', {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': body.length,
             'Authorization': 'Basic ' + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET)
-            .toString('base64')
+                .toString('base64')
         },
 
         body: body
     });
 
-    if(response.statusCode !== 200) res.status(response.statusCode).json({message: "couldn't refresh accessToken"})
-    
-    let responseBody = response.getBody('utf8');
-    let toJson = JSON.parse(responseBody);
+    let response = res.getBody('utf8');
+
+    let toJson = JSON.parse(response);
     let newAccessToken = toJson['access_token'];
     let newExpireTime = Math.floor(new Date().getTime() / 1000) + toJson['expires_in'];
     console.log('newAccessToken: ' + newAccessToken);
     console.log('newExpireTime: ' + newExpireTime);
 
-    await Host.findOneAndUpdate({ accessToken: req.body.accessToken },
+
+    await Host.findOneAndUpdate({ accessToken: accessToken },
         {
             $set: {
                 accessToken: newAccessToken,
                 expireTime: Math.floor(new Date().getTime() / 1000) + toJson['expires_in']
             }
         });
+    return newAccessToken;
+};
 
-    let responseData = {
-        'accessToken': newAccessToken,
-        'newExpireTime' : newExpireTime
-    }
-    res.status(200).json(responseData)
+
+
+//getTokenByPartyId
+router.get("/:partyid", async (req,res,next)=>{
+    //Find from database the party id, user name and tracks
+    //of a party given the host username.
+
+    await Host.findOne({"party.id": req.params.partyid}).then( async partyExists =>{
+        if (partyExists){
+            let userInfo = await Host.aggregate([
+                { '$match': {  "party.id": req.params.partyid} },
+                {
+                    '$group': {
+                        _id: null,
+                        id: { '$first': '$party.id' },
+                        name: { '$first': '$name' },
+                        accessToken: { '$first': '$accessToken' },
+                        refreshToken: { '$first': '$refreshToken' },
+                        expireTime: {'$first' : '$expireTime'}
+                    }
+                },
+                {
+                    '$project': {
+                        id: 1,
+                        name: 1,
+                        _id: 0,
+                        accessToken: 1,
+                        refreshToken: 1,
+                        expireTime: 1
+                    }
+                }
+            ]);
+
+            if (!userInfo || userInfo.length === 0) {
+                res.status(500).json({ message: 'User not found' });
+            } else {
+                let searchType = req.query.type;
+                let searchLimit = req.query.limit;
+                let searchText = req.query.q;
+                let partyId = userInfo[0].id;
+                let userName = userInfo[0].name;
+                let accessToken = userInfo[0].accessToken;
+                let refreshToken = userInfo[0].refreshToken;
+                let expireTime = userInfo[0].expireTime;
+
+                if (Math.floor(new Date().getTime() / 1000) >= expireTime){
+                    console.log("The access token is expired, request a new one now.");
+
+                    accessToken = await refreshToken(accessToken, refreshToken);
+                }
+                let responseData = {
+                    'accessToken': accessToken
+                };
+                res.status(200).json(responseData)
+            }
+            res.end();
+        }else{
+            res.status(404).json({message: "couldn't find party"})
+        }
+    });
 });
 
-module.exports = router;
+module.exports =  {
+    router : router,
+    refreshToken : refreshToken
+};

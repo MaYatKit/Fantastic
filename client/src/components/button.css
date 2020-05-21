@@ -42,8 +42,9 @@
 }
 
 .button:focus {
-  outline: 1px solid #dddddd;
-  outline-offset: -4px;
+  /*outline: 1px solid #dddddd;*/
+  /*outline-offset: -4px;*/
+  outline:none;
 }
 
 .button:active {
