@@ -38,14 +38,12 @@ var allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 
 //Exporting routes
-const auth = require("./src/routes/auth-route")
+const auth = require("./src/routes/auth")
 app.use("/auth", auth)
-const party = require("./src/routes/party-route")
+const party = require("./src/routes/party")
 app.use("/party", party)
-
 const search = require("./src/routes/search")
 app.use("/search", search)
-
 const refreshToken = require("./src/routes/refreshToken")
 app.use("/refresh", refreshToken)
 

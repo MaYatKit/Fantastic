@@ -1,16 +1,16 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import mongoose from 'mongoose'
+import mongoose, { get } from 'mongoose'
 import express from 'express'
 import partyRoutes from '../src/routes/party'
 import fetch from 'isomorphic-unfetch'
 import host from '../src/models/host'
 import cookieParser from 'cookie-parser'
 
-let server
+let server, mongo
 
 describe('Test for adding and editing playlists users in mongodb', ()=>{
     beforeAll(async done =>{
-        let mongo = new MongoMemoryServer();
+        mongo = new MongoMemoryServer();
         let connectionString = await mongo.getConnectionString()
         await mongoose.connect(connectionString, {useNewUrlParser: true})
 
@@ -18,16 +18,14 @@ describe('Test for adding and editing playlists users in mongodb', ()=>{
         app.use(express.json())
         app.use("/party", partyRoutes)
         server = app.listen(8080, ()=> done())
-        done()
     })
 
     afterAll(async done =>{
-        await mongoose.connection.dropDatabase()
-        await mongoose.connection.close()
-        server.close(async ()=>{
+        server.close(async () => {
+            await mongoose.disconnect();
+            await mongo.stop();
             done()
-        })
-        done()
+        });
     })
 
     beforeEach(async ()=>{
@@ -62,7 +60,7 @@ describe('Test for adding and editing playlists users in mongodb', ()=>{
     it("GET /party/id: successfully get party details with party ID", async ()=>{
         let response = await fetch("http://localhost:8080/party/abc")
         let partyDetails = await response.json()
-        console.log("response " + JSON.stringify(partyDetails))
+
         expect(partyDetails).toBeTruthy()
         expect(partyDetails.name).toBe("testHost")
         expect(partyDetails.room_id).toBe("abc")
@@ -70,7 +68,10 @@ describe('Test for adding and editing playlists users in mongodb', ()=>{
     })
 
     it("GET /party/id: send incorrect ID and get 404", async ()=>{
-        let response = await fetch("http://localhost:8080/party/123")
+        let response = await fetch("http://localhost:8080/party",{
+            method: GET,
+
+        })
         expect(response.status).toBe(404)
     })
 
