@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Host = require('../models/host');
-const re = require('./refreshToken');
+const re = require('./refresh');
 const syncRequest = require('sync-request');
 
 
@@ -47,28 +47,10 @@ router.get('/', async (req, res) => {
 
             if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                 console.log("The access token is expired, request a new one now.");
-                // Can not use fetch in here
-                // accessToken = fetch('http://localhost:1000/refresh', {
-                //     method: 'GET',
-                //     mode: 'cors',
-                //     credentials: 'include',
-                //     body: body,
-                //     headers: {
-                //         Accept: 'application/json',
-                //         'Content-Type': 'application/json;charset=utf-8'
-                //     }
-                // })
                 accessToken = await re.refreshToken(accessToken, refreshToken);
             }
 
-
-            let searchRes = syncRequest('GET', 'https://api.spotify.com/v1/search?q=' + searchText + '&type=' + searchType + '&limit=' + searchLimit, {
-                headers: {
-                    Accept: "application/json",
-                    'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': 'Bearer ' + accessToken
-                }
-            });
+            let searchRes = callSpotifySearch(searchText, searchType, searchLimit, accessToken)
 
             if(searchRes.statusCode === 200){
                 let response = searchRes.getBody('utf8');
@@ -86,4 +68,18 @@ router.get('/', async (req, res) => {
     }
 });
 
-module.exports = router;
+let callSpotifySearch = async function callSpotifySearch(searchText, searchType, searchLimit, accessToken){
+    let searchRes = syncRequest('GET', 'https://api.spotify.com/v1/search?q=' + searchText + '&type=' + searchType + '&limit=' + searchLimit, {
+        headers: {
+            Accept: "application/json",
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': 'Bearer ' + accessToken
+        }
+    })
+    return searchRes
+}
+
+module.exports = {
+    router : router,
+    callSpotifySearch : callSpotifySearch
+}

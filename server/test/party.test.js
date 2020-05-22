@@ -6,16 +6,17 @@ import fetch from 'isomorphic-unfetch'
 import host from '../src/models/host'
 import cookieParser from 'cookie-parser'
 
-let server, mongo
+let server, mongo, app
 
-describe('Test for adding and editing playlists users in mongodb', ()=>{
+describe('Tests for /party endpoints', ()=>{
     beforeAll(async done =>{
-        mongo = new MongoMemoryServer();
+        mongo = new MongoMemoryServer()
         let connectionString = await mongo.getConnectionString()
         await mongoose.connect(connectionString, {useNewUrlParser: true})
 
-        let app = express()
+        app = express()
         app.use(express.json())
+        app.use(cookieParser())
         app.use("/party", partyRoutes)
         server = app.listen(8080, ()=> done())
     })
@@ -57,6 +58,33 @@ describe('Test for adding and editing playlists users in mongodb', ()=>{
         await mongoose.connection.db.dropCollection("hosts")
     })
 
+    it("GET /party: successfully get party details with host ID", async () =>{
+        let response = await fetch("http://localhost:8080/party",{
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json;charset=utf-8',
+                Cookie: 'user=234'
+            },
+        })
+        let partyDetails = await response.json()
+        expect(response.status).toBe(200)
+        expect(partyDetails.name).toBe("testHost")
+        expect(partyDetails.room_id).toBe("abc")
+    })
+
+    it("GET /party: cookie with incorrect host ID and get 404", async () =>{
+        let response = await fetch("http://localhost:8080/party",{
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json;charset=utf-8',
+                Cookie: 'user=567'
+            },
+        })
+        expect(response.status).toBe(404)
+    })
+
     it("GET /party/id: successfully get party details with party ID", async ()=>{
         let response = await fetch("http://localhost:8080/party/abc")
         let partyDetails = await response.json()
@@ -68,10 +96,7 @@ describe('Test for adding and editing playlists users in mongodb', ()=>{
     })
 
     it("GET /party/id: send incorrect ID and get 404", async ()=>{
-        let response = await fetch("http://localhost:8080/party",{
-            method: GET,
-
-        })
+        let response = await fetch("http://localhost:8080/party/123")
         expect(response.status).toBe(404)
     })
 

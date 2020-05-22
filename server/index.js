@@ -43,8 +43,8 @@ app.use("/auth", auth)
 const party = require("./src/routes/party")
 app.use("/party", party)
 const search = require("./src/routes/search")
-app.use("/search", search)
-const refreshToken = require("./src/routes/refreshToken")
+app.use("/search", search.router)
+const refreshToken = require("./src/routes/refresh")
 app.use("/refresh", refreshToken.router)
 
 app.get('/', (req, res) => {
