@@ -1,5 +1,5 @@
-<a href="https://festify.rocks/">
-    <img title="Festify Logo" height="150" src="https://github.com/BennyChun/Group-9-Amethyst-Ant/blob/master/client/src/image/logo.png">
+<a href="https://Fantastic.com/">
+    <img title="Fantastic Logo" height="150" src="https://github.com/BennyChun/Group-9-Amethyst-Ant/blob/master/client/src/image/logo.png">
 </a>
 
 # Fantastic 
