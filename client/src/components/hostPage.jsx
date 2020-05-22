@@ -17,6 +17,7 @@ import {
     updateActiveMusicState
 } from '../redux/actions';
 import io from 'socket.io-client';
+import playBack from '../playBack';
 
 
 const socket = io('http://localhost:1002');
@@ -142,12 +143,29 @@ class ConnectHostPage extends React.Component {
         }
     }
 
+    getParamFromUrl() {
+        if (window.location.search === '') {
+            window.location.href = '/';
+        }
+        let query = window.location.search.split('&');
+        query[0] = query[0].split('?')[1];
+        let param = {};
+        for (let i = 0; i < query.length; i++) {
+            let q = query[i].split('=');
+            if (q.length === 2) {
+                param[q[0]] = q[1].replace('%20', ' ');
+            }
+        }
+        return param;
+    }
+
     componentDidMount() {
         if(this.props.iniAtLanding)
             return
 
+        let param = this.getParamFromUrl();
         // refresh page at path /host
-        api.createParty()
+        api.checkPartyCode(param['roomId'])
         .then(response => {
             return response.json();
         })
@@ -161,6 +179,7 @@ class ConnectHostPage extends React.Component {
                 data['tracks'][0]['play_state'] = 0;
             }
             this.props.dispatch(updatePlaylist(data['tracks']));
+            playBack.getTokenFromServer(data.room_id);
             needNotify = true;
         })
         .catch(error => {
@@ -183,9 +202,9 @@ class ConnectHostPage extends React.Component {
                     console.log('server responded: ', data);
             });
         });
-        
+
         this.props.dispatch(restoreDefault())
-        
+
     }
 
 
@@ -204,7 +223,7 @@ class ConnectHostPage extends React.Component {
 
     selectSearchItem(item) {
         let musicInfoCopy = Array.from(this.props.musicInfo)
-        let i = musicInfoCopy.findIndex(e => e.uri === item.uri) 
+        let i = musicInfoCopy.findIndex(e => e.uri === item.uri)
         if (i !== -1){
             let liked = this.trackIsLiked(musicInfoCopy[i].uri)
             if (liked) {

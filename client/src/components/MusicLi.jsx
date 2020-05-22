@@ -13,7 +13,7 @@ class MusicLi extends React.Component {
     }
 
     musicStateText(props) {
-        let text = props.votes === 0 ? 'Not in Queue' : `${props.votes} votes`;
+        let text = `${props.votes} votes`;
         return text;
     }
 
