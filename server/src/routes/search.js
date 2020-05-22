@@ -39,8 +39,6 @@ router.get('/', async (req, res) => {
             let searchType = req.query.type;
             let searchLimit = req.query.limit;
             let searchText = req.query.q;
-            let partyId = userInfo[0].id;
-            let userName = userInfo[0].name;
             let accessToken = userInfo[0].accessToken;
             let refreshToken = userInfo[0].refreshToken;
             let expireTime = userInfo[0].expireTime;
@@ -50,8 +48,13 @@ router.get('/', async (req, res) => {
                 accessToken = await re.refreshToken(accessToken, refreshToken);
             }
 
-            let searchRes = callSpotifySearch(searchText, searchType, searchLimit, accessToken)
-
+            let searchRes = syncRequest('GET', 'https://api.spotify.com/v1/search?q=' + searchText + '&type=' + searchType + '&limit=' + searchLimit, {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            })
             if(searchRes.statusCode === 200){
                 let response = searchRes.getBody('utf8');
                 let jsonResult = JSON.parse(response);
@@ -63,23 +66,10 @@ router.get('/', async (req, res) => {
         }
         res.end();
     } catch (err) {
+        console.log(err.message)
         res.status(500).json({ message: err.message });
         res.end();
     }
 });
 
-let callSpotifySearch = async function callSpotifySearch(searchText, searchType, searchLimit, accessToken){
-    let searchRes = syncRequest('GET', 'https://api.spotify.com/v1/search?q=' + searchText + '&type=' + searchType + '&limit=' + searchLimit, {
-        headers: {
-            Accept: "application/json",
-            'Content-Type': 'application/json;charset=utf-8',
-            'Authorization': 'Bearer ' + accessToken
-        }
-    })
-    return searchRes
-}
-
-module.exports = {
-    router : router,
-    callSpotifySearch : callSpotifySearch
-}
+module.exports = router
