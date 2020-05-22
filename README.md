@@ -1,11 +1,11 @@
-<a href="https://Fantastic.com/">
+<a href="https://fantastic.com/">
     <img title="Fantastic Logo" height="150" src="https://github.com/BennyChun/Group-9-Amethyst-Ant/blob/master/client/src/image/logo.png">
 </a>
 
 # Fantastic 
 
 
-Fantastic is a party webapp that lets your guests choose which music should be played in the party. [Fantastic](https://festify.rocks/)
+Fantastic is a party webapp that lets your guests choose which music should be played in the party. [Fantastic](https://fantastic.rocks/)
 
 ## Building
 
