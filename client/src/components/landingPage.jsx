@@ -78,7 +78,7 @@ class LandingPage extends React.Component{
             });
             this.props.updatePlaylist(data['tracks'])
             this.props.updateActiveMusicState('STOP')
-            this.setRedirect('/host')
+            this.setRedirect('/host?roomId=' + data.room_id + "&host_name=" + data.name)
         })
         .catch(e=> {
             console.log("Create room failed: " + e);
