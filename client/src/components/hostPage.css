@@ -1,3 +1,14 @@
+.content_container{
+    padding-left: 260px;
+}
+
+@media (max-width: 768px) {
+    .content_container{
+        padding-left: 0;
+    }
+    
+}
+
 .page {
     place-items: center;
     margin-top: 0;
@@ -14,11 +25,28 @@
     opacity: 0.95;
 }
 
-.tracklist {
-    width: 100%;
-    text-align: center;
+@media (max-width: 768px) {
+    .search-results{
+        left: 60px;
+        width: calc(100vw - 60px)
+    }
+    
 }
 
+.tracklist {
+    text-align: center;
+    padding: 0 30px;
+    width: calc(100vw - 260px);
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .tracklist{
+        width: calc(100vw - 60px);;
+        margin-left: 60px;
+    }
+    
+}
 
 .tracklist > .hint{
     font-size: 1.5rem;

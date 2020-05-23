@@ -55,47 +55,53 @@ export default class SideBar extends React.Component {
 
     constructor(props) {
         super(props);
-        this.itemOnclick = this.itemOnclick.bind(this);
+        this.resp_toggle.bind(this);
         this.state = {
+            respShow: false
         };
     }
 
 
-    itemOnclick(item, changeStyle) {
-        // items.map((entry, index) => {
-
-        //     entry.selected = entry.item === item;
-        // });
-        // this.setState({data:items});
-
-        // this.render();
+    resp_toggle(boolean){
+        this.setState(
+            { respShow: boolean }
+        )
     }
 
     render() {
         let items = this.props.isGuest ? guest_items : host_items
         return (
-            <div className={'side_bar'}>
+            <div className={'side_bar_container'}>
 
-                <SideBarIcon className={'side_bar_icon'}
-                             userName={this.props.userName} roomId = {this.props.roomId}> </SideBarIcon>
-
-
-                <div className={'side_bar_item_list'}>
-
-                    {items.map((entry, index) => {
-                            return (<SideBarItem
-                                data = {this.state.data}
-                                item={entry.item}
-                                icon={entry.icon}
-                                index={index}
-                                key={index}
-                                to={entry.to}
-                                itemOnclick={this.itemOnclick}>
-                            </SideBarItem>);
-                        }
-                    )}
+                <div className={'small_menu'}
+                    onClick={() => this.resp_toggle(true)}>                       
                 </div>
-            </div>
+                <div className={'cover' + (this.state.respShow ? '' : 'resp_show')} 
+                    onClick={() => this.resp_toggle(false)}>
+                </div>
+
+                <div className={'side_bar ' + (this.state.respShow ? 'resp_show' : '')}>
+
+                    <SideBarIcon className={'side_bar_icon'}
+                                userName={this.props.userName} roomId = {this.props.roomId}> </SideBarIcon>
+
+
+                    <div className={'side_bar_item_list'}>
+
+                        {items.map((entry, index) => {
+                                return (<SideBarItem
+                                    data = {this.state.data}
+                                    item={entry.item}
+                                    icon={entry.icon}
+                                    index={index}
+                                    key={index}
+                                    to={entry.to}>
+                                </SideBarItem>);
+                            }
+                        )}
+                    </div>
+                </div>
+                </div>
         );
     }
 }

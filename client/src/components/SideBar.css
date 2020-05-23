@@ -1,4 +1,4 @@
-.side_bar {
+.side_bar_container > .side_bar {
     display: inline-block;
     height: 100%; /* Full-height: remove this if you want "auto" height */
     width: 260px; /* Set the width of the sidebar */
@@ -8,6 +8,43 @@
     left: 0;
     background-color: #1f2127; /* Black */
     overflow-x: hidden; /* Disable horizontal scroll */
+    transition: all .3s;
+}
+
+.side_bar_container > .cover{
+    display: none;
+    width: calc(100vw - 60px);
+    height: 100vh;
+    position: fixed;
+    z-index: 101;
+    left: 60px;
+    top: 0;
+    cursor: pointer;
+    background-color: rgba(1,1,1,.6);
+}
+
+.side_bar_container > .small_menu{
+    height: 100vh;
+    width: 60px;
+    position: fixed;
+    left: 0;
+    z-index: 1;
+    background: #666;
+}
+
+@media (max-width: 768px) {
+    .side_bar_container > .side_bar{
+        left: -270px;
+        z-index: 102;
+    }
+
+    .side_bar_container > .side_bar.resp_show{
+        left: 0;
+    }
+
+    .side_bar_container > .cover{
+        display: block;
+    }
 }
 
 

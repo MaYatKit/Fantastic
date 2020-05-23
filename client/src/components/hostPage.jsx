@@ -281,9 +281,13 @@ class ConnectHostPage extends React.Component {
     render() {
         return (
             <div className={'hostPage'}>
-                <SideBar userName={this.props.userName} roomId={this.props.roomId}> </SideBar>
-                <div style={{ marginLeft: '260px' }}>
+                <SideBar userName={this.props.userName} 
+                    roomId={this.props.roomId}>
+                </SideBar>
+
+                <div className={'content_container'}>
                     <SearchBar GetResult={this.GetResult} ref={this.searchRef}/>
+                    
                     <div className={'page'}>
                         {/* search result container */}
 
