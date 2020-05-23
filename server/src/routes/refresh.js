@@ -26,7 +26,7 @@ let refreshToken = async function refreshToken(accessToken, refreshToken) {
         body: body
     });
 
-    if(res.status !== 200){ return null }
+    if(res.statusCode !== 200){ return null }
 
     let response = res.getBody('utf8');
     let toJson = JSON.parse(response);
