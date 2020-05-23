@@ -197,12 +197,15 @@ class ConnectGuestPage extends React.Component {
     render() {
         return (
             <div className={'hostPage'}>
+
                 <SideBar userName={this.state.userName + '\'s party'}
                          roomId={this.state.roomId}
                          isGuest={true}>
                 </SideBar>
-                <div style={{ marginLeft: '260px' }}>
+
+                <div className={'content_container'}>
                     <SearchBar GetResult={this.GetResult} ref={this.searchRef}/>
+                    
                     <div className={'page'}>
                         <div className={'search-results ' + (this.state.active ? '' : 'hidden') } onClick={() => {
                             this.setState({ active: false });

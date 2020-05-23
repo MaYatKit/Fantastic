@@ -13,12 +13,6 @@ export default class SideBarItem extends React.Component {
         this.state = { data: this.props.data };
     }
 
-
-    itemClick(item) {
-        // this.props.itemOnclick(item);
-    }
-
-
     componentWillReceiveProps(nextProps, nextContext) {
         this.setState({ data: nextProps.data });
     }

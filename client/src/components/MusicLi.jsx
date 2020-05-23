@@ -70,7 +70,7 @@ class MusicLi extends React.Component {
                 </div>
 
                 <div className="info">
-                    <div className="top">
+                    <div className="top" title={this.props.name}>
                         {this.props.name}
                     </div>
                     <div className="bottom clearfix">
