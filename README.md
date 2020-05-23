@@ -5,7 +5,7 @@
 # Fantastic 
 
 
-Fantastic is a party webapp that lets your guests choose which music should be played in the party. [Fantastic](https://fantastic.rocks/)
+Fantastic is a party webapp that lets your guests choose which music should be played in the party. 
 
 ## Building
 
