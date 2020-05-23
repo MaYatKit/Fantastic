@@ -12,6 +12,21 @@
     text-align: left;
 }
 
+@media (max-width: 768px) {
+    .musicli{
+        height: 100px;
+
+    }
+
+    .musicli > .img{
+        width: 92px!important;
+        height: 92px!important;
+    }
+    
+}
+
+
+
 .musicli > .img{
     width: 54px;
     height: 54px;
@@ -28,11 +43,16 @@
 .musicli > .info{
     float: left;
     padding: 5px 0;
+    width: calc(100% - 200px);
 }
 
 .musicli > .info > .top{
     font-size: 14px;
     line-height: 20px;
+    text-overflow: ellipsis;
+    height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .musicli > .info > .bottom{

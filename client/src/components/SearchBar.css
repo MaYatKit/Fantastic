@@ -37,11 +37,12 @@
     padding-left: 30px;
     padding-top: 10px;
     padding-bottom: 10px;
+    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
     .search_layout{
-        padding-left: 60px;
+        padding-left: 80px;
     }
     
 }

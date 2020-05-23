@@ -287,7 +287,7 @@ class ConnectHostPage extends React.Component {
 
                 <div className={'content_container'}>
                     <SearchBar GetResult={this.GetResult} ref={this.searchRef}/>
-                    
+
                     <div className={'page'}>
                         {/* search result container */}
 
@@ -309,11 +309,11 @@ class ConnectHostPage extends React.Component {
                                             <img src={item.albumArt} alt=""/>
                                         </div>
                                         <div className={'info'}>
-                                            <div className={'top'}>
+                                            <div className={'top'} title={item.trackName}>
                                                 {item.trackName}
                                             </div>
                                             <div className={'bottom'}>
-                                                <span className={'album-name'}>
+                                                <span className={'album-name'} title={item.albumName}>
                                                     {item.albumName}
                                                 </span>
                                                 <span className={'dot'}>.</span>
