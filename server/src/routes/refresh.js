@@ -26,15 +26,15 @@ let refreshToken = async function refreshToken(accessToken, refreshToken) {
         body: body
     });
 
-    let response = res.getBody('utf8');
+    if(res.status !== 200){ return null }
 
+    let response = res.getBody('utf8');
     let toJson = JSON.parse(response);
     let newAccessToken = toJson['access_token'];
     let newRefreshToken = toJson['refresh_token']; // Sometime refresh_token will return as well
     let newExpireTime = Math.floor(new Date().getTime() / 1000) + toJson['expires_in'];
     console.log('newAccessToken: ' + newAccessToken);
     console.log('newExpireTime: ' + newExpireTime);
-
 
     await Host.findOneAndUpdate({ accessToken: accessToken },
         {
@@ -46,7 +46,6 @@ let refreshToken = async function refreshToken(accessToken, refreshToken) {
         });
     return newAccessToken;
 };
-
 
 
 //getTokenByPartyId
@@ -83,19 +82,16 @@ router.get("/:partyid", async (req,res,next)=>{
             if (!userInfo || userInfo.length === 0) {
                 res.status(500).json({ message: 'User not found' });
             } else {
-                let searchType = req.query.type;
-                let searchLimit = req.query.limit;
-                let searchText = req.query.q;
-                let partyId = userInfo[0].id;
-                let userName = userInfo[0].name;
                 let accessToken = userInfo[0].accessToken;
                 let localRefreshToken = userInfo[0].refreshToken;
                 let expireTime = userInfo[0].expireTime;
 
                 if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                     console.log("The access token is expired, request a new one now.");
-
                     accessToken = await refreshToken(accessToken, localRefreshToken);
+                    if (!accessToken){
+                        res.status(500).json({message: "couldn't refresh token"})
+                    }
                 }
                 let responseData = {
                     'accessToken': accessToken

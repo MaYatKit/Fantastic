@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Host = require('../models/host');
-const re = require('./refreshToken');
+const re = require('./refresh');
 const syncRequest = require('sync-request');
 
 
@@ -39,28 +39,14 @@ router.get('/', async (req, res) => {
             let searchType = req.query.type;
             let searchLimit = req.query.limit;
             let searchText = req.query.q;
-            let partyId = userInfo[0].id;
-            let userName = userInfo[0].name;
             let accessToken = userInfo[0].accessToken;
             let refreshToken = userInfo[0].refreshToken;
             let expireTime = userInfo[0].expireTime;
 
             if (Math.floor(new Date().getTime() / 1000) >= expireTime){
                 console.log("The access token is expired, request a new one now.");
-                // Can not use fetch in here
-                // accessToken = fetch('http://localhost:1000/refresh', {
-                //     method: 'GET',
-                //     mode: 'cors',
-                //     credentials: 'include',
-                //     body: body,
-                //     headers: {
-                //         Accept: 'application/json',
-                //         'Content-Type': 'application/json;charset=utf-8'
-                //     }
-                // })
                 accessToken = await re.refreshToken(accessToken, refreshToken);
             }
-
 
             let searchRes = syncRequest('GET', 'https://api.spotify.com/v1/search?q=' + searchText + '&type=' + searchType + '&limit=' + searchLimit, {
                 headers: {
@@ -68,8 +54,7 @@ router.get('/', async (req, res) => {
                     'Content-Type': 'application/json;charset=utf-8',
                     'Authorization': 'Bearer ' + accessToken
                 }
-            });
-
+            })
             if(searchRes.statusCode === 200){
                 let response = searchRes.getBody('utf8');
                 let jsonResult = JSON.parse(response);
@@ -81,9 +66,10 @@ router.get('/', async (req, res) => {
         }
         res.end();
     } catch (err) {
+        console.log(err.message)
         res.status(500).json({ message: err.message });
         res.end();
     }
 });
 
-module.exports = router;
+module.exports = router
