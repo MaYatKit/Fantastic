@@ -29,7 +29,18 @@
     position: fixed;
     left: 0;
     z-index: 1;
-    background: #666;
+    background: #1f2127;
+
+    font-size: 40px;
+    color: white;
+    line-height: 100vh;
+    text-align: center;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.side_bar_container > .small_menu:hover{
+    background: #40434c;
 }
 
 @media (max-width: 768px) {

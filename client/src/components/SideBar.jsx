@@ -10,6 +10,7 @@ import {
     MdHome,
     MdExitToApp,
     MdHighlightOff,
+    MdMoreVert,
 } from 'react-icons/all';
 
 import SideBarItem from './SideBarItem';
@@ -74,7 +75,8 @@ export default class SideBar extends React.Component {
             <div className={'side_bar_container'}>
 
                 <div className={'small_menu'}
-                    onClick={() => this.resp_toggle(true)}>                       
+                    onClick={() => this.resp_toggle(true)}>
+                        <MdMoreVert></MdMoreVert>               
                 </div>
                 <div className={'cover' + (this.state.respShow ? '' : 'resp_show')} 
                     onClick={() => this.resp_toggle(false)}>
