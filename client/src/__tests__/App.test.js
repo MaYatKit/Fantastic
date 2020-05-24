@@ -7,7 +7,3 @@
 //   const linkElement = getByText(/learn react/i);
 //   expect(linkElement).toBeInTheDocument();
 // });
-
-test('Fake test', () => {
-    expect(true).toBeTruthy()
-})
