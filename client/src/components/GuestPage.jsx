@@ -5,6 +5,7 @@ import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
 import api from '../api';
+import util from '../util'
 import {updatePlaylist,
     play,
     pause,
@@ -26,9 +27,8 @@ let needNotify = false;
 class ConnectGuestPage extends React.Component {
     constructor(props) {
         super(props);
-        this.getParamFromUrl = this.getParamFromUrl.bind(this);
 
-        let param = this.getParamFromUrl();
+        let param = util.getParamFromUrl();
         this.state = {
             tracks: [],     // store search result
             active: false,
@@ -41,23 +41,6 @@ class ConnectGuestPage extends React.Component {
         this.searchRef = React.createRef();
         this.initWs = this.initWs.bind(this);
         this.initWs();
-    }
-
-
-    getParamFromUrl() {
-        if (window.location.search === '') {
-            window.location.href = '/';
-        }
-        let query = window.location.search.split('&');
-        query[0] = query[0].split('?')[1];
-        let param = {};
-        for (let i = 0; i < query.length; i++) {
-            let q = query[i].split('=');
-            if (q.length === 2) {
-                param[q[0]] = q[1].replace('%20', ' ');
-            }
-        }
-        return param;
     }
 
     initWs() {

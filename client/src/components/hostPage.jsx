@@ -5,6 +5,7 @@ import SideBar from './SideBar';
 import MusicLi from './MusicLi';
 import { connect } from 'react-redux';
 import api from '../api';
+import util from '../util'
 import { MdAdd } from 'react-icons/md';
 import { MdCheck } from 'react-icons/md';
 import {
@@ -138,27 +139,11 @@ class ConnectHostPage extends React.Component {
         }
     }
 
-    getParamFromUrl() {
-        if (window.location.search === '') {
-            window.location.href = '/';
-        }
-        let query = window.location.search.split('&');
-        query[0] = query[0].split('?')[1];
-        let param = {};
-        for (let i = 0; i < query.length; i++) {
-            let q = query[i].split('=');
-            if (q.length === 2) {
-                param[q[0]] = q[1].replace('%20', ' ');
-            }
-        }
-        return param;
-    }
-
     componentDidMount() {
         if(this.props.iniAtLanding)
             return
 
-        let param = this.getParamFromUrl();
+        let param = util.getParamFromUrl();
         // refresh page at path /host
         api.checkPartyCode(param['roomId'])
         .then(response => {
