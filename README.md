@@ -43,10 +43,11 @@ The `server/package.json` contains all necessary dependencies for building the F
 
 
 ## Contributing
+This application was made as a group project for the Softeng750/Compsci732 course at the University of Auckland. If you would like to contribute to it:
 
-1. Fork it! :octocat:
+1. Fork it :octocat:
 1. Create your feature branch: `git checkout -b my-improvement`
-1. Make your changes and test them!
+1. Make your changes and test them
 1. Commit & push your changes
 1. Submit a pull request :rocket:
 
