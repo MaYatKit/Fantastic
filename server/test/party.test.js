@@ -7,6 +7,7 @@ import host from '../src/models/host'
 import cookieParser from 'cookie-parser'
 
 let server, mongo, app
+let prefix = "http://localhost:8080"
 
 describe('Tests for /party endpoints', ()=>{
     beforeAll(async done =>{
@@ -59,7 +60,7 @@ describe('Tests for /party endpoints', ()=>{
     })
 
     it("GET /party: successfully get party details with host ID", async () =>{
-        let response = await fetch("http://localhost:8080/party",{
+        let response = await fetch(prefix + "/party",{
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -74,7 +75,7 @@ describe('Tests for /party endpoints', ()=>{
     })
 
     it("GET /party: cookie with incorrect host ID and get 404", async () =>{
-        let response = await fetch("http://localhost:8080/party",{
+        let response = await fetch(prefix + "/party",{
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -86,7 +87,7 @@ describe('Tests for /party endpoints', ()=>{
     })
 
     it("GET /party/id: successfully get party details with party ID", async ()=>{
-        let response = await fetch("http://localhost:8080/party/abc")
+        let response = await fetch(prefix + "/party/abc")
         let partyDetails = await response.json()
 
         expect(partyDetails).toBeTruthy()
@@ -96,7 +97,7 @@ describe('Tests for /party endpoints', ()=>{
     })
 
     it("GET /party/id: send incorrect ID and get 404", async ()=>{
-        let response = await fetch("http://localhost:8080/party/123")
+        let response = await fetch(prefix + "/party/123")
         expect(response.status).toBe(404)
     })
 
@@ -125,7 +126,7 @@ describe('Tests for /party endpoints', ()=>{
             tracks: updatedTracks
         };
 
-        let response = await fetch("http://localhost:8080/party/", {
+        let response = await fetch(prefix + "/party/", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -136,7 +137,7 @@ describe('Tests for /party endpoints', ()=>{
 
         expect(response.status).toEqual(200)
 
-        let updatedResponse = await fetch("http://localhost:8080/party/abc")
+        let updatedResponse = await fetch(prefix + "/party/abc")
         let updatedPartyDetails = await updatedResponse.json()
         expect(updatedPartyDetails.tracks.length).toBe(2)
 
@@ -168,7 +169,7 @@ describe('Tests for /party endpoints', ()=>{
             tracks: updatedTracks
         };
 
-        let response = await fetch("http://localhost:8080/party", {
+        let response = await fetch(prefix + "/party", {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
