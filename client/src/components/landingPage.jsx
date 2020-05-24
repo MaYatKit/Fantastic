@@ -9,8 +9,6 @@ import { updateRoomInfo, updatePlaylist, updateActiveMusicState } from '../redux
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
-import { Link, BrowserRouter} from "react-router-dom";
-import playBack from '../playBack';
 
 class LandingPage extends React.Component{
     constructor(props) {
@@ -25,12 +23,9 @@ class LandingPage extends React.Component{
             redirect: false,
             path: undefined
         };
-        // this.changePagePosition = this.changePagePosition.bind(this);
         this.create = this.create.bind(this);
         this.login = this.login.bind(this);
 
-        // this.initPlayback = this.initPlayback.bind(this);
-        // this.initPlayback();
     }
 
     inputChange(event){
@@ -40,9 +35,6 @@ class LandingPage extends React.Component{
         })
     }
 
-    // changePagePosition(pos) {
-    //     this.setState({pagePosition: pos});
-    // }
 
     changeIntention(){
         this.setState(
@@ -130,48 +122,8 @@ class LandingPage extends React.Component{
 
     login(){
         api.login()
-        // fetch('http://localhost:1000/auth/spotify', {
-        //     method: 'GET',
-        //     mode: 'no-cors',
-        //     credentials: 'include',
-        //     headers: {
-        //         Accept:"*/*",
-        //         "Content-Type": "application/json;charset=utf-8"
-        //     },
-        // }).then(response => {
-        //     // console.log(response.json());
-        //     if (response["status"] === 404){
-        //         console.log("Login fail!!!");
-        //
-        //     }else if (response["status"] === 0){
-        //         console.log("Login successful, fetching user info...");
-        //         // this.create();
-        //     }
-        // }).catch(function (e) {
-        //     console.log("Login failed: " + e);
-        // });
     }
 
-    // checkGuestCode(){
-    //     api.checkPartyCode(this.state.input)
-    //     .then(response =>{
-    //         if (response["status"] == 404){
-    //             console.log("login failed!")
-    //             this.setState({
-    //                 incorrectCode: true
-    //             })
-    //         }else{
-    //             this.setState({
-    //                 incorrectCode: false
-    //             })
-
-    //         }
-    //     })
-    // }
-
-    // testPlaylistUpload(){
-    //     api.uploadPlayList("12345", data)
-    // }
 
 
     render(){
@@ -238,57 +190,7 @@ class LandingPage extends React.Component{
         )
     }
 
-    // render2() {
-    //     switch (this.state.pagePosition) {
-    //         case 0:
-    //             return (
-    //                 <div className={"landingPage"}>
-    //                     <img className={"logo"} src={logo} alt={"logo"} />
-    //                     <div className={"landing"}>
-    //                         <Button name={"CREATE PARTY"} type={"main"} pos={1} changePagePosition={this.changePagePosition} />
-    //                         <Button name={"JOIN PARTY"} type={"main"} pos={2} changePagePosition={this.changePagePosition} />
-    //                     </div>
-    //                 </div>
-    //             );
-    //         case 1:
-    //             return (
-    //                 <div className={"landingPage"}>
-    //                     <img className={"logo"} src={logo} alt={"logo"} />
-    //                     <div className={"creating"}>
-    //                         <Button name={"AUTHORIZING"} type={"main"} pos={0} disable = {true} changePagePosition={this.changePagePosition}/>
-    //                         <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
-    //                     </div>
-    //                 </div>
-    //             );
-    //         case 2:
-    //             return (
-    //                 <div className={"landingPage"}>
-    //                     <img className={"logo"} src={logo} alt={"logo"} />
-    //                     <div className={"joining"}>
-    //                         <div className={"inputArea"}>
-    //                             <button className={"arrow"} onClick={() => this.changePagePosition(0)}><FaArrowLeft/></button>
-    //                             <input className={"codeInput"} type={"text"} placeholder={"ENTER CODE"} />
-    //                         </div>
-    //                         <Button name={"JOIN"} type={"main"} />
-    //                     </div>
-    //                 </div>
-    //             );
-    //         case 3:
-    //             return (
-    //                 <div className={"landingPage"}>
-    //                     <img className={"logo"} src={logo} alt={"logo"} />
-    //                     <div className={"joining"}>
-    //                         <div className={"login"}>
-    //                             <button className={"button animateIn main"} type={"main"} onClick={() => this.login()}> LOGIN </button>
-    //                             <Button name={"JOIN PARTY"} type={"main"} pos={0} changePagePosition={this.changePagePosition} />
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             );
-    //         default:
-    //             break;
-    //     }
-    // }
+
 }
 
 

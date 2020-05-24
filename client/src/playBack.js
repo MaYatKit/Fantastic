@@ -1,11 +1,10 @@
-import oauth from './oauth';
 const syncRequest = require('sync-request');
 
 
 let _token = 'oauth.getToken()';
 let readyToPlay = false;
 let deviceId = null;
-let _partyId  = null;
+let _partyId = null;
 
 
 function insertTag() {
@@ -28,9 +27,9 @@ function getTokenFromServer(partyId) {
         }
     });
 
-    if(response.statusCode !== 200) {
+    if (response.statusCode !== 200) {
         console.log('Fail to get token!!! status code = ' + response['status']);
-        return
+        return;
     }
 
     let responseBody = response.getBody('utf8');
@@ -42,7 +41,6 @@ function getTokenFromServer(partyId) {
 
 function init() {
     window.onSpotifyWebPlaybackSDKReady = () => {
-        // const token = 'BQAqrWNV5yfJfQ-IZd-WPjgf3hbYVlj0S6GKtiNCgPUBpvf3ylsgywDLQOpN-fg4UvHzu5MlZqMKdNz5dTptSPeGC9wtZ_TLAi_PiOBMQ1IP6v1lyUUUJsKlE6lHWHOiTXwAWOV7o8P2gen620Q_XUdC430z4UnizfCH_49ZRHBL09ej6oBG_7I';
         // eslint-disable-next-line
         const player = new Spotify.Player({
             name: 'Web Playback SDK Quick Start Player',
@@ -92,27 +90,6 @@ function init() {
 }
 
 
-// export function playSong(songList) {
-//     if (!readyToPlay) {
-//         return '!readyToPlay!!!';
-//     }
-//     if (!songList) {
-//         return '!songList!!!';
-//     }
-
-//     fetch('https://api.spotify.com/v1/me/player/play?device_id=' + deviceId, {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + _token
-//         },
-//         body: JSON.stringify({ 'uris': songList })
-//     })
-//         .then(response => {
-//             console.log('Player response: ' + response.url + ', status = ' + response.status);
-//         });
-
-// }
 
 async function pause() {
     if (!readyToPlay) {
@@ -123,7 +100,7 @@ async function pause() {
 
     let response = null;
 
-    try{
+    try {
         response = await fetch('https://api.spotify.com/v1/me/player/pause?device_id=' + deviceId, {
             method: 'PUT',
             headers: {
@@ -131,7 +108,7 @@ async function pause() {
                 'Authorization': 'Bearer ' + _token
             }
         });
-    }catch (e) {
+    } catch (e) {
         getTokenFromServer(_partyId);
         response = await fetch('https://api.spotify.com/v1/me/player/pause?device_id=' + deviceId, {
             method: 'PUT',
@@ -153,7 +130,7 @@ async function resume() {
 
     let response = null;
 
-    try{
+    try {
         response = await fetch('https://api.spotify.com/v1/me/player/play?device_id=' + deviceId, {
             method: 'PUT',
             headers: {
@@ -161,7 +138,7 @@ async function resume() {
                 'Authorization': 'Bearer ' + _token
             }
         });
-    }catch (e) {
+    } catch (e) {
         getTokenFromServer(_partyId);
         response = await fetch('https://api.spotify.com/v1/me/player/play?device_id=' + deviceId, {
             method: 'PUT',
@@ -175,27 +152,10 @@ async function resume() {
     return response;
 }
 
-// function next() {
-//     if (!readyToPlay) {
-//         return '!readyToPlay!!!';
-//     }
-//     fetch('https://api.spotify.com/v1/me/player/next?device_id=' + deviceId, {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + _token
-//         }
-//     })
-//         .then(response => {
-//             console.log('Player response: ' + response.url + ', status = ' + response.status);
-//             if (response.status === 204) {
-//                 // playing = true;
-//             }
-//         });
-// }
+
 
 // Play a specified track on the Web Playback SDK's device ID
-async function  play(uri)  {
+async function play(uri) {
     // ['spotify:track:2eSNpIOFoi1Q8wxw6CycXJ', 'spotify:track:5HG4ivhRHPuO0f8u7zocjw']
     console.log('play');
     if (!readyToPlay) {
@@ -203,7 +163,7 @@ async function  play(uri)  {
     }
     let response = null;
 
-    try{
+    try {
         response = await fetch('https://api.spotify.com/v1/me/player/play?device_id=' + deviceId, {
             method: 'PUT',
             headers: {
@@ -212,7 +172,7 @@ async function  play(uri)  {
             },
             body: JSON.stringify({ 'uris': [uri] })
         });
-    }catch (e) {
+    } catch (e) {
         getTokenFromServer(_partyId);
         response = await fetch('https://api.spotify.com/v1/me/player/play?device_id=' + deviceId, {
             method: 'PUT',
@@ -233,4 +193,4 @@ export default {
     pause,
     resume,
     getTokenFromServer
-}
+};

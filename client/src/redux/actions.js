@@ -2,36 +2,12 @@ import playBack from '../playBack'
 
 // Define action types here
 
-const READ_LOCAL_LIST = "READ_LOCAL_LIST";
-const REFREASH_HOSTPAGE = "REFREASH_HOSTPAGE";
-const REFREASH_PLAYLIST = "REFREASH_PLAYLIST";
 const UPDATE_ROOM_INFO = "UPDATE_ROOM_INFO";
 const UPDATE_PLAYLIST = 'UPDATE_PLAYLIST';
 const UPDATE_ACTIVE_MUSIC_STATE = "UPDATE_ACTIVE_MUSIC_STATE";
 const UPDATE_ACTIVE_MUSIC = "UPDATE_ACTIVE_MUSIC";
 const RESTORE_DEFAULT = "RESTORE_DEFAULT";
 
-// define action creators here
-// let refreshHostPage = (data) => {
-//     return {
-//         type: REFREASH_HOSTPAGE,
-//         data: data
-//     }
-// };
-
-// let readLocalList = () => {
-//     return{
-//         type: READ_LOCAL_LIST,
-//         data: undefined
-//     }
-// }
-
-// let refreshPlaylist = (data) => {
-//     return {
-//         type: REFREASH_PLAYLIST,
-//         data: data
-//     }
-// };
 
 let updateRoomInfo = (data) => {
     // expected input: a object that has matching attributes of the store
@@ -74,11 +50,6 @@ let restoreDefault = () => {
 // ---------------async actions-----------------
 
 function play(event){
-    // {
-    //     nextState: 'PAUSE' or 'PLAYING'
-    //     uri,
-    //     resume: boolean
-    // }
     return function(dispatch, getState){
         // getState(): return a object containing the redux state
         let s = getState()
@@ -125,9 +96,6 @@ function pause(){
 
 
 export {updatePlaylist,
-        // readLocalList,
-        // refreshHostPage,
-        // refreshPlaylist,
         updateRoomInfo,
         updateActiveMusicState,
         updateActiveMusic,

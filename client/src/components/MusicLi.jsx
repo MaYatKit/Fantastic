@@ -26,11 +26,8 @@ class MusicLi extends React.Component {
     }
 
     playControlMli(info) {
-        // stop/pause -> playing
-        // playing -> pause
 
         if (!this.IsActive())
-            // control button only appear in the topmost music
         {
             return;
         }

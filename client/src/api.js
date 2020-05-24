@@ -1,21 +1,6 @@
-const querystring = require('querystring');
 const prefix = 'http://localhost:1000';
 
-function get(url) {
-    // old XMLHttpRequest method for GET
-    return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.withCredentials = true;
-        xhr.onload = () => {
-            resolve(xhr.responseText);
-        };
-        xhr.onerror = () => {
-            reject();
-        };
-        xhr.send();
-    });
-}
+
 
 function login() {
     window.location.replace(prefix + '/auth/spotify');
@@ -137,17 +122,7 @@ function uploadPlayList(roomId, playList, successCallback) {
         });
 }
 
-// function getPartyInfo(partyId){
-//     // /guest ?
-//     let url = `${prefix}/auth/guest?id=${encodeURIComponent(partyId)}`
-//     return fetch(url, {
-//         method: 'GET',
-//         headers: {
-//             Accept: 'application/json',
-//             'Content-Type': 'application/json;charset=utf-8'
-//         },
-//     })
-// }
+
 
 function checkPartyCode(partyCode){
     let url = prefix + "/party/"+ partyCode;

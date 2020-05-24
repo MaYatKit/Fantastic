@@ -1,10 +1,5 @@
-// implicit oauth
-// call getToken() to get a existing token.
-// if there is no lcoally existing token, browser redirects to spotify to request a new one.
 
 function getHashObject(){
-    // #a=1&b=2    
-    // =>     {a: 1, b: 2}
     return window.location.hash
     .substring(1)
     .split('&')
@@ -18,9 +13,6 @@ function getHashObject(){
 }
 
 function getTokenFromURL(){
-    // #access_token=#####
-    // &token_type=Bearer
-    // &expires_in=3600 (seconds)
     let token = getHashObject()["access_token"];
     let expire_len = getHashObject()["expires_in"];
     let expire_by = Date.now() + expire_len * 1000

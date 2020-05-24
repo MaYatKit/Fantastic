@@ -2,14 +2,11 @@ import React from 'react';
 
 import style from "./MliBtns.css"
 
-// import icons
 
 import {MdSkipNext} from "react-icons/md"
 import {MdClear} from "react-icons/md"
 
 
-// all possible states
-// const s = ["REMOVE", "NEXT"];
 
 export default class MusicLi extends React.Component {
 
@@ -28,7 +25,7 @@ export default class MusicLi extends React.Component {
 
     render(){
         return (
-            <div className="likebtn" 
+            <div className="likebtn"
                 onClick={ e => this.props.parentHandler(this.props.type) }>
                 { this.iconFn() }
             </div>

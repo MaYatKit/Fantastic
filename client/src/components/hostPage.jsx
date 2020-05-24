@@ -64,11 +64,6 @@ class ConnectHostPage extends React.Component {
     }
 
     playControl(event) {
-        // {
-        //     nextState: 'PAUSE' or 'PLAYING'
-        //     uri,
-        //     resume: boolean
-        // }
         if (event.nextState === 'PAUSE') {
             this.props.musicInfo[0]['play_state'] = 0;
             api.uploadPlayList(this.props.roomId, this.props.musicInfo, () => {
@@ -281,7 +276,7 @@ class ConnectHostPage extends React.Component {
     render() {
         return (
             <div className={'hostPage'}>
-                <SideBar userName={this.props.userName} 
+                <SideBar userName={this.props.userName}
                     roomId={this.props.roomId}>
                 </SideBar>
 
@@ -387,12 +382,6 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         refreshPlaylist: data => dispatch( refreshPlaylist(data) ),
-//         play: data => dispatch( play(data) ),
-//     };
-// };
 
 
 export const HostPage = connect(mapStateToProps, null)(ConnectHostPage);
