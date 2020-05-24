@@ -12,7 +12,7 @@ function isLogin() {
         // promise resolve when user is logged in
         // promise reject when user is not
 
-        fetch('http://localhost:1000/party/', {
+        fetch(prefix + '/party/', {
             method: 'GET',
             mode: 'cors',
             credentials: 'include',
@@ -40,7 +40,7 @@ function isLogin() {
 }
 
 function createParty() {
-    return fetch('http://localhost:1000/party/', {
+    return fetch(prefix + '/party/', {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -55,7 +55,7 @@ function searchItem(searchItem) {
     // search music by keyword
     // return Promise, The promise return a array of music when resolved
 
-    let url = 'http://localhost:1000/search?q=' + searchItem + '&type=track&limit=10';
+    let url = prefix + '/search?q=' + searchItem + '&type=track&limit=10';
     return fetch(url, {
         method: 'GET',
         mode: 'cors',
@@ -97,7 +97,7 @@ function searchItem(searchItem) {
 function uploadPlayList(roomId, playList, successCallback) {
     // search music by keyword
     // return Promise, The promise return a array of music when resolved
-    let url = 'http://localhost:1000/party/';
+    let url = prefix + '/party/';
 
     let data = {
         id: roomId,
