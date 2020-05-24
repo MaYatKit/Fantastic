@@ -5,6 +5,7 @@ import './App.css';
 import { HostPage } from './components/hostPage';
 import  {ReduxLandingPage}  from './components/landingPage'
 import {GuestPage} from './components/GuestPage'
+import {Logout} from './components/Logout'
 
 function App() {
     return (
@@ -17,6 +18,10 @@ function App() {
 
             <Route path="/guest" component={GuestPage}>
                 <GuestPage></GuestPage >
+            </Route>
+
+            <Route path="/logout" component={Logout}>
+                <Logout></Logout >
             </Route>
 
             <Route path="/">
