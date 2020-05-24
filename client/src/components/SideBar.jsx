@@ -29,9 +29,13 @@ let host_items = [{
     icon: MdShare,
     to: '/host/share'
 }, {
-    item: 'Exit Party',
-    icon: MdHighlightOff,
+    item: 'Landing Page',
+    icon: MdHome,
     to: '/'
+},{
+    item: 'Logout',
+    icon: MdHighlightOff,
+    to: '/logout'
 }];
 
 let guest_items = [{

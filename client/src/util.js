@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 function getParamFromUrl_test(str){
     let query = str.split('&');
     query[0] = query[0].split('?')[1];
@@ -27,4 +29,11 @@ function getParamFromUrl() {
     return param;
 }
 
-export default {getParamFromUrl_test, getParamFromUrl}
+function clearAppData(){
+    // clear cookies, localstorages and session storages
+    sessionStorage.removeItem("likedTracks")
+    Cookies.remove('user', { path: '' })
+    Cookies.remove('io', { path: '' })
+}
+
+export default {getParamFromUrl_test, getParamFromUrl, clearAppData}
