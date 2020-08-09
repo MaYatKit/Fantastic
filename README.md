@@ -5,8 +5,7 @@
 # Fantastic 
 
 
-Fantastic is a party webapp that lets guests collaborate on a music playlist that should be played in the party. More details about the application can be found in the [wiki](https://github.com/BennyChun/Group-9-Amethyst-Ant/wiki).<br/>
-Live demo: https://partymusicapp.herokuapp.com
+Fantastic is a party webapp that lets guests collaborate on a music playlist that should be played in the party. More details about the application can be found in the [wiki](https://github.com/BennyChun/Group-9-Amethyst-Ant/wiki). Live demo: https://partymusicapp.herokuapp.com<br/>
 
 Responsive UI:<br/>
 <img title="A screenshot of particle effect" width="500" src="responsive_ui.gif">
